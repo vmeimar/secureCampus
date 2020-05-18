@@ -10,7 +10,6 @@
                     <div class="card-body">
                         <form method="post" action="/s" enctype="multipart/form-data">
                             @csrf
-
                             <div class="form-group row">
 
                                 <label for="guard_name" class="col-md-4 col-form-label text-md-right">Guard's Name</label>

@@ -18,6 +18,8 @@ class CreateGuardsTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->integer('active');
+            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('company_id');
             $table->integer('age')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();

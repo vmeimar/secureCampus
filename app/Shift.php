@@ -10,6 +10,6 @@ class Shift extends Model
 
     public function user()
     {
-        return $this->belongsTo(Guard::class);
+        return $this->belongsTo(User::class);
     }
 }

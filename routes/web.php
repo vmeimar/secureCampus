@@ -24,3 +24,7 @@ Route::get('/profile/{user}', 'ProfilesController@index');
 
 Route::get('/shift/create', 'ShiftsController@create');
 Route::post('/s', 'ShiftsController@store');
+
+Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
+    Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
+});
