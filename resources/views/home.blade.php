@@ -13,8 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
-                    You are logged in!
+                    <a href="/profile/{{ $user->id }}" class="btn btn-primary">Visit Profile</a>
                 </div>
             </div>
         </div>

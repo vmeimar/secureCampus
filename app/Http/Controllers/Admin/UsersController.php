@@ -57,9 +57,15 @@ class UsersController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->save();
 
-//        dd($user->roles()->sync($request->roles));
+        if ($user->save())
+        {
+            $request->session()->flash('success', $user->name.' has been updated');
+        }
+        else
+        {
+            $request->session()->flash('error', 'Error while updating user '.$user->name);
+        }
 
         return redirect()->route('admin.users.index');
     }

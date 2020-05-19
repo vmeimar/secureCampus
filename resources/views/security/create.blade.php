@@ -8,7 +8,7 @@
                     <div class="card-header">Create New Shift</div>
 
                     <div class="card-body">
-                        <form method="post" action="/sh" enctype="multipart/form-data">
+                        <form method="post" action="/s" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
 

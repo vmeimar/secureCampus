@@ -20,9 +20,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/home', 'HomeController@index');
+
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
+Route::get('/home', 'HomeController@index');
+
 Route::get('/shift/create', 'ShiftsController@create');
+Route::post('/sh', 'ShiftsController@store');
+
+Route::get('/security/create', 'ShiftsController@create');
 Route::post('/s', 'ShiftsController@store');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
