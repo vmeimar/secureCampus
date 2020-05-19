@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class ShiftsController extends Controller
 {
@@ -27,32 +28,31 @@ class ShiftsController extends Controller
             ->where('active', '=', '1')
             ->get();
 
-//        $locations = DB::table('locations')
-//            ->get();
+        $locations = DB::table('locations')
+            ->get();
 
 
-        return view('shift.create', compact('guards'));
+        return view('shift.create', compact('guards', 'locations'));
     }
 
     public function store()
     {
-//        $this->validate(\request(), [
-//            'guard_name'    =>  'required'
-//        ]);
-
-
-
         $data = \request()->validate([
-            'guard_name' => 'required',
+            'guard' => 'required',
+            'location' => 'required',
 //            'shift_from' => 'required',
 //            'shift_until' => 'required',
-//            'shift_location' => 'required',
         ]);
 
+        $now = Carbon::now();
 
-        dd(\request()->all());
+        auth()->user()->shifts()->create([
+            'guard_id'  =>  $data['guard'],
+            'location_id'  =>  $data['location'],
+            'shift_from'    =>  $now->toDateTimeString(),
+            'shift_until'    =>  $now->toDateTimeString(),
+        ]);
 
-
-//        auth()->user()->shifts()->create($data);
+        return redirect('/profile/' . \auth()->user()->id);
     }
 }

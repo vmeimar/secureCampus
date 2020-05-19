@@ -41,6 +41,8 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasRole('supervisor');
         });
 
-
+        Gate::define('manage-security', function ($user) {
+            return $user->hasRole('secretariat');
+        });
     }
 }

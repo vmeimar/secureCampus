@@ -16,13 +16,11 @@ class CreateShiftsTable extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('guard_id');
-            $table->unsignedBigInteger('supervisor_id');
+            $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('user_id');
             $table->dateTime('shift_from');
             $table->dateTime('shift_until');
-            $table->string('shift_location');
             $table->timestamps();
-
-            $table->index('guard_id');
         });
     }
 

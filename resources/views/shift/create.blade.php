@@ -12,9 +12,9 @@
                             @csrf
                             <div class="form-group row">
 
-                                <label for="guard_name" class="col-md-4 col-form-label text-md-right">Guard's Name</label>
+                                <label for="guard" class="col-md-4 col-form-label text-md-right">Guard's Name</label>
                                 <div class="col-md-6">
-                                    <select name="guard_name" id="guard_name" class="form-control input-lg dynamic">
+                                    <select name="guard" id="guard" class="form-control input-lg dynamic">
                                         <option selected disabled>Select Guard</option>
                                         @foreach($guards as $guard)
                                             <option value="{{ $guard->id }}">
@@ -22,21 +22,20 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('guard_name')
+                                    @error('guard')
                                         <strong>{{ $message }}</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-
                                 <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
                                 <div class="col-md-6">
                                     <select name="location" id="location" class="form-control input-lg dynamic">
                                         <option selected disabled>Select Location</option>
-                                        @foreach($guards as $guard)
-                                            <option value="{{ $guard->id }}">
-                                                {{ $guard->surname }} {{ $guard->name }}
+                                        @foreach($locations as $location)
+                                            <option value="{{ $location->id }}">
+                                                {{ $location->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -45,8 +44,6 @@
                                     @enderror
                                 </div>
                             </div>
-
-
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
