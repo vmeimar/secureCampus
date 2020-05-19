@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/profile/{user}', 'ProfilesController@index');
+Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
 Route::get('/shift/create', 'ShiftsController@create');
 Route::post('/s', 'ShiftsController@store');
