@@ -24,13 +24,15 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
-Route::get('/home', 'HomeController@index');
-
 Route::get('/shift/create', 'ShiftsController@create');
 Route::post('/sh', 'ShiftsController@store');
 
-Route::get('/security/create', 'ShiftsController@create');
-Route::post('/s', 'ShiftsController@store');
+Route::get('/security', 'SecurityController@index')->name('company.index');
+Route::get('/security/create', 'SecurityController@create');
+Route::get('/security/show', 'SecurityController@show');
+Route::delete('/security/{company}', 'SecurityController@destroy')->name('company.destroy');
+Route::get('/security/{company}/edit', 'SecurityController@edit');
+Route::post('/s', 'SecurityController@store');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);

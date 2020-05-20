@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Users</div>
+                    <div class="card-header"><strong>Companies</strong></div>
 
                     <div class="card-body">
                         <table class="table">
@@ -14,31 +14,31 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Roles</th>
-                                @can('edit-users')
+                                <th scope="col">Phone</th>
+                                @can('manage-security')
                                     <th scope="col">Actions</th>
                                 @endcan
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($users as $user)
+                            @foreach($companies as $company)
                                 <tr>
-                                    <th scope="row">{{ $user->id }}</th>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
+                                    <th scope="row">{{ $company->id }}</th>
+                                    <td>{{ $company->name }}</td>
+                                    <td>{{ $company->email }}</td>
+                                    <td>{{ $company->phone }}</td>
                                     <td>
-                                        @can('edit-users')
+                                        @can('manage-security')
                                             <div class="row">
-                                                <a href="{{ route('admin.users.edit', $user->id) }}">
+                                                <a href="security/{{ $company->id }}/edit">
                                                     <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
                                                 </a>
                                             </div>
                                         @endcan
 
-                                        @can('delete-users')
+                                        @can('manage-security')
                                             <div class="row">
-                                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">
+                                                <form action="{{ route('company.destroy', $company) }}" method="POST" class="float-left">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -54,6 +54,7 @@
 
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

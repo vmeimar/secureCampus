@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Guard;
-use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Carbon\Carbon;
 
 class ShiftsController extends Controller
 {
@@ -51,11 +48,11 @@ class ShiftsController extends Controller
         $data = \request()->validate([
             'guard' => 'required',
             'location' => 'required',
-            'shift_date' => 'required',
-            'shift_from_hour' => 'required',
-            'shift_from_minute' => 'required',
-            'shift_until_hour' => 'required',
-            'shift_until_minute' => 'required',
+//            'shift_date' => 'required',
+//            'shift_from_hour' => 'required',
+//            'shift_from_minute' => 'required',
+//            'shift_until_hour' => 'required',
+//            'shift_until_minute' => 'required',
         ]);
 
 //        $now = Carbon::now();
