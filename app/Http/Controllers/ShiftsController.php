@@ -51,6 +51,7 @@ class ShiftsController extends Controller
         $data = \request()->validate([
             'guard' => 'required',
             'location' => 'required',
+            'shift_date' => 'required',
             'shift_from_hour' => 'required',
             'shift_from_minute' => 'required',
             'shift_until_hour' => 'required',
