@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Users</div>
 
@@ -29,17 +29,23 @@
                                     <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                     <td>
                                         @can('edit-users')
+                                        <div class="row">
                                             <a href="{{ route('admin.users.edit', $user->id) }}">
-                                                <button type="button" class="btn btn-primary float-left">Edit</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
                                             </a>
+                                        </div>
                                         @endcan
+
                                         @can('delete-users')
-                                            <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">
+                                        <div class="row">
+                                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">
                                             @csrf
                                             {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn-danger ml-2">Delete</button>
-                                        @endcan
+                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                         </form>
+                                        </div>
+                                        @endcan
+
                                     </td>
                                 </tr>
                             @endforeach

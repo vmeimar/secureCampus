@@ -45,6 +45,52 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="shift_date" class="col-md-4 col-form-label text-md-right">Shift's Date</label>
+                                <div class="col-md-6">
+                                    <input type="date" name="shift_date" id="shift_date" class="form-control input-lg dynamic">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="shift_from" class="col-md-4 col-form-label text-md-right">Shift From</label>
+                                <div class="col-md-3">
+                                    <select name="shift_from_hour" id="shift_from_hour" class="form-control input-lg dynamic">
+                                        <option selected disabled>Hours</option>
+                                        @foreach($hours as $hour)
+                                            <option value="{{ $hour }}">{{ $hour }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="shift_from_minute" id="shift_from_minute" class="form-control input-lg dynamic">
+                                        <option selected disabled>Minutes</option>
+                                        @foreach($minutes as $minute)
+                                            <option value="{{ $minute }}">{{ $minute }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="shift_date" class="col-md-4 col-form-label text-md-right">Shift Until</label>
+                                <div class="col-md-3">
+                                    <select name="shift_until_hour" id="shift_until_hour" class="form-control input-lg dynamic">
+                                        <option selected disabled>Hours</option>
+                                        @foreach($hours as $hour)
+                                            <option value="{{ $hour }}">{{ $hour }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="shift_until_minute" id="shift_until_minute" class="form-control input-lg dynamic">
+                                        <option selected disabled>Minutes</option>
+                                        @foreach($minutes as $minute)
+                                            <option value="{{ $minute }}">{{ $minute }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">

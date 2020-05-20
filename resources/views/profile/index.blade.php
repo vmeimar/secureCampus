@@ -14,7 +14,7 @@
             <div class="pt-2">
                 <div><strong>You are logged in as {{ $user->name }}</strong></div>
                 <div><strong>Department: Dept. of Informatics</strong></div>
-                <div><strong>Role: Admin</strong></div>
+                <div><strong>Role: {{ implode(", ", $userRoles) }}</strong></div>
                 <div class="pt-3">
                     <p>This application allows you to manage security spots and shifts for your assets.</p>
                 </div>

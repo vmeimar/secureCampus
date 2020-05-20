@@ -16,11 +16,22 @@ class ProfilesController extends Controller
     public function index($user)
     {
         $user = User::findOrFail($user);
+        $userRoles = [];
+
+        foreach ($user->roles as $role)
+        {
+            $userRoles[] = ucfirst($role->name);
+        }
+
+//        echo "<pre>";
+//        print_r(implode(", ", $userRoles));
+//        exit;
 
         if (Auth::id() == $user->id)
         {
-            return view('profile.index', compact('user'));
+            return view('profile.index', compact('user', 'userRoles'));
         }
+
         return redirect()->route('profile', ['user' => Auth::id()]);
     }
 }
