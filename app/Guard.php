@@ -8,16 +8,9 @@ class Guard extends Model
 {
     protected $guarded = [];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::created( function ($guard) {
-            $guard->create([
-                'active' =>  1
-            ]);
-        } );
-    }
+    protected $attributes = [
+        'active'    =>  1
+    ];
 
     public function company()
     {

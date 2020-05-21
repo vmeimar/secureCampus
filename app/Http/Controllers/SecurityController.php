@@ -17,8 +17,9 @@ class SecurityController extends Controller
 
     public function index()
     {
+        $user_id = Auth::id();
         $companies = Company::all();
-        return view('security.index', compact('companies'));
+        return view('security.index', compact('companies', 'user_id'));
     }
 
     public function show(Company $company)
@@ -44,7 +45,9 @@ class SecurityController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        return view('security.create');
+        $user_id = Auth::id();
+
+        return view('security.create', compact('user_id'));
     }
 
     public function store()
@@ -69,7 +72,7 @@ class SecurityController extends Controller
             \request()->session()->flash('error', 'Error while creating new Company');
         }
 
-        return redirect()->route('profile', ['user' => Auth::id()]);
+        return redirect()->route('company.index');
     }
 
     public function destroy(Company $company)
@@ -79,9 +82,15 @@ class SecurityController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        $company->delete();
+        if ($company->guards()->delete() && $company->delete())
+        {
+            \request()->session()->flash('success', 'Successfully deleted security company');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while deleting security company');
+        }
 
         return redirect()->route('company.index');
-
     }
 }

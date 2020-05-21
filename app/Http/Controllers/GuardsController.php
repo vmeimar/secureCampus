@@ -56,11 +56,25 @@ class GuardsController extends Controller
             \request()->session()->flash('error', 'Error while creating new Guard');
         }
 
-        return redirect()->route('profile', ['user' => Auth::id()]);
+        return redirect()->route('company.edit', ['company' => $company_id]);
     }
 
-    public function destroy()
+    public function destroy(Guard $guard)
     {
+        if (Gate::denies('manage-security'))
+        {
+            return redirect()->route('profile', ['user' => Auth::id()]);
+        }
 
+        if ($guard->delete())
+        {
+            \request()->session()->flash('success', 'Guard deleted successfully');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while deleting guard');
+        }
+
+        return redirect()->route('company.index');
     }
 }

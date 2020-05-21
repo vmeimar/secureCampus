@@ -31,7 +31,7 @@ Route::get('/security', 'SecurityController@index')->name('company.index');
 Route::get('/security/create', 'SecurityController@create');
 Route::get('/security/show', 'SecurityController@show');
 Route::delete('/security/{company}', 'SecurityController@destroy')->name('company.destroy');
-Route::get('/security/{company}/edit', 'SecurityController@edit');
+Route::get('/security/{company}/edit', 'SecurityController@edit')->name('company.edit');
 Route::post('/s', 'SecurityController@store');
 
 Route::get('/guard/{company}/create', 'GuardsController@create');

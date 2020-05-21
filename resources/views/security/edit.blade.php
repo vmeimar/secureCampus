@@ -30,7 +30,7 @@
                                     <td>
                                         @can('manage-security')
                                             <div class="row">
-                                                <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
+                                                <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -47,7 +47,14 @@
                     </div>
                 </div>
                 @can('manage-security')
-                <a href="/guard/{{ $company->id }}/create" class="btn btn-primary m-4">Add Guards</a>
+                    <div class="d-flex">
+                        <div class="row">
+                            <a href="/guard/{{ $company->id }}/create" class="btn btn-primary m-4">Add Guards</a>
+                        </div>
+                        <div class="row">
+                            <a href="/security" class="btn btn-secondary m-4">Back</a>
+                        </div>
+                    </div>
                 @endcan
             </div>
         </div>

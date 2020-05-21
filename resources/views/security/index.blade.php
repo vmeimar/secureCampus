@@ -51,7 +51,15 @@
                     </div>
                 </div>
                 @can('manage-security')
-                    <a href="/security/create" class="btn btn-primary m-4">Add New Security Company</a>
+                    <div class="d-flex">
+                        <div class="row">
+                            <a href="/security/create" class="btn btn-primary m-4">Add New Security Company</a>
+                        </div>
+                        <div class="row">
+                            <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                        </div>
+                    </div>
+
                 @endcan
             </div>
         </div>

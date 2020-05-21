@@ -36,6 +36,11 @@
                         </form>
                     </div>
                 </div>
+
+                <div class="row">
+                    <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                </div>
+
             </div>
         </div>
     </div>

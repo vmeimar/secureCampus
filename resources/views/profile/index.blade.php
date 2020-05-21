@@ -21,6 +21,7 @@
                 <hr>
             </div>
 
+            @can('use-application')
             <div class="row">
                 <div class="col-8 mb-4 d-flex">
 
@@ -76,6 +77,7 @@
 
                 </div>
             </div>
+            @endcan
 
         </div>
     </div>
