@@ -17,13 +17,8 @@ class CreateGuardsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('surname');
-            $table->integer('active');
-            $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('company_id');
-            $table->integer('age')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->string('email')->nullable();
+            $table->integer('active');
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Companies</div>
+                    <div class="card-header"><strong>Companies</strong></div>
 
                     <div class="card-body">
                         <table class="table">

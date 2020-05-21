@@ -11,7 +11,7 @@ class Department extends Model
         return $this->belongsTo(Faculty::class);
     }
 
-    public function supervisors()
+    public function profiles()
     {
         return $this->hasMany(Supervisor::class);
     }

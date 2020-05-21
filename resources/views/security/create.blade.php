@@ -3,55 +3,37 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Users</div>
+                    <div class="card-header"><strong>Add New Security Company</strong></div>
 
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Roles</th>
-                                @can('edit-users')
-                                    <th scope="col">Actions</th>
-                                @endcan
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($users as $user)
-                                <tr>
-                                    <th scope="row">{{ $user->id }}</th>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
-                                    <td>
-                                        @can('edit-users')
-                                            <div class="row">
-                                                <a href="{{ route('admin.users.edit', $user->id) }}">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
-                                                </a>
-                                            </div>
-                                        @endcan
+                        <form method="post" action="/s" enctype="multipart/form-data">
+                            @csrf
 
-                                        @can('delete-users')
-                                            <div class="row">
-                                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">
-                                                    @csrf
-                                                    {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            </div>
-                                        @endcan
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">Company Name</label>
+                                <div class="col-md-6">
 
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                    <input id="name"
+                                           type="text"
+                                           class="form-control @error('name') is-invalid @enderror"
+                                           name="name"
+                                           value="{{ old('name') }}"
+                                           autocomplete="name" autofocus>
 
+                                    @error('name')
+                                    <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

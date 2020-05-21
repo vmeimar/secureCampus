@@ -28,17 +28,13 @@
                                     <td>{{ $company->email }}</td>
                                     <td>{{ $company->phone }}</td>
                                     <td>
-                                        @can('manage-security')
-                                            <div class="row">
-                                                <a href="security/{{ $company->id }}/edit">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
-                                                </a>
-                                            </div>
-                                        @endcan
 
                                         @can('manage-security')
-                                            <div class="row">
-                                                <form action="{{ route('company.destroy', $company) }}" method="POST" class="float-left">
+                                            <div class="row d-flex">
+                                                <a href="security/{{ $company->id }}/edit">
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit Guards</button>
+                                                </a>
+                                                <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
@@ -54,7 +50,9 @@
 
                     </div>
                 </div>
-
+                @can('manage-security')
+                    <a href="/security/create" class="btn btn-primary m-4">Add New Security Company</a>
+                @endcan
             </div>
         </div>
     </div>

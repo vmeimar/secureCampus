@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,16 +23,6 @@ class ShiftsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        for ($i=0; $i<24; $i++)
-        {
-            $hours[] = $i;
-        }
-
-        for ($i=0; $i<60; $i++)
-        {
-            $minutes[] = $i;
-        }
-
         $guards = DB::table('guards')
             ->where('active', '=', '1')
             ->get();
@@ -40,7 +31,7 @@ class ShiftsController extends Controller
             ->get();
 
 
-        return view('shift.create', compact('guards', 'locations', 'hours', 'minutes'));
+        return view('shift.create', compact('guards', 'locations'));
     }
 
     public function store()
@@ -55,24 +46,23 @@ class ShiftsController extends Controller
 //            'shift_until_minute' => 'required',
         ]);
 
-//        $now = Carbon::now();
+        $now = Carbon::now();
 
-        dd($data);
 
-//        if (auth()->user()->shifts()->create([
-//            'guard_id'  =>  $data['guard'],
-//            'location_id'  =>  $data['location'],
-//            'shift_from'    =>  $now->toDateTimeString(),
-//            'shift_until'    =>  $now->toDateTimeString(),
-//        ]))
-//        {
-//            \request()->session()->flash('success', 'Shift created successfully');
-//        }
-//        else
-//        {
-//            \request()->session()->flash('error', 'Error while creating shift');
-//        }
-//
-//        return redirect('/profile/' . \auth()->user()->id);
+        if (auth()->user()->shifts()->create([
+            'guard_id'  =>  $data['guard'],
+            'location_id'  =>  $data['location'],
+            'shift_from'    =>  $now->toDateTimeString(),
+            'shift_until'    =>  $now->toDateTimeString(),
+        ]))
+        {
+            \request()->session()->flash('success', 'Shift created successfully');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while creating shift');
+        }
+
+        return redirect('/profile/' . \auth()->user()->id);
     }
 }

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ ucfirst($company->name) }} Guards</div>
+                    <div class="card-header"><strong>{{ ucfirst($company->name) }} Guards</strong></div>
 
                     <div class="card-body">
                         <table class="table">
@@ -30,9 +30,11 @@
                                     <td>
                                         @can('manage-security')
                                             <div class="row">
-                                                <a href="#">
-                                                    <button type="button" class="btn btn-danger">Delete</button>
-                                                </a>
+                                                <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
+                                                    @csrf
+                                                    {{ method_field('DELETE') }}
+                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
                                             </div>
                                         @endcan
 
@@ -45,7 +47,7 @@
                     </div>
                 </div>
                 @can('manage-security')
-                <a href="#" class="btn btn-primary m-4">Add Guards</a>
+                <a href="/guard/{{ $company->id }}/create" class="btn btn-primary m-4">Add Guards</a>
                 @endcan
             </div>
         </div>

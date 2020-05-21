@@ -34,6 +34,10 @@ Route::delete('/security/{company}', 'SecurityController@destroy')->name('compan
 Route::get('/security/{company}/edit', 'SecurityController@edit');
 Route::post('/s', 'SecurityController@store');
 
+Route::get('/guard/{company}/create', 'GuardsController@create');
+Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy');
+Route::post('/g', 'GuardsController@store');
+
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 });
