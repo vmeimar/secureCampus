@@ -12,4 +12,9 @@ class Shift extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

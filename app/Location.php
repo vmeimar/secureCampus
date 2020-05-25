@@ -12,4 +12,9 @@ class Location extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function shifts()
+    {
+        return $this->hasMany(Location::class);
+    }
 }

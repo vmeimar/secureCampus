@@ -33,8 +33,24 @@ class ShiftsController extends Controller
 
     public function edit(Shift $shift)
     {
-        dd($shift);
-        return view('shift.edit');
+        $authUser = User::find(Auth::id());
+
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', $authUser->id);
+        }
+
+        if (Gate::allows('manage-anything'))
+        {
+            $departments = Department::all();
+        }
+        else
+        {
+            $departments = Department::where('id', $authUser->department_id)->get();
+        }
+
+        return view('shift.edit', compact('shift', 'departments'));
     }
 
     public function create()
@@ -61,6 +77,14 @@ class ShiftsController extends Controller
 
     public function store()
     {
+        $authUser = User::find(Auth::id());
+
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', $authUser->id);
+        }
+
         $data = \request()->validate([
             'location' => 'required',
             'number-of-guards' => 'required',
@@ -87,8 +111,75 @@ class ShiftsController extends Controller
         return redirect('/shift/index');
     }
 
+    public function update(Shift $shift)
+    {
+        $authUser = User::find(Auth::id());
+
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', $authUser->id);
+        }
+
+        $data = \request()->validate([
+            'location' => 'required',
+            'number-of-guards' => 'required',
+            'shift-name' => 'required',
+        ]);
+
+        $location_id = DB::table('locations')
+            ->select('id')
+            ->where('name', '=', $data['location'])
+            ->first();
+
+        $now = Carbon::now();
+
+        if ($shift->update([
+            'location_id'  =>  $location_id->id,
+            'number_of_guards'  =>  $data['number-of-guards'],
+            'name'  =>  $data['shift-name'],
+            'shift_from'    =>  $now->toDateTimeString(),
+            'shift_until'    =>  $now->toDateTimeString(),
+        ]))
+        {
+            \request()->session()->flash('success', 'Shift updated successfully');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while updating shift');
+        }
+
+//        if (auth()->user()->shifts()->update([
+//            'location_id'  =>  $location_id->id,
+//            'number_of_guards'  =>  $data['number-of-guards'],
+//            'name'  =>  $data['shift-name'],
+//            'shift_from'    =>  $now->toDateTimeString(),
+//            'shift_until'    =>  $now->toDateTimeString(),
+//        ]))
+
+
+        return redirect('/shift/index');
+    }
+
     public function destroy(Shift $shift)
     {
-        dd($shift);
+        $authUser = User::find(Auth::id());
+
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', $authUser->id);
+        }
+
+        if ($shift->delete())
+        {
+            \request()->session()->flash('success', 'Shift deleted successfully');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while deleting shift');
+        }
+
+        return redirect('/shift/index');
     }
 }

@@ -28,6 +28,7 @@ Route::get('/shift/index', 'ShiftsController@index');
 Route::get('/shift/create', 'ShiftsController@create');
 Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->name('shift.edit');
 Route::delete('/shift/{shift}', 'ShiftsController@destroy')->name('shift.destroy');
+Route::patch('/shift/{shift}', 'ShiftsController@update')->name('shift.update');
 Route::post('/sh', 'ShiftsController@store');
 
 Route::get('/security', 'SecurityController@index')->name('company.index');

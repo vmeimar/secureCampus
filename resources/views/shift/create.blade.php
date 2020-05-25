@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                    <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
                 </div>
             </div>
         </div>
