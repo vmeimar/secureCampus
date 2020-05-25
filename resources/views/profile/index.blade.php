@@ -27,18 +27,18 @@
             <div class="row">
                 <div class="col-8 mb-4 d-flex">
 
-                    @if($user->hasAnyRoles(['admin', 'supervisor']))
-                    <div class="card mr-2">
-                        <div class="card-header">
-                            Shift Manager
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Add a new Shift</h5>
-                            <p class="card-text">Press button bellow to add a new security shift</p>
-                            <a href="/shift/create" class="btn btn-primary">Add</a>
-                        </div>
-                    </div>
-                    @endif
+{{--                    @if($user->hasAnyRoles(['admin', 'supervisor']))--}}
+{{--                    <div class="card mr-2">--}}
+{{--                        <div class="card-header">--}}
+{{--                            Shift Manager--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
+{{--                            <h5 class="card-title">Add a new Shift</h5>--}}
+{{--                            <p class="card-text">Press button bellow to add a new security shift</p>--}}
+{{--                            <a href="/shift/create" class="btn btn-primary">Add</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    @endif--}}
 
                     <div class="card mr-2">
                         <div class="card-header">
@@ -73,7 +73,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Manage Shifts</h5>
                             <p class="card-text">Press button bellow to load current shifts</p>
-                            <a href="#" class="btn btn-primary">Manage</a>
+                            <a href="/shift/index" class="btn btn-primary">Manage</a>
                         </div>
                     </div>
 

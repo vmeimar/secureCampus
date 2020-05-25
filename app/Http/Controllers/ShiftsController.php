@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Shift;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,25 @@ class ShiftsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', Auth::id());
+        }
+
+        $shifts = Shift::all();
+
+        return view('shift.index', compact('shifts'));
+    }
+
+    public function edit(Shift $shift)
+    {
+        dd($shift);
+        return view('shift.edit');
     }
 
     public function create()
@@ -45,11 +65,6 @@ class ShiftsController extends Controller
             'location' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
-//            'shift_date' => 'required',
-//            'shift_from_hour' => 'required',
-//            'shift_from_minute' => 'required',
-//            'shift_until_hour' => 'required',
-//            'shift_until_minute' => 'required',
         ]);
 
         $now = Carbon::now();
@@ -69,6 +84,11 @@ class ShiftsController extends Controller
             \request()->session()->flash('error', 'Error while creating shift');
         }
 
-        return redirect('/profile/' . Auth::id());
+        return redirect('/shift/index');
+    }
+
+    public function destroy(Shift $shift)
+    {
+        dd($shift);
     }
 }

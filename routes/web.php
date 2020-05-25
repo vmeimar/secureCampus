@@ -24,12 +24,14 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
+Route::get('/shift/index', 'ShiftsController@index');
 Route::get('/shift/create', 'ShiftsController@create');
+Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->name('shift.edit');
+Route::delete('/shift/{shift}', 'ShiftsController@destroy')->name('shift.destroy');
 Route::post('/sh', 'ShiftsController@store');
 
 Route::get('/security', 'SecurityController@index')->name('company.index');
 Route::get('/security/create', 'SecurityController@create');
-Route::get('/security/show', 'SecurityController@show');
 Route::delete('/security/{company}', 'SecurityController@destroy')->name('company.destroy');
 Route::get('/security/{company}/edit', 'SecurityController@edit')->name('company.edit');
 Route::post('/s', 'SecurityController@store');

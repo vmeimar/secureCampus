@@ -22,11 +22,6 @@ class SecurityController extends Controller
         return view('security.index', compact('companies', 'user_id'));
     }
 
-    public function show(Company $company)
-    {
-        return view('security.show', compact('company'));
-    }
-
     public function edit(Company $company)
     {
         if (Gate::denies('manage-security'))
