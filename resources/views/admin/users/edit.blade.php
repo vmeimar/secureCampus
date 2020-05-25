@@ -38,6 +38,29 @@
                                </div>
                            </div>
 
+                           <div class="form-group row">
+                               <label for="department" class="col-md-2 col-form-label text-md-right">Department</label>
+                               <div class="col-md-6">
+                                   <select name="department" id="department" class="form-control input-lg dynamic">
+                                       <option selected>
+                                           {{ isset($user->department['name']) ? $user->department['name'] : '' }}
+                                       </option>
+                                       @foreach($faculties as $faculty)
+                                           <optgroup label="{{ $faculty->name }}">
+                                               @foreach($faculty->departments as $department)
+                                                   <option value="{{ $department->id }}">
+                                                       {{ $department->name }}
+                                                   </option>
+                                               @endforeach
+                                           </optgroup>
+                                       @endforeach
+                                   </select>
+                                   @error('department')
+                                   <strong>{{ $message }}</strong>
+                                   @enderror
+                               </div>
+                           </div>
+
                            @csrf
                            {{ method_field('PUT') }}
                            <div class="form-group row">

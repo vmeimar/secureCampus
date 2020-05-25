@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Department;
+use App\Faculty;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
@@ -19,11 +21,12 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         $users = User::all();
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -31,7 +34,7 @@ class UsersController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function edit(User $user)
     {
@@ -40,8 +43,11 @@ class UsersController extends Controller
             return redirect(route('admin.users.index'));
         }
 
+        $faculties = Faculty::all();
+//        $departments = Department::all();
         $roles = Role::all();
-        return view('admin.users.edit', compact('roles', 'user'));
+
+        return view('admin.users.edit', compact('roles', 'user', 'faculties'));
     }
 
     /**
@@ -57,6 +63,7 @@ class UsersController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->department_id = $request->department;
 
         if ($user->save())
         {

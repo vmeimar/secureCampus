@@ -13,19 +13,19 @@
                             <div class="form-group row">
 
                                 <label for="guard" class="col-md-4 col-form-label text-md-right">Guard's Name</label>
-                                <div class="col-md-6">
-                                    <select name="guard" id="guard" class="form-control input-lg dynamic">
-                                        <option selected disabled>Select Guard</option>
-                                        @foreach($guards as $guard)
-                                            <option value="{{ $guard->id }}">
-                                                {{ $guard->surname }} {{ $guard->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('guard')
-                                        <strong>{{ $message }}</strong>
-                                    @enderror
-                                </div>
+                                    <div class="col-md-6">
+                                        <select name="guard" id="guard" class="form-control input-lg dynamic">
+                                            <option selected disabled>Select Guard</option>
+                                            @foreach($guards as $guard)
+                                                <option value="{{ $guard->id }}">
+                                                    {{ $guard->surname }} {{ $guard->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('guard')
+                                            <strong>{{ $message }}</strong>
+                                        @enderror
+                                    </div>
                             </div>
 
                             <div class="form-group row">
