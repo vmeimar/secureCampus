@@ -149,15 +149,6 @@ class ShiftsController extends Controller
             \request()->session()->flash('error', 'Error while updating shift');
         }
 
-//        if (auth()->user()->shifts()->update([
-//            'location_id'  =>  $location_id->id,
-//            'number_of_guards'  =>  $data['number-of-guards'],
-//            'name'  =>  $data['shift-name'],
-//            'shift_from'    =>  $now->toDateTimeString(),
-//            'shift_until'    =>  $now->toDateTimeString(),
-//        ]))
-
-
         return redirect('/shift/index');
     }
 
@@ -182,4 +173,6 @@ class ShiftsController extends Controller
 
         return redirect('/shift/index');
     }
+
+    
 }

@@ -27,6 +27,7 @@ Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 Route::get('/shift/index', 'ShiftsController@index');
 Route::get('/shift/create', 'ShiftsController@create');
 Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->name('shift.edit');
+Route::get('/shift/{shift}', 'ShiftsController@show')->name('shift.show');
 Route::delete('/shift/{shift}', 'ShiftsController@destroy')->name('shift.destroy');
 Route::patch('/shift/{shift}', 'ShiftsController@update')->name('shift.update');
 Route::post('/sh', 'ShiftsController@store');
