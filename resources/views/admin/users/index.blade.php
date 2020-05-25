@@ -48,14 +48,15 @@
                                         </form>
                                         </div>
                                         @endcan
-
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
-
                     </div>
+                </div>
+                <div class="row">
+                    <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>
                 </div>
             </div>
         </div>

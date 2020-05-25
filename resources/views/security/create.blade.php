@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="row">
-                    <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                    <a href="/security" class="btn btn-secondary m-4">Back</a>
                 </div>
 
             </div>
