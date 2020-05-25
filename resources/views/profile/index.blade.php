@@ -13,7 +13,9 @@
 
             <div class="pt-2">
                 <div>You are logged in as <strong>{{ $user->name }}</strong></div>
-                <div><strong>Department:</strong> {{ $user->department['name'] }}</div>
+                <div><strong>Department:</strong>
+                    {{ isset($user->department['name']) ? $user->department['name'] : 'N/A' }}
+                </div>
                 <div><strong>Role:</strong> {{ implode(", ", $userRoles) }}</div>
                 <div class="pt-3">
                     <p>This application allows you to manage security spots and shifts for your assets.</p>

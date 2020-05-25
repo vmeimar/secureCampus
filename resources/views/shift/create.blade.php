@@ -11,33 +11,19 @@
                         <form method="post" action="/sh" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-
-                                <label for="guard" class="col-md-4 col-form-label text-md-right">Guard's Name</label>
-                                    <div class="col-md-6">
-                                        <select name="guard" id="guard" class="form-control input-lg dynamic">
-                                            <option selected disabled>Select Guard</option>
-                                            @foreach($guards as $guard)
-                                                <option value="{{ $guard->id }}">
-                                                    {{ $guard->surname }} {{ $guard->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('guard')
-                                            <strong>{{ $message }}</strong>
-                                        @enderror
-                                    </div>
-                            </div>
-
-                            <div class="form-group row">
                                 <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
                                 <div class="col-md-6">
                                     <select name="location" id="location" class="form-control input-lg dynamic">
                                         <option selected disabled>Select Location</option>
-                                        @foreach($locations as $location)
-                                            <option value="{{ $location->id }}">
-                                                {{ $location->name }}
-                                            </option>
-                                        @endforeach
+                                            @foreach($departments as $department)
+                                                <optgroup label="{{ $department->name }}">
+                                                    @foreach($department->locations as $location)
+                                                        <option value="{{ $location->id }}">
+                                                            {{ $location->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endforeach
                                     </select>
                                     @error('location')
                                     <strong>{{ $message }}</strong>
@@ -45,66 +31,52 @@
                                 </div>
                             </div>
 
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="shift_date" class="col-md-4 col-form-label text-md-right">Shift's Date</label>--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <input type="date" name="shift_date" id="shift_date" class="form-control input-lg dynamic">--}}
-{{--                                    @error('shift_date')--}}
-{{--                                    <strong>{{ $message }}</strong>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            <div class="form-group row">
+                                <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Number of Guards</label>
+                                <div class="col-md-6">
+                                    <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic">
+                                        <option selected disabled>Number of Guards</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    @error('number-of-guards')
+                                    <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
 
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="shift_from" class="col-md-4 col-form-label text-md-right">Shift From</label>--}}
-{{--                                <div class="col-md-3">--}}
-{{--                                    <select name="shift_from_hour" id="shift_from_hour" class="form-control input-lg dynamic">--}}
-{{--                                        <option value="" selected disabled>Hours</option>--}}
-{{--                                        @foreach($hours as $hour)--}}
-{{--                                            <option value="{{ $hour }}">{{ $hour }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                    @error('shift_from_hour')--}}
-{{--                                    <strong>{{ $message }}</strong>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-3">--}}
-{{--                                    <select name="shift_from_minute" id="shift_from_minute" class="form-control input-lg dynamic">--}}
-{{--                                        <option selected disabled>Minutes</option>--}}
-{{--                                        @foreach($minutes as $minute)--}}
-{{--                                            <option value="{{ $minute }}">{{ $minute }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                    @error('shift_from_minute')--}}
-{{--                                    <strong>{{ $message }}</strong>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="shift_date" class="col-md-4 col-form-label text-md-right">Shift Until</label>--}}
-{{--                                <div class="col-md-3">--}}
-{{--                                    <select name="shift_until_hour" id="shift_until_hour" class="form-control input-lg dynamic">--}}
-{{--                                        <option selected disabled>Hours</option>--}}
-{{--                                        @foreach($hours as $hour)--}}
-{{--                                            <option value="{{ $hour }}">{{ $hour }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                    @error('shift_until_hour')--}}
-{{--                                    <strong>{{ $message }}</strong>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                                <div class="col-md-3">--}}
-{{--                                    <select name="shift_until_minute" id="shift_until_minute" class="form-control input-lg dynamic">--}}
-{{--                                        <option selected disabled>Minutes</option>--}}
-{{--                                        @foreach($minutes as $minute)--}}
-{{--                                            <option value="{{ $minute }}">{{ $minute }}</option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                    @error('shift_until_minute')--}}
-{{--                                    <strong>{{ $message }}</strong>--}}
-{{--                                    @enderror--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                            <div class="form-group row">
+                                <label for="time" class="col-md-4 col-form-label text-md-right">Time</label>
+                                <div class="col-md-6 d-flex">
+                                    <div class="col-md-6">
+                                        <select class="form-control input-lg dynamic">
+                                            <option>From</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="form-control input-lg dynamic">
+                                            <option>To</option>
+                                        </select>
+                                    </div>
+                                    @error('number-of-guards')
+                                        <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Shift's Alias</label>
+
+                                <div class="col-md-6">
+                                    <input id="shift-name" type="text" class="form-control @error('shift-name') is-invalid @enderror" name="shift-name" value="{{ old('shift-name') }}" required autocomplete="shift-name" autofocus>
+
+                                    @error('shift-name')
+                                        <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -115,6 +87,9 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="row">
+                    <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>
                 </div>
             </div>
         </div>

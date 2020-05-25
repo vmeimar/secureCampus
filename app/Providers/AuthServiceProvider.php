@@ -53,5 +53,12 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('manage-anything', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'rectorate',
+            ]);
+        });
+
     }
 }

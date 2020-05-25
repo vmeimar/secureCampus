@@ -15,6 +15,7 @@ class RolesTableSeeder extends Seeder
         Role::truncate();
 
         Role::create(['name' => 'admin']);
+        Role::create(['name' => 'rector']);
         Role::create(['name' => 'supervisor']);
         Role::create(['name' => 'secretariat']);
         Role::create(['name' => 'user']);

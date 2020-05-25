@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
         DB::table('role_user')->truncate();
 
         $adminRole = Role::where('name', 'admin')->first();
+        $rectorRole = Role::where('name', 'rector')->first();
         $supervisorRole = Role::where('name', 'supervisor')->first();
         $secretariatRole = Role::where('name', 'secretariat')->first();
         $userRole = Role::where('name', 'user')->first();
@@ -26,6 +27,12 @@ class UsersTableSeeder extends Seeder
         $admin = User::create([
             'name'  =>  'Admin User',
             'email' =>  'admin@admin.com',
+            'password'  =>  Hash::make('password'),
+        ]);
+
+        $rector = User::create([
+            'name'  =>  'Rector',
+            'email' =>  'rector@rector.com',
             'password'  =>  Hash::make('password'),
         ]);
 
@@ -48,6 +55,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         $admin->roles()->attach($adminRole);
+        $rector->roles()->attach($rectorRole);
         $secretariat->roles()->attach($secretariatRole);
         $user->roles()->attach($userRole);
         $supervisor->roles()->attach($supervisorRole);
