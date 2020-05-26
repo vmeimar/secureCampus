@@ -23,10 +23,6 @@ class ProfilesController extends Controller
             $userRoles[] = ucfirst($role->name);
         }
 
-//        echo "<pre>";
-//        print_r(implode(", ", $userRoles));
-//        exit;
-
         if (Auth::id() == $user->id)
         {
             return view('profile.index', compact('user', 'userRoles'));

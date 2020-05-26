@@ -6,7 +6,9 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header">Users</div>
+                    <div class="card-header">
+                        <strong>Users</strong>
+                    </div>
 
                     <div class="card-body">
                         <table class="table">
@@ -17,7 +19,7 @@
                                 <th scope="col">Email</th>
                                 <th scope="col">Department</th>
                                 <th scope="col">Roles</th>
-                                @can('edit-users')
+                                @can('manage-users')
                                     <th scope="col">Actions</th>
                                 @endcan
                             </tr>
@@ -31,7 +33,7 @@
                                     <td>{{ isset( $user->department['name'] ) ? $user->department['name'] : 'N/A' }}</td>
                                     <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                     <td>
-                                        @can('edit-users')
+                                        @can('manage-users')
                                         <div class="row">
                                             <a href="{{ route('admin.users.edit', $user->id) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
@@ -39,7 +41,7 @@
                                         </div>
                                         @endcan
 
-                                        @can('delete-users')
+                                        @can('manage-users')
                                         <div class="row">
                                         <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">
                                             @csrf

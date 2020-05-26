@@ -2,13 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Department;
 use App\Guard;
 use App\Shift;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class GuardingController extends Controller
 {
+    public function index()
+    {
+        $authUser = User::find(Auth::id());
+        $activeShiftsIds = $this->getActiveShiftsIds();
+
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', $authUser->id);
+        }
+
+        if (Gate::allows('manage-anything'))
+        {
+            $shifts = Shift::whereIn('id', $activeShiftsIds)->get();
+        }
+        else
+        {
+            $allActiveShifts = Shift::whereIn('id', $activeShiftsIds)->get();
+
+            foreach ($allActiveShifts as $item)
+            {
+                if ($authUser->department_id == $item->location->department_id)
+                {
+                    $wantedIds[] = $item->id;
+                }
+            }
+
+            $shifts = Shift::whereIn('id', $wantedIds)->get();
+        }
+
+        return view('guarding.index', compact('shifts'));
+    }
+
     public function store(Shift $shift)
     {
         $guardIds = $this->fetchData($shift->number_of_guards);
@@ -63,5 +101,15 @@ class GuardingController extends Controller
         }
 
         return $data;
+    }
+
+    private function getActiveShiftsIds()
+    {
+        $activeShiftsRecords = DB::table('guard_shift')
+            ->select('shift_id')
+            ->groupBy('shift_id')
+            ->pluck('shift_id');
+
+        return $activeShiftsRecords;
     }
 }

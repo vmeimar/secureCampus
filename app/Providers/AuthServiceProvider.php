@@ -25,29 +25,32 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('edit-users', function ($user) {
-            return $user->hasRole('admin');
-        });
-
-        Gate::define('delete-users', function ($user) {
-            return $user->hasRole('admin');
-        });
-
         Gate::define('manage-users', function ($user) {
             return $user->hasRole('admin');
         });
 
         Gate::define('manage-shifts', function ($user) {
-            return $user->hasRole('supervisor');
+            return $user->hasAnyRoles([
+                'admin',
+                'rectorate',
+                'secretariat',
+                'supervisor',
+            ]);
         });
 
         Gate::define('manage-security', function ($user) {
-            return $user->hasRole('secretariat');
+            return $user->hasAnyRoles([
+                'admin',
+                'rectorate',
+                'supervisor',
+                'secretariat',
+            ]);
         });
 
         Gate::define('use-application', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
+                'rectorate',
                 'supervisor',
                 'secretariat',
             ]);
@@ -56,9 +59,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-anything', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'rectorate',
             ]);
         });
-
     }
 }

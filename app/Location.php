@@ -15,6 +15,6 @@ class Location extends Model
 
     public function shifts()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasMany(Shift::class);
     }
 }

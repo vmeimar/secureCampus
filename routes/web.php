@@ -43,6 +43,7 @@ Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy
 Route::post('/g', 'GuardsController@store');
 Route::get('/guard/{shift}', 'GuardsController@show')->name('guard.show');
 
+Route::get('/guarding/index', 'GuardingController@index')->name('guarding.index');
 Route::post('/guarding/{shift}', 'GuardingController@store');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {

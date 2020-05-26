@@ -14,7 +14,7 @@
             <div class="pt-2">
                 <div>You are logged in as <strong>{{ $user->name }}</strong></div>
                 <div><strong>Department:</strong>
-                    {{ isset($user->department['name']) ? $user->department['name'] : 'N/A' }}
+                    {{ isset($user->department['name']) ? $user->department['name'] : 'Not Defined' }}
                 </div>
                 <div><strong>Role:</strong> {{ implode(", ", $userRoles) }}</div>
                 <div class="pt-3">
@@ -23,10 +23,9 @@
                 <hr>
             </div>
 
-            @can('use-application')
+            @can('manage-security')
             <div class="row">
                 <div class="col-8 mb-4 d-flex">
-
                     <div class="card mr-2">
                         <div class="card-header">
                             Guards Manager
@@ -37,11 +36,8 @@
                             <a href="/security" class="btn btn-primary">Manage</a>
                         </div>
                     </div>
-
                 </div>
-
                 <div class="col-8 mb-4 d-flex">
-
                     <div class="card mr-2">
                         <div class="card-header">
                             Location Manager

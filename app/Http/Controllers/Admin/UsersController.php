@@ -38,13 +38,12 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        if (Gate::denies('edit-users'))
+        if (Gate::denies('manage-users'))
         {
             return redirect(route('admin.users.index'));
         }
 
         $faculties = Faculty::all();
-//        $departments = Department::all();
         $roles = Role::all();
 
         return view('admin.users.edit', compact('roles', 'user', 'faculties'));
@@ -59,6 +58,16 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if (Gate::denies('manage-users'))
+        {
+            return redirect(route('admin.users.index'));
+        }
+
+//        if (isset($request->department))
+//        {
+//            $departmentId = Department::where('name', $request->department)->value('id');
+//        }
+
         $user->roles()->sync($request->roles);
 
         $user->name = $request->name;
@@ -85,7 +94,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        if (Gate::denies('delete-users'))
+        if (Gate::denies('manage-users'))
         {
             return redirect(route('admin.users.index'));
         }

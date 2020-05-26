@@ -162,6 +162,16 @@ class ShiftsController extends Controller
             return redirect()->route('profile', $authUser->id);
         }
 
+        $shift_guards = $shift->guarded()->get();
+
+        if ( isset($shift_guards) && $shift_guards->count() > 0)
+        {
+            foreach ($shift_guards as $shift_guard)
+            {
+                $shift->guarded()->detach($shift_guard);
+            }
+        }
+
         if ($shift->delete())
         {
             \request()->session()->flash('success', 'Shift deleted successfully');
@@ -172,16 +182,5 @@ class ShiftsController extends Controller
         }
 
         return redirect('/shift/index');
-    }
-
-    public function isActive(Shift $shift)
-    {
-        $now = Carbon::now();
-
-        if ($shift->shift_from->lt($now) && $shift->shift_until->gt($now))
-        {
-            return true;
-        }
-        return false;
     }
 }
