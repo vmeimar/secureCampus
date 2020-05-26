@@ -173,6 +173,4 @@ class ShiftsController extends Controller
 
         return redirect('/shift/index');
     }
-
-    
 }

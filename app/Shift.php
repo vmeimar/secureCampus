@@ -8,9 +8,9 @@ class Shift extends Model
 {
     protected $guarded = [];
 
-    public function user()
+    public function guards()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(Guard::class);
     }
 
     public function location()

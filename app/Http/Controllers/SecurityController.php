@@ -77,7 +77,12 @@ class SecurityController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        if ($company->guards()->delete() && $company->delete())
+        if ($company->guards()->count())
+        {
+            $company->guards()->delete();
+        }
+
+        if ($company->delete())
         {
             \request()->session()->flash('success', 'Successfully deleted security company');
         }

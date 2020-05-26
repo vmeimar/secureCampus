@@ -62,7 +62,7 @@
                         <a href="/shift/create" class="btn btn-primary m-4">Create New Shift</a>
                     </div>
                     <div class="row">
-                        <a href="/shift/create" class="btn btn-primary m-4">Show active shifts</a>
+                        <a href="/shift/create" class="btn btn-warning m-4">Show active shifts</a>
                     </div>
                     <div class="row">
                         <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>

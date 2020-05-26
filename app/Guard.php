@@ -16,4 +16,9 @@ class Guard extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class);
+    }
 }
