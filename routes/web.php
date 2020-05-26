@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
-Route::get('/shift/index', 'ShiftsController@index');
+Route::get('/shift/index', 'ShiftsController@index')->name('shift.index');
 Route::get('/shift/create', 'ShiftsController@create');
 Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->name('shift.edit');
 Route::get('/shift/{shift}', 'ShiftsController@show')->name('shift.show');
@@ -41,6 +41,9 @@ Route::post('/s', 'SecurityController@store');
 Route::get('/guard/{company}/create', 'GuardsController@create');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy');
 Route::post('/g', 'GuardsController@store');
+Route::get('/guard/{shift}', 'GuardsController@show')->name('guard.show');
+
+Route::post('/guarding/{shift}', 'GuardingController@store');
 
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);

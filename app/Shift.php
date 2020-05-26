@@ -13,6 +13,16 @@ class Shift extends Model
         return $this->belongsToMany(Guard::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function guarded()
+    {
+        return $this->belongsToMany(Guard::class);
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class);

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Edit Shift</div>
+                    <div class="card-header"><strong>Edit Shift</strong></div>
 
                     <div class="card-body">
                         <form method="post" action="/shift/{{ $shift->id }}" enctype="multipart/form-data">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/shift/index }}" class="btn btn-secondary m-4">Back</a>
+                    <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
                 </div>
             </div>
         </div>

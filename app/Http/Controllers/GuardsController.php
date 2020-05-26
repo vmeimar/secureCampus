@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Guard;
+use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -13,6 +14,13 @@ class GuardsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function show(Shift $shift)
+    {
+        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
+
+        return view('guard.show', compact('guards', 'shift'));
     }
 
     public function create(Company $company)

@@ -173,4 +173,15 @@ class ShiftsController extends Controller
 
         return redirect('/shift/index');
     }
+
+    public function isActive(Shift $shift)
+    {
+        $now = Carbon::now();
+
+        if ($shift->shift_from->lt($now) && $shift->shift_until->gt($now))
+        {
+            return true;
+        }
+        return false;
+    }
 }
