@@ -48,6 +48,21 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="days" class="col-md-4 col-form-label text-md-right">Days</label>
+                                <div class="col-md-6">
+                                        <select name="days" id="days" class="form-control input-lg dynamic">
+                                            <option value="" selected disabled>Select Days</option>
+                                            <option value="weekdays">Weekdays</option>
+                                            <option value="saturday">Saturday</option>
+                                            <option value="sunday">Sunday</option>
+                                        </select>
+                                    @error('days')
+                                    <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="time" class="col-md-4 col-form-label text-md-right">Time</label>
                                 <div class="col-md-6 d-flex">
                                     <div class="col-md-6">
@@ -60,9 +75,6 @@
                                             <option>To</option>
                                         </select>
                                     </div>
-                                    @error('number-of-guards')
-                                        <strong>{{ $message }}</strong>
-                                    @enderror
                                 </div>
                             </div>
 

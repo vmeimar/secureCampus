@@ -14,9 +14,9 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Alias</th>
                                 <th scope="col">Number of Guards</th>
+                                <th scope="col">Days</th>
                                 <th scope="col">From</th>
                                 <th scope="col">Until</th>
                                 @can('manage-shifts')
@@ -27,31 +27,34 @@
                             <tbody>
                             @foreach($shifts as $shift)
                                 <tr>
-                                    <th scope="row">{{ $shift->id }}</th>
-                                    <td>{{ $shift->name }}</td>
+                                    <th scope="row">{{ $shift->name }}</th>
                                     <td>{{ $shift->number_of_guards }}</td>
+                                    <td>{{ $shift->days }}</td>
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>
-                                        @can('manage-shifts')
-                                            <div class="row">
-                                                <a href="{{ route('guard.show', $shift) }}">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
-                                                </a>
-                                            </div>
+                                    @can('manage-shifts')
+                                        <div class="row">
+                                            <a href="{{ route('guard.show', $shift) }}">
+                                                <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
+                                            </a>
+                                        </div>
 
-                                            <div class="row">
-                                                <a href="{{ route('shift.edit', $shift->id) }}">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Edit</button>
-                                                </a>
+                                        <div class="row">
+                                            <a href="{{ route('shift.edit', $shift->id) }}">
+                                                <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Edit</button>
+                                            </a>
 
-                                                <form action="{{ route('shift.destroy', $shift) }}" method="POST" class="float-left">
-                                                    @csrf
-                                                    {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                </form>
-                                            </div>
-                                        @endcan
+                                            <form action="{{ route('shift.destroy', $shift) }}" method="POST" class="float-left">
+                                                @csrf
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit"
+                                                        onclick="return confirm('Are you sure you want to Delete?')"
+                                                        class="btn btn-danger btn-sm">
+                                                    Delete</button>
+                                            </form>
+                                        </div>
+                                    @endcan
                                     </td>
                                 </tr>
                             @endforeach

@@ -87,18 +87,20 @@ class ShiftsController extends Controller
 
         $data = \request()->validate([
             'location' => 'required',
+            'days' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
         ]);
 
-        $now = Carbon::now();
+        $now = Carbon::now()->format('H:i:s');
 
         if (auth()->user()->shifts()->create([
             'location_id'  =>  $data['location'],
             'number_of_guards'  =>  $data['number-of-guards'],
             'name'  =>  $data['shift-name'],
-            'shift_from'    =>  $now->toDateTimeString(),
-            'shift_until'    =>  $now->toDateTimeString(),
+            'days'  =>  $data['days'],
+            'shift_from'    =>  $now,
+            'shift_until'    =>  $now,
         ]))
         {
             \request()->session()->flash('success', 'Shift created successfully');
@@ -123,6 +125,7 @@ class ShiftsController extends Controller
 
         $data = \request()->validate([
             'location' => 'required',
+            'days' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
         ]);
@@ -132,14 +135,15 @@ class ShiftsController extends Controller
             ->where('name', '=', $data['location'])
             ->first();
 
-        $now = Carbon::now();
+        $now = Carbon::now()->format('H:i:s');
 
         if ($shift->update([
             'location_id'  =>  $location_id->id,
             'number_of_guards'  =>  $data['number-of-guards'],
             'name'  =>  $data['shift-name'],
-            'shift_from'    =>  $now->toDateTimeString(),
-            'shift_until'    =>  $now->toDateTimeString(),
+            'days'  =>  $data['days'],
+            'shift_from'    =>  $now,
+            'shift_until'    =>  $now,
         ]))
         {
             \request()->session()->flash('success', 'Shift updated successfully');

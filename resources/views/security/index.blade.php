@@ -37,7 +37,10 @@
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                    <button type="submit"
+                                                            onclick="return confirm('Are you sure you want to Delete?')"
+                                                            class="btn btn-danger btn-sm">
+                                                        Delete</button>
                                                 </form>
                                             </div>
                                         @endcan

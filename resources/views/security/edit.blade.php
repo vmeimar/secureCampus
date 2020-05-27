@@ -14,7 +14,6 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Surname</th>
-                                <th scope="col">Dept ID</th>
                                 @can('manage-security')
                                     <th scope="col">Actions</th>
                                 @endcan
@@ -26,14 +25,16 @@
                                     <th scope="row">{{ $guard->id }}</th>
                                     <td>{{ $guard->name }}</td>
                                     <td>{{ $guard->surname }}</td>
-                                    <td>{{ $guard->department_id }}</td>
                                     <td>
                                         @can('manage-security')
                                             <div class="row">
                                                 <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                    <button type="submit"
+                                                            onclick="return confirm('Are you sure you want to Delete?')"
+                                                            class="btn btn-danger btn-sm">
+                                                        Delete</button>
                                                 </form>
                                             </div>
                                         @endcan

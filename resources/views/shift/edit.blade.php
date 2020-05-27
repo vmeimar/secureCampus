@@ -36,7 +36,9 @@
                                 <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Number of Guards</label>
                                 <div class="col-md-6">
                                     <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic">
-                                        <option selected>{{ $shift->number_of_guards }}</option>
+                                        <option value="{{ $shift->number_of_guards }}" selected>
+                                            {{ $shift->number_of_guards }}
+                                        </option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -44,6 +46,23 @@
                                     </select>
                                     @error('number-of-guards')
                                         <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="days" class="col-md-4 col-form-label text-md-right">Days</label>
+                                <div class="col-md-6">
+                                    <select name="days" id="days" class="form-control input-lg dynamic">
+                                        <option value="{{ $shift->days }}" selected>
+                                            {{ $shift->days }}
+                                        </option>
+                                        <option value="weekdays">Weekdays</option>
+                                        <option value="saturday">Saturday</option>
+                                        <option value="sunday">Sunday</option>
+                                    </select>
+                                    @error('days')
+                                    <strong>{{ $message }}</strong>
                                     @enderror
                                 </div>
                             </div>
@@ -61,7 +80,7 @@
                                             <option selected>{{ $shift->shift_until }}</option>
                                         </select>
                                     </div>
-                                    @error('number-of-guards')
+                                    @error('time')
                                         <strong>{{ $message }}</strong>
                                     @enderror
                                 </div>

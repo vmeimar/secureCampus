@@ -15,12 +15,13 @@ class CreateShiftsTable extends Migration
     {
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('location_id');
             $table->string('name');
+            $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('days');
             $table->integer('number_of_guards');
-            $table->dateTime('shift_from');
-            $table->dateTime('shift_until');
+            $table->string('shift_from');
+            $table->string('shift_until');
             $table->timestamps();
         });
     }
