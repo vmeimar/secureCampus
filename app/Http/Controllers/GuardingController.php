@@ -16,13 +16,14 @@ class GuardingController extends Controller
     public function index()
     {
         $authUser = User::find(Auth::id());
-        $activeShiftsIds = $this->getActiveShiftsIds();
 
         if (Gate::denies('manage-shifts'))
         {
             \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', $authUser->id);
         }
+
+        $activeShiftsIds = $this->getActiveShiftsIds();
 
         if (Gate::allows('manage-anything'))
         {
@@ -48,6 +49,12 @@ class GuardingController extends Controller
 
     public function store(Shift $shift)
     {
+        if (Gate::denies('manage-shifts'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', Auth::id());
+        }
+
         $guardIds = $this->fetchData($shift->number_of_guards);
 
         foreach ($guardIds as $guardId)

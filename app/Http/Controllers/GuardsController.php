@@ -18,6 +18,12 @@ class GuardsController extends Controller
 
     public function show(Shift $shift)
     {
+        if (Gate::denies('manage-security'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', ['user' => Auth::id()]);
+        }
+
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
 
         return view('guard.show', compact('guards', 'shift'));
@@ -27,6 +33,7 @@ class GuardsController extends Controller
     {
         if (Gate::denies('manage-security'))
         {
+            \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
@@ -37,6 +44,7 @@ class GuardsController extends Controller
     {
         if (Gate::denies('manage-security'))
         {
+            \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
@@ -71,6 +79,7 @@ class GuardsController extends Controller
     {
         if (Gate::denies('manage-security'))
         {
+            \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 

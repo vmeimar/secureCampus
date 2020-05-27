@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Department;
 use App\Faculty;
 use App\Http\Controllers\Controller;
 use App\Role;
@@ -38,11 +37,6 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        if (Gate::denies('manage-users'))
-        {
-            return redirect(route('admin.users.index'));
-        }
-
         $faculties = Faculty::all();
         $roles = Role::all();
 
@@ -62,11 +56,6 @@ class UsersController extends Controller
         {
             return redirect(route('admin.users.index'));
         }
-
-//        if (isset($request->department))
-//        {
-//            $departmentId = Department::where('name', $request->department)->value('id');
-//        }
 
         $user->roles()->sync($request->roles);
 

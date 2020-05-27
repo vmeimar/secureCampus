@@ -18,6 +18,13 @@ class SecurityController extends Controller
     public function index()
     {
         $user_id = Auth::id();
+
+        if (Gate::denies('manage-security'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', ['user' => Auth::id()]);
+        }
+
         $companies = Company::all();
         return view('security.index', compact('companies', 'user_id'));
     }
@@ -26,6 +33,7 @@ class SecurityController extends Controller
     {
         if (Gate::denies('manage-security'))
         {
+            \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 

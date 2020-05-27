@@ -26,7 +26,7 @@ class ShiftsController extends Controller
             return redirect()->route('profile', Auth::id());
         }
 
-        $shifts = Shift::paginate(5);
+        $shifts = Shift::latest()->paginate(5);
 
         return view('shift.index', compact('shifts'));
     }

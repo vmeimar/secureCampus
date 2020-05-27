@@ -12,7 +12,6 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
                                 <th scope="col">Alias</th>
                                 <th scope="col">Guards</th>
                                 <th scope="col">From</th>
@@ -25,8 +24,7 @@
                             <tbody>
                             @foreach($shifts as $shift)
                                 <tr>
-                                    <th scope="row">{{ $shift->id }}</th>
-                                    <td>{{ $shift->name }}</td>
+                                    <th scope="row">{{ $shift->name }}</th>
                                     <td>{{ implode(', ', $shift->guards()->get()->pluck('surname')->toArray()) }}</td>
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>
