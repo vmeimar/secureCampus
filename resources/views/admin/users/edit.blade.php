@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Edit User {{ $user->name }}</div>
+                    <div class="card-header"><strong>Edit User {{ $user->name }}</strong></div>
 
                     <div class="card-body">
                        <form action="{{ route('admin.users.update', $user) }}" method="POST">

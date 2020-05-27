@@ -36,18 +36,6 @@
                             <a href="/security" class="btn btn-primary">Manage</a>
                         </div>
                     </div>
-                </div>
-                <div class="col-8 mb-4 d-flex">
-                    <div class="card mr-2">
-                        <div class="card-header">
-                            Location Manager
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Add a new Location</h5>
-                            <p class="card-text">Press button bellow to add a new security location</p>
-                            <a href="#" class="btn btn-primary">Add</a>
-                        </div>
-                    </div>
 
                     <div class="card mr-2">
                         <div class="card-header">
@@ -59,8 +47,22 @@
                             <a href="/shift/index" class="btn btn-primary">Manage</a>
                         </div>
                     </div>
-
                 </div>
+
+
+{{--                <div class="col-8 mb-4 d-flex">--}}
+{{--                    <div class="card mr-2">--}}
+{{--                        <div class="card-header">--}}
+{{--                            Location Manager--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
+{{--                            <h5 class="card-title">Add a new Location</h5>--}}
+{{--                            <p class="card-text">Press button bellow to add a new security location</p>--}}
+{{--                            <a href="#" class="btn btn-primary">Add</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+{{--                </div>--}}
             </div>
             @endcan
 

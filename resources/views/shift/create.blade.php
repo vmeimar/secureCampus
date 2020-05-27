@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Create New Shift</div>
+                    <div class="card-header"><strong>Create New Shift</strong></div>
 
                     <div class="card-body">
                         <form method="post" action="/sh" enctype="multipart/form-data">

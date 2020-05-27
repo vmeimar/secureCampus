@@ -25,7 +25,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                    <img src="https://upload.wikimedia.org/wikipedia/el/2/2b/Logo_uoa_blue.png" style="height: 35px; border-right: 1px solid #333;" class="pr-3 pt-1">
+                    <img src="https://upload.wikimedia.org/wikipedia/el/2/2b/Logo_uoa_blue.png" style="height: 30px; border-right: 1px solid #333;" class="pr-3 pt-1">
                     <div class="pl-3">Secure Campus</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

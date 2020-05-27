@@ -6,7 +6,9 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header">Shifts</div>
+                    <div class="card-header">
+                        <strong>Shifts</strong>
+                    </div>
 
                     <div class="card-body">
                         <table class="table">
@@ -55,6 +57,11 @@
                             @endforeach
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center mt-2">
+                        {{ $shifts->links() }}
                     </div>
                 </div>
                 <div class="d-flex">
