@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/home');
 });
 
 Auth::routes();
@@ -40,12 +40,16 @@ Route::post('/s', 'SecurityController@store');
 
 Route::get('/guard/{company}/create', 'GuardsController@create');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy');
-Route::post('/g', 'GuardsController@store');
 Route::get('/guard/{shift}', 'GuardsController@show')->name('guard.show');
+Route::post('/g', 'GuardsController@store');
 
 Route::get('/guarding/index', 'GuardingController@index')->name('guarding.index');
 Route::post('/guarding/{shift}', 'GuardingController@store');
 
-Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:manage-users')->group(function () {
-    Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
+Route::namespace('Admin')
+    ->prefix('admin')
+    ->name('admin.')
+    ->middleware('can:manage-users')
+    ->group(function () {
+        Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 });
