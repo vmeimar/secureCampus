@@ -42,7 +42,9 @@
                                <label for="department" class="col-md-2 col-form-label text-md-right">Department</label>
                                <div class="col-md-6">
                                    <select name="department" id="department" class="form-control input-lg dynamic">
-                                       <option selected>
+                                       <option
+                                           value="{{ isset($user->department['id']) ? $user->department['id'] : '' }}"
+                                           selected>
                                            {{ isset($user->department['name']) ? $user->department['name'] : '' }}
                                        </option>
                                        @foreach($faculties as $faculty)

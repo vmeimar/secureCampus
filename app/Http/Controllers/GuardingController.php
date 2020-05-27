@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Department;
 use App\Guard;
 use App\Shift;
 use App\User;
