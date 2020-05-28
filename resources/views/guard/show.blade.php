@@ -26,6 +26,21 @@
                                     </div>
                                 </div>
                             @endfor
+                            <div class="form-group row">
+                                <label for="date" class="col-md-4 col-form-label text-md-right">Shift's Date</label>
+                                <div class="col-md-6">
+                                    <input id="date"
+                                           type="date"
+                                           class="form-control"
+                                           name="date"
+                                           value="{{ old('date') }}"
+                                           autocomplete="date"
+                                           autofocus>
+                                    @error('date')
+                                    <strong>{{ $message }}</strong>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">Assign</button>

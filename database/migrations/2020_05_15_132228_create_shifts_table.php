@@ -18,7 +18,6 @@ class CreateShiftsTable extends Migration
             $table->string('name');
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('days');
             $table->integer('number_of_guards');
             $table->string('shift_from');
             $table->string('shift_until');

@@ -17,6 +17,7 @@ class CreateGuardShiftTable extends Migration
             $table->id();
             $table->unsignedBigInteger('guard_id');
             $table->unsignedBigInteger('shift_id');
+            $table->string('shift_date')->nullable();
             $table->timestamps();
         });
     }

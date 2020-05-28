@@ -87,21 +87,19 @@ class ShiftsController extends Controller
 
         $data = \request()->validate([
             'location' => 'required',
-            'days' => 'required',
+            'shift-from' => 'required',
+            'shift-until' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
         ]);
 
-        $now = Carbon::now()->format('H:i:s');
-
-        if (auth()->user()->shifts()->create([
+        if ( auth()->user()->shifts()->create([
             'location_id'  =>  $data['location'],
             'number_of_guards'  =>  $data['number-of-guards'],
             'name'  =>  $data['shift-name'],
-            'days'  =>  $data['days'],
-            'shift_from'    =>  $now,
-            'shift_until'    =>  $now,
-        ]))
+            'shift_from'    =>  $data['shift-from'],
+            'shift_until'    =>  $data['shift-until'],
+        ]) )
         {
             \request()->session()->flash('success', 'Shift created successfully');
         }
@@ -186,5 +184,40 @@ class ShiftsController extends Controller
         }
 
         return redirect('/shift/index');
+    }
+
+    private function calculateFactor(Shift $shift)
+    {
+//        $start = strtotime("07:00");
+
+//        $end = strtotime("17:30");
+//        $end = strtotime("06:00") + 3600*24; // the work ended at 06:00 morning of the next day
+
+
+        $morning_start = strtotime("06:00");
+        $morning_end = strtotime("14:00");
+
+        $afternoon_start = strtotime("14:00");
+        $afternoon_end = strtotime("22:00");
+
+        $night_start = strtotime("22:00");
+        $night_end = strtotime("06:00") + 3600*24; // 07:00 of next day, add 3600*24 seconds
+
+        echo "morning: " . $this->intersection( $start, $end, $morning_start, $morning_end ) / 3600 . " hours\n";
+        echo "afternoon: " . $this->intersection( $start, $end, $afternoon_start, $afternoon_end ) / 3600 . " hours\n";
+        echo "night: " . $this->intersection( $start, $end, $night_start, $night_end ) / 3600 . " hours\n";
+    }
+
+    private function intersection($s1, $e1, $s2, $e2)
+    {
+        if ($e1 < $s2)
+            return 0;
+        if ($s1 > $e2)
+            return 0;
+        if ($s1 < $s2)
+            $s1 = $s2;
+        if ($e1 > $e2)
+            $e1 = $e2;
+        return $e1 - $s1;
     }
 }

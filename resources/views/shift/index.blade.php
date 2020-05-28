@@ -16,7 +16,7 @@
                             <tr>
                                 <th scope="col">Alias</th>
                                 <th scope="col">Number of Guards</th>
-                                <th scope="col">Days</th>
+{{--                                <th scope="col">Days</th>--}}
                                 <th scope="col">From</th>
                                 <th scope="col">Until</th>
                                 @can('manage-shifts')
@@ -29,7 +29,7 @@
                                 <tr>
                                     <th scope="row">{{ $shift->name }}</th>
                                     <td>{{ $shift->number_of_guards }}</td>
-                                    <td>{{ $shift->days }}</td>
+{{--                                    <td>{{ $shift->days }}</td>--}}
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>

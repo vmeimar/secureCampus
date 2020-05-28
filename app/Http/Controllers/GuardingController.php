@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Guard;
 use App\Shift;
 use App\User;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 class GuardingController extends Controller
@@ -24,7 +26,6 @@ class GuardingController extends Controller
         }
 
         $activeShiftsIds = $this->getActiveShiftsIds();
-        $wantedIds = [];
 
         if (Gate::allows('manage-anything'))
         {
@@ -33,6 +34,7 @@ class GuardingController extends Controller
         else
         {
             $allActiveShifts = Shift::whereIn('id', $activeShiftsIds)->get();
+            $wantedIds = [];
 
             foreach ($allActiveShifts as $item)
             {
@@ -58,6 +60,12 @@ class GuardingController extends Controller
 
         $shift_guards = $shift->guarded()->get();
 
+        $data = \request()->validate([
+            'date'  =>  'required',
+        ]);
+
+        $date  = new \DateTime( $data['date'] );
+
         if ( isset($shift_guards) && ($shift_guards->count() > 0) )
         {
             foreach ($shift_guards as $shift_guard)
@@ -74,6 +82,7 @@ class GuardingController extends Controller
 
             try {
                 $shift->guarded()->attach($guard);
+
             } catch (Throwable $e) {
                 report($e);
 
@@ -81,9 +90,41 @@ class GuardingController extends Controller
             }
         }
 
+        $assignedShift = DB::table('guard_shift')
+            ->whereIn('guard_id', $guardIds)
+            ->where('shift_id', $shift->id)
+            ->get();
+
+        $this->populateGuardingTable($assignedShift, $date);
+
         return redirect(route('shift.index'));
     }
 
+    private function populateGuardingTable ($assignedShift, $date)
+    {
+//        if (! $this->createGuardingTable())
+//        {
+//            \request()->session()->flash('warning', 'Something went wrong');
+//            return redirect()->route('profile', Auth::id());
+//        }
+
+        dd($date->format('d/m/Y'));
+
+    }
+
+    private function createGuardingTable ()
+    {
+        if (! Schema::hasTable('guarding'))
+        {
+            Schema::create('guarding', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('guarding_shift_id');
+                $table->string('guarding_guards_ids');
+                $table->string('guarding_shift_date');
+                $table->timestamps();
+            });
+        }
+    }
 
     private function fetchData ($numberOfGuards)
     {
