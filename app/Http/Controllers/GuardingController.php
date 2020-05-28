@@ -24,6 +24,7 @@ class GuardingController extends Controller
         }
 
         $activeShiftsIds = $this->getActiveShiftsIds();
+        $wantedIds = [];
 
         if (Gate::allows('manage-anything'))
         {
@@ -53,6 +54,16 @@ class GuardingController extends Controller
         {
             \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', Auth::id());
+        }
+
+        $shift_guards = $shift->guarded()->get();
+
+        if ( isset($shift_guards) && ($shift_guards->count() > 0) )
+        {
+            foreach ($shift_guards as $shift_guard)
+            {
+                $shift->guarded()->detach($shift_guard);
+            }
         }
 
         $guardIds = $this->fetchData($shift->number_of_guards);
