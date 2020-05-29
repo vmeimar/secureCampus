@@ -7,6 +7,7 @@ use App\Guard;
 use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class GuardsController extends Controller
@@ -16,7 +17,7 @@ class GuardsController extends Controller
         $this->middleware('auth');
     }
 
-    public function show(Shift $shift)
+    public function show(Guard $guard)
     {
         if (Gate::denies('manage-security'))
         {
@@ -24,9 +25,9 @@ class GuardsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
 
-        return view('guard.show', compact('guards', 'shift'));
+
+        return view('guard.show', compact('guard'));
     }
 
     public function create(Company $company)
@@ -93,5 +94,9 @@ class GuardsController extends Controller
         }
 
         return redirect()->route('company.index');
+    }
+
+    private function getGuardsHours (Guard $guard)
+    {
     }
 }

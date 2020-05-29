@@ -32,7 +32,7 @@
                                         @can('manage-security')
                                             <div class="row d-flex">
                                                 <a href="security/{{ $company->id }}/edit">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit Guards</button>
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">View Guards</button>
                                                 </a>
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
                                                     @csrf

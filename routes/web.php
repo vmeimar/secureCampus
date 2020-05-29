@@ -40,7 +40,7 @@ Route::post('/s', 'SecurityController@store');
 
 Route::get('/guard/{company}/create', 'GuardsController@create');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy');
-Route::get('/guard/{shift}', 'GuardsController@show')->name('guard.show');
+Route::get('/guard/{guard}', 'GuardsController@show')->name('guard.show');
 Route::post('/g', 'GuardsController@store');
 
 Route::get('/guarding/index', 'GuardingController@index')->name('guarding.index');

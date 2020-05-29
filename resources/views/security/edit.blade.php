@@ -27,15 +27,21 @@
                                     <td>{{ $guard->surname }}</td>
                                     <td>
                                         @can('manage-security')
-                                            <div class="row">
-                                                <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
-                                                    @csrf
-                                                    {{ method_field('DELETE') }}
-                                                    <button type="submit"
-                                                            onclick="return confirm('Are you sure you want to Delete?')"
-                                                            class="btn btn-danger btn-sm">
-                                                        Delete</button>
-                                                </form>
+                                            <div class="d-flex">
+                                                <div class="row mr-3">
+                                                    <a href="{{route('guard.show', $guard->id)}}" class="btn btn-primary btn-sm">Details</a>
+                                                </div>
+
+                                                <div class="row">
+                                                    <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
+                                                        @csrf
+                                                        {{ method_field('DELETE') }}
+                                                        <button type="submit"
+                                                                onclick="return confirm('Are you sure you want to Delete?')"
+                                                                class="btn btn-danger btn-sm">
+                                                            Delete</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         @endcan
 
