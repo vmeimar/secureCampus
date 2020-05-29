@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Department;
+use App\Guard;
 use App\Shift;
 use App\User;
 use Carbon\Carbon;
@@ -29,6 +30,19 @@ class ShiftsController extends Controller
         $shifts = Shift::latest()->paginate(5);
 
         return view('shift.index', compact('shifts'));
+    }
+
+    public function show(Shift $shift)
+    {
+        if (Gate::denies('manage-security'))
+        {
+            \request()->session()->flash('warning', 'unauthorized action');
+            return redirect()->route('profile', ['user' => Auth::id()]);
+        }
+
+        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
+
+        return view('shift.show', compact('guards', 'shift'));
     }
 
     public function edit(Shift $shift)

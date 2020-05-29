@@ -30,42 +30,65 @@ class GuardingController extends Controller
             return redirect()->route('profile', $authUser->id);
         }
 
-        $activeShiftsIds = $this->getActiveShiftsIds();
+        $activeShifts = $this->getActiveShifts();
+
+        foreach ($activeShifts as $activeShift)
+        {
+            $activeShiftsIds[] = $activeShift->guarding_shift_id;
+        }
 
         if (Gate::allows('manage-anything'))
         {
-            $shifts = Shift::whereIn('id', $activeShiftsIds)->get();
+//            $shifts = Shift::whereIn('id', array_unique($activeShiftsIds))->get();
+            $shiftsIds = array_unique($activeShiftsIds);
         }
         else
         {
-            $allActiveShifts = Shift::whereIn('id', $activeShiftsIds)->get();
-            $wantedIds = [];
+            $allActiveShifts = Shift::whereIn('id', array_unique($activeShiftsIds))->get();
+//            $wantedIds = [];
+            $shiftsIds = [];
 
             foreach ($allActiveShifts as $item)
             {
                 if ($authUser->department_id == $item->location->department_id)
                 {
-                    $wantedIds[] = $item->id;
+//                    $wantedIds[] = $item->id;
+                    $shiftsIds[] = $item->id;
                 }
             }
-
-            $shifts = Shift::whereIn('id', $wantedIds)->get();
+//            $shifts = Shift::whereIn('id', $wantedIds)->get();
         }
 
         $viewShiftsData = [];
 
-        foreach ($shifts as $shift)
+        foreach ($activeShifts as $activeShift)
         {
+            if (!in_array($activeShift->guarding_shift_id, $shiftsIds))
+            {
+                continue;
+            }
+
             $confirmation = DB::table('guarding')
-                            ->where('guarding_shift_id', $shift->id)
-                            ->value('confirmed');
+                ->where('id', $activeShift->id)
+                ->value('confirmed');
+
+            $shift = Shift::find($activeShift->guarding_shift_id);
+            $guards = Guard::whereIn('id', explode(', ',$activeShift->guarding_guards_ids ))->get();
+
+//            print_r($confirmation);
+//            echo "<br>";
+
+//            $id = DB::table('guarding')
+//                ->where('guarding_shift_id', $shift->id)
+//                ->value('id');
 
             $viewShiftsData[] = [
-                'shift_id'  =>  $shift->id,
+                'id'    =>  $activeShift->id,
+                'shift_id'  =>  $activeShift->guarding_shift_id,
                 'shift_name'    =>  $shift->name,
                 'shift_from'  =>  $shift->shift_from,
                 'shift_until'  =>  $shift->shift_until,
-                'shift_guards'  =>  implode(', ', $shift->guards()->get()->pluck('surname')->toArray()),
+                'shift_guards'  =>  implode(', ', $guards->pluck('surname')->toArray()),
                 'shift_confirmed'   =>  ($confirmation == 0 ? 'No' : 'Yes'),
             ];
         }
@@ -123,7 +146,7 @@ class GuardingController extends Controller
         return redirect(route('guarding.index'));
     }
 
-    public function update(Shift $shift)
+    public function update($shiftId)
     {
         if (Gate::denies('manage-shifts'))
         {
@@ -133,7 +156,7 @@ class GuardingController extends Controller
 
         try {
             DB::table('guarding')
-                ->where('guarding_shift_id', $shift->id)
+                ->where('id', $shiftId)
                 ->update([
                     'confirmed'   =>  1
                 ]);
@@ -143,7 +166,7 @@ class GuardingController extends Controller
         return redirect(route('guarding.index'));
     }
 
-    public function destroy(Shift $shift)
+    public function destroy($shiftId)
     {
         if (Gate::denies('manage-shifts'))
         {
@@ -151,6 +174,11 @@ class GuardingController extends Controller
             return redirect()->route('profile', Auth::id());
         }
 
+        $dettachId = DB::table('guarding')
+            ->where('id', $shiftId)
+            ->value('guarding_shift_id');
+
+        $shift = Shift::find($dettachId);
         $shift_guards = $shift->guarded()->get();
 
         if ( isset($shift_guards) && $shift_guards->count() > 0)
@@ -163,10 +191,8 @@ class GuardingController extends Controller
 
         try {
             DB::table('guarding')
-                ->where('guarding_shift_id', $shift->id)
-                ->update([
-                    'confirmed'   =>  0
-                ]);
+                ->where('id', $shiftId)
+                ->delete();
         } catch (\Illuminate\Database\QueryException $e) {
             dd($e);
         }
@@ -252,12 +278,14 @@ class GuardingController extends Controller
         return $data;
     }
 
-    private function getActiveShiftsIds()
+    private function getActiveShifts()
     {
-        $activeShiftsRecords = DB::table('guard_shift')
-            ->select('shift_id')
-            ->groupBy('shift_id')
-            ->pluck('shift_id');
+//        $activeShiftsRecords = DB::table('guard_shift')
+//            ->select('shift_id')
+//            ->groupBy('shift_id')
+//            ->pluck('shift_id');
+
+        $activeShiftsRecords = DB::table('guarding')->get();
 
         return $activeShiftsRecords;
     }

@@ -35,7 +35,7 @@
                                     <td>
                                     @can('manage-shifts')
                                         <div class="row">
-                                            <a href="{{ route('guard.show', $shift) }}">
+                                            <a href="{{ route('shift.show', $shift) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
                                             </a>
                                         </div>
