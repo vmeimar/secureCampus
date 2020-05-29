@@ -45,6 +45,8 @@ Route::post('/g', 'GuardsController@store');
 
 Route::get('/guarding/index', 'GuardingController@index')->name('guarding.index');
 Route::post('/guarding/{shift}', 'GuardingController@store');
+Route::patch('/guarding/{shift}', 'GuardingController@update')->name('guarding.update');
+Route::delete('/guarding/{shift}', 'GuardingController@destroy')->name('guarding.destroy');
 
 Route::namespace('Admin')
     ->prefix('admin')

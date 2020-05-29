@@ -16,32 +16,36 @@
                                 <th scope="col">Guards</th>
                                 <th scope="col">From</th>
                                 <th scope="col">To</th>
+                                <th scope="col">Confirmed</th>
                                 @can('manage-shifts')
                                     <th scope="col">Actions</th>
                                 @endcan
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($shifts as $shift)
+                            @foreach($viewShiftsData as $shift)
                                 <tr>
-                                    <th scope="row">{{ $shift->name }}</th>
-                                    <td>{{ implode(', ', $shift->guards()->get()->pluck('surname')->toArray()) }}</td>
-                                    <td>{{ $shift->shift_from }}</td>
-                                    <td>{{ $shift->shift_until }}</td>
+                                    <th scope="row">{{ $shift['shift_name'] }}</th>
+                                    <td>{{ $shift['shift_guards'] }}</td>
+                                    <td>{{ $shift['shift_from'] }}</td>
+                                    <td>{{ $shift['shift_until'] }}</td>
+                                    <td><strong>{{ $shift['shift_confirmed'] }}</strong></td>
                                     <td>
                                         @can('manage-shifts')
-                                            <div class="row">
-                                                <a href="#">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
-                                                </a>
+                                            <div class="row mb-1">
+                                                <form action="{{ route('guarding.update', $shift['shift_id']) }}" method="POST" class="float-left">
+                                                    @csrf
+                                                    @method('patch')
+                                                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                                </form>
                                             </div>
                                         @endcan
 
                                         @can('manage-shifts')
                                             <div class="row">
-                                                <form action="#" method="POST" class="float-left">
+                                                <form action="{{ route('guarding.destroy', $shift['shift_id']) }}" method="POST" class="float-left">
                                                     @csrf
-                                                    {{ method_field('DELETE') }}
+                                                    @method('delete')
                                                     <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                                 </form>
                                             </div>
@@ -53,8 +57,10 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
-                    <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
+                <div class="d-flex">
+                    <div class="row">
+                        <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
+                    </div>
                 </div>
             </div>
         </div>
