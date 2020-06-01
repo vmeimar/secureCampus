@@ -32,6 +32,13 @@ class GuardingController extends Controller
 
         $activeShifts = $this->getActiveShifts();
 
+        if ($activeShifts == '')
+        {
+            \request()->session()->flash('warning', 'No active shifts. Please assign guards to a shift.');
+            return redirect( route('shift.index') );
+        }
+
+
         foreach ($activeShifts as $activeShift)
         {
             $activeShiftsIds[] = $activeShift->guarding_shift_id;
@@ -285,7 +292,14 @@ class GuardingController extends Controller
 //            ->groupBy('shift_id')
 //            ->pluck('shift_id');
 
-        $activeShiftsRecords = DB::table('guarding')->get();
+        if ( Schema::hasTable('guarding') )
+        {
+            $activeShiftsRecords = DB::table('guarding')->get();
+        }
+        else
+        {
+            return '';
+        }
 
         return $activeShiftsRecords;
     }

@@ -54,18 +54,29 @@
                                 <label for="time" class="col-md-4 col-form-label text-md-right">Time</label>
                                 <div class="col-md-6 d-flex">
                                     <div class="col-md-6">
-                                        <select class="form-control input-lg dynamic">
-                                            <option selected>{{ $shift->shift_from }}</option>
-                                        </select>
+                                        <input id="shift-from"
+                                               type="time"
+                                               class="form-control"
+                                               name="shift-from"
+                                               value="{{ $shift->shift_from }}"
+                                               autocomplete="shift-from"
+                                               autofocus>
+                                        @error('shift-from')
+                                        <strong>{{ $message }}</strong>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
-                                        <select class="form-control input-lg dynamic">
-                                            <option selected>{{ $shift->shift_until }}</option>
-                                        </select>
-                                    </div>
-                                    @error('time')
+                                        <input id="shift-until"
+                                               type="time"
+                                               class="form-control"
+                                               name="shift-until"
+                                               value="{{ $shift->shift_until }}"
+                                               autocomplete="shift-until"
+                                               autofocus>
+                                        @error('shift-until')
                                         <strong>{{ $message }}</strong>
-                                    @enderror
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
 

@@ -6,7 +6,6 @@ use App\Department;
 use App\Guard;
 use App\Shift;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -137,7 +136,8 @@ class ShiftsController extends Controller
 
         $data = \request()->validate([
             'location' => 'required',
-            'days' => 'required',
+            'shift-from' => 'required',
+            'shift-until' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
         ]);
@@ -147,15 +147,12 @@ class ShiftsController extends Controller
             ->where('name', '=', $data['location'])
             ->first();
 
-        $now = Carbon::now()->format('H:i:s');
-
         if ($shift->update([
             'location_id'  =>  $location_id->id,
             'number_of_guards'  =>  $data['number-of-guards'],
             'name'  =>  $data['shift-name'],
-            'days'  =>  $data['days'],
-            'shift_from'    =>  $now,
-            'shift_until'    =>  $now,
+            'shift_from'    =>  $data['shift-from'],
+            'shift_until'    =>  $data['shift-until'],
         ]))
         {
             \request()->session()->flash('success', 'Shift updated successfully');
@@ -202,10 +199,10 @@ class ShiftsController extends Controller
 
     private function calculateFactor(Shift $shift)
     {
-//        $start = strtotime("07:00");
+        $start = strtotime("07:00");
 
-//        $end = strtotime("17:30");
-//        $end = strtotime("06:00") + 3600*24; // the work ended at 06:00 morning of the next day
+        $end = strtotime("17:30");
+        $end = strtotime("06:00") + 3600*24; // the work ended at 06:00 morning of the next day
 
 
         $morning_start = strtotime("06:00");

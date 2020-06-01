@@ -25,7 +25,14 @@ class GuardsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
+        echo "<pre>";
 
+        foreach ( $guard->guarding()->get()->toArray() as $guarding_shift )
+        {
+            print_r($guarding_shift);
+        }
+
+        exit;
 
         return view('guard.show', compact('guard'));
     }
