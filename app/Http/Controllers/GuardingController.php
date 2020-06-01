@@ -46,24 +46,20 @@ class GuardingController extends Controller
 
         if (Gate::allows('manage-anything'))
         {
-//            $shifts = Shift::whereIn('id', array_unique($activeShiftsIds))->get();
             $shiftsIds = array_unique($activeShiftsIds);
         }
         else
         {
             $allActiveShifts = Shift::whereIn('id', array_unique($activeShiftsIds))->get();
-//            $wantedIds = [];
             $shiftsIds = [];
 
             foreach ($allActiveShifts as $item)
             {
                 if ($authUser->department_id == $item->location->department_id)
                 {
-//                    $wantedIds[] = $item->id;
                     $shiftsIds[] = $item->id;
                 }
             }
-//            $shifts = Shift::whereIn('id', $wantedIds)->get();
         }
 
         $viewShiftsData = [];
@@ -79,15 +75,16 @@ class GuardingController extends Controller
                 ->where('id', $activeShift->id)
                 ->value('confirmed');
 
-            $shift = Shift::find($activeShift->guarding_shift_id);
+            $shift = (Shift::find($activeShift->guarding_shift_id))
+                ? Shift::find($activeShift->guarding_shift_id)
+                : '';
+
+            if ($shift == '')
+            {
+                continue;
+            }
+
             $guards = Guard::whereIn('id', explode(', ',$activeShift->guarding_guards_ids ))->get();
-
-//            print_r($confirmation);
-//            echo "<br>";
-
-//            $id = DB::table('guarding')
-//                ->where('guarding_shift_id', $shift->id)
-//                ->value('id');
 
             $viewShiftsData[] = [
                 'id'    =>  $activeShift->id,
@@ -287,11 +284,6 @@ class GuardingController extends Controller
 
     private function getActiveShifts()
     {
-//        $activeShiftsRecords = DB::table('guard_shift')
-//            ->select('shift_id')
-//            ->groupBy('shift_id')
-//            ->pluck('shift_id');
-
         if ( Schema::hasTable('guarding') )
         {
             $activeShiftsRecords = DB::table('guarding')->get();

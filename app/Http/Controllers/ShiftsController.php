@@ -177,7 +177,7 @@ class ShiftsController extends Controller
 
         $shift_guards = $shift->guarded()->get();
 
-        if ( isset($shift_guards) && $shift_guards->count() > 0)
+        if ( isset($shift_guards) && $shift_guards->count() > 0 )
         {
             foreach ($shift_guards as $shift_guard)
             {
@@ -195,40 +195,5 @@ class ShiftsController extends Controller
         }
 
         return redirect('/shift/index');
-    }
-
-    private function calculateFactor(Shift $shift)
-    {
-        $start = strtotime("07:00");
-
-        $end = strtotime("17:30");
-        $end = strtotime("06:00") + 3600*24; // the work ended at 06:00 morning of the next day
-
-
-        $morning_start = strtotime("06:00");
-        $morning_end = strtotime("14:00");
-
-        $afternoon_start = strtotime("14:00");
-        $afternoon_end = strtotime("22:00");
-
-        $night_start = strtotime("22:00");
-        $night_end = strtotime("06:00") + 3600*24; // 07:00 of next day, add 3600*24 seconds
-
-        echo "morning: " . $this->intersection( $start, $end, $morning_start, $morning_end ) / 3600 . " hours\n";
-        echo "afternoon: " . $this->intersection( $start, $end, $afternoon_start, $afternoon_end ) / 3600 . " hours\n";
-        echo "night: " . $this->intersection( $start, $end, $night_start, $night_end ) / 3600 . " hours\n";
-    }
-
-    private function intersection($s1, $e1, $s2, $e2)
-    {
-        if ($e1 < $s2)
-            return 0;
-        if ($s1 > $e2)
-            return 0;
-        if ($s1 < $s2)
-            $s1 = $s2;
-        if ($e1 > $e2)
-            $e1 = $e2;
-        return $e1 - $s1;
     }
 }
