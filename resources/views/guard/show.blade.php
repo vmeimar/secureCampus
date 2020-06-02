@@ -17,18 +17,18 @@
                                     <select name="month" id="month" class="form-control input-lg dynamic">
                                         <option disabled selected value="">Select Month</option>
                                         <option value="all">All</option>
-                                        <option value="january">January</option>
-                                        <option value="february">February</option>
-                                        <option value="march">March</option>
-                                        <option value="april">April</option>
-                                        <option value="may">May</option>
-                                        <option value="june">June</option>
-                                        <option value="july">July</option>
-                                        <option value="august">August</option>
-                                        <option value="september">September</option>
-                                        <option value="october">October</option>
-                                        <option value="november">November</option>
-                                        <option value="december">December</option>
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
                                     </select>
                                     @error('month')
                                     <strong>{{ $message }}</strong>
@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ URL::previous() }}" class="btn btn-secondary m-4">Back</a>
+                    <a href="/security/{{ $guard->company->id }}/edit" class="btn btn-secondary m-4">Back</a>
                 </div>
             </div>
         </div>

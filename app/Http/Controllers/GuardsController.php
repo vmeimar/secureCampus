@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Maatwebsite\Excel\Excel;
 
 class GuardsController extends Controller
 {
@@ -25,8 +24,6 @@ class GuardsController extends Controller
             \request()->session()->flash('warning', 'unauthorized action');
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
-
-        $data = $this->getGuardsShifts($guard);
 
         return view('guard.show', compact('guard', 'data'));
     }
@@ -193,6 +190,12 @@ class GuardsController extends Controller
         )                                               // morning shift, ends next day, only morning hours. to be further tested
         {
             $temp = ($e1 - $s2 - 24 * 3600);
+
+            if ($temp < 0)
+            {
+                $temp = 0;
+            }
+
             return $temp;
         }
         if ($s1 > $e2)
@@ -213,20 +216,57 @@ class GuardsController extends Controller
 
     public function export (Guard $guard)
     {
-        $guardArray = $guard->toArray();
+        $requestData = \request()->validate([
+            'month' =>  'required'
+        ]);
 
-        ob_start();
-        $df = fopen("php://output", 'w');
+        if ($requestData['month'] == '')
+        {
+            \request()->session()->flash('warning', 'select month');
+            return redirect()->back();
+        }
 
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
+        $guardData = $this->getGuardsShifts($guard);
 
-//        fputcsv($df, array_keys(reset($guardArray)));
+        $totalHours = 0;
+        $totalCredits = 0;
 
-        fputcsv($df, $guardArray);
-        fclose($df);
-        
+        foreach ($guardData as $row)
+        {
+            $timestamp = strtotime($row['start_day']);
+
+            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', $timestamp) )
+            {
+                continue;
+            }
+
+            $totalHours += $row['duration'];
+            $totalCredits += $row['morning'] + $row['evening'] + $row['night'];
+        }
+
+        $fetchData = [
+            'Name'  =>  $guard->name,
+            'Surname' => $guard->surname,
+            'Duration' => $totalHours,
+            'Total Credits' => $totalCredits,
+        ];
+
+        $headers = [
+            'Name', 'Surname', 'Duration', 'Credits'
+        ];
+
+        // output headers so that the file is downloaded rather than displayed
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=data.csv');
+
+        // create a file pointer connected to the output stream
+        $output = fopen('php://output', 'w');
+
+        // output the column headings
+        fputcsv($output, $headers, ';');
+        fputcsv($output, $fetchData, ';');
+
+        fclose($output);
         return ob_get_clean();
     }
 }
