@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Maatwebsite\Excel\Excel;
 
 class GuardsController extends Controller
 {
@@ -25,9 +26,9 @@ class GuardsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        $this->getGuardsShifts($guard);
+        $data = $this->getGuardsShifts($guard);
 
-        return view('guard.show', compact('guard'));
+        return view('guard.show', compact('guard', 'data'));
     }
 
     public function create(Company $company)
@@ -105,7 +106,7 @@ class GuardsController extends Controller
 
         foreach ($guardingData as $item)
         {
-            if (in_array($guard->id, explode(', ', $item->guarding_guards_ids)))
+            if ( in_array($guard->id, explode(', ', $item->guarding_guards_ids)) )
             {
                 $date = explode(' ', $item->guarding_shift_date);
 
@@ -118,37 +119,31 @@ class GuardsController extends Controller
                     continue;
                 }
 
-                $shiftFactor []= $this->calculateFactor($shift, $date[0]);
+                $shiftsFactors[] = $this->calculateFactor($shift, $date[0]);
             }
         }
-
-        echo "<pre>";
-        print_r($shiftFactor);
-        exit;
+        return $shiftsFactors;
     }
 
     private function calculateFactor(Shift $shift, $date)
     {
         $start = strtotime($shift->shift_from);
 
-        $end = ($shift->shift_until < $shift->shift_from)
-            ? (strtotime($shift->shift_until) + 3600*24)
+        $end = ( $shift->shift_until < $shift->shift_from )
+            ? ( strtotime($shift->shift_until) + 3600 * 24 )
             : strtotime($shift->shift_until);
 
         $duration = ($end - $start) / 3600; // shift's duration in hours
-
         $timestamp = strtotime($date);
 
         $morning_start = strtotime("06:00");
         $morning_end = strtotime("14:00");
-
         $afternoon_start = strtotime("14:00");
         $afternoon_end = strtotime("22:00");
-
         $night_start = strtotime("22:00");
         $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
 
-        switch (date('l', $timestamp))
+        switch ( date('l', $timestamp) )
         {
             case 'Saturday':
                 $morningFactor = 1;
@@ -170,28 +165,68 @@ class GuardsController extends Controller
         }
 
         $data = [
-            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end ) / 3600) * $morningFactor,
-            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end ) / 3600) * $eveningFactor,
-            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end ) / 3600) * $nightFactor,
+            'start'     =>  $shift->shift_from,
+            'end'       =>  $shift->shift_until,
+            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
+            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
+            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
             'duration'  =>  $duration,
-            'start_day' =>  date('l', $timestamp),
+            'start_day' =>  $date,
         ];
 
         return $data;
     }
 
-    private function intersection($s1, $e1, $s2, $e2)  // 20  7  6  14
+    private function intersection($s1, $e1, $s2, $e2, $when)
     {
+        $midnight = strtotime('24:00');
 
-
-        if ($e1 < $s2)  // 7 < 6
+        if ($e1 < $s2)
+        {
             return 0;
-        if ($s1 > $e2)  //  20 > 14
+        }
+        if (
+            ($e1 > $s2)
+            && ((($midnight - $s1) / 3600 ) > 0)
+            && ((($midnight - $s1) / 3600 ) < 12)
+            && $when == 'm'
+        )                                               // morning shift, ends next day, only morning hours. to be further tested
+        {
+            $temp = ($e1 - $s2 - 24 * 3600);
+            return $temp;
+        }
+        if ($s1 > $e2)
+        {
             return 0;
-        if ($s1 < $s2)  //  20 < 6
+        }
+        if ($s1 < $s2)
+        {
             $s1 = $s2;
-        if ($e1 > $e2)  //  7 > 14
+        }
+        if ($e1 > $e2)
+        {
             $e1 = $e2;
-        return $e1 - $s1;  //  7 - 20
+        }
+
+        return $e1 - $s1;
+    }
+
+    public function export (Guard $guard)
+    {
+        $guardArray = $guard->toArray();
+
+        ob_start();
+        $df = fopen("php://output", 'w');
+
+        header("Content-Type: application/force-download");
+        header("Content-Type: application/octet-stream");
+        header("Content-Type: application/download");
+
+//        fputcsv($df, array_keys(reset($guardArray)));
+
+        fputcsv($df, $guardArray);
+        fclose($df);
+        
+        return ob_get_clean();
     }
 }
