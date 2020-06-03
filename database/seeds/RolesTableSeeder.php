@@ -14,10 +14,11 @@ class RolesTableSeeder extends Seeder
     {
         Role::truncate();
 
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'rectorate']);
-        Role::create(['name' => 'supervisor']);
-        Role::create(['name' => 'secretariat']);
-        Role::create(['name' => 'user']);
+        Role::create(['name' => 'ΔΙΑΧΕΙΡΙΣΤΗΣ']);
+        Role::create(['name' => 'ΕΠΙΤΡΟΠΗ']);
+        Role::create(['name' => 'ΕΠΟΠΤΗΣ']);
+        Role::create(['name' => 'ΕΠΙΣΤΑΤΗΣ']);
+        Role::create(['name' => 'ΔΟΥ']);
+        Role::create(['name' => 'ΝΕΟΣ ΧΡΗΣΤΗΣ']);
     }
 }

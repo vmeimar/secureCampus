@@ -18,46 +18,54 @@ class UsersTableSeeder extends Seeder
         User::truncate();
         DB::table('role_user')->truncate();
 
-        $adminRole = Role::where('name', 'admin')->first();
-        $rectorRole = Role::where('name', 'rectorate')->first();
-        $supervisorRole = Role::where('name', 'supervisor')->first();
-        $secretariatRole = Role::where('name', 'secretariat')->first();
-        $userRole = Role::where('name', 'user')->first();
+        $adminRole = Role::where('name', 'ΔΙΑΧΕΙΡΙΣΤΗΣ')->first();
+        $doyRole = Role::where('name', 'ΔΟΥ')->first();
+        $epitropiRole = Role::where('name', 'ΕΠΙΤΡΟΠΗ')->first();
+        $epoptisRole = Role::where('name', 'ΕΠΟΠΤΗΣ')->first();
+        $epistatisRole = Role::where('name', 'ΕΠΙΣΤΑΤΗΣ')->first();
+        $userRole = Role::where('name', 'ΓΕΝΙΚΟΣ ΧΡΗΣΤΗΣ')->first();
 
         $admin = User::create([
-            'name'  =>  'Admin User',
+            'name'  =>  'ΔΙΑΧΕΙΡΙΣΤΗΣ',
             'email' =>  'admin@admin.com',
             'password'  =>  Hash::make('password'),
         ]);
 
-        $rector = User::create([
-            'name'  =>  'Rectorate',
-            'email' =>  'rectorate@rectorate.com',
+        $epitropi = User::create([
+            'name'  =>  'ΕΠΙΤΡΟΠΗ',
+            'email' =>  'epitropi@epitropi.com',
             'password'  =>  Hash::make('password'),
         ]);
 
-        $supervisor = User::create([
-            'name'  =>  'Supervisor',
-            'email' =>  'super@super.com',
+        $epoptis = User::create([
+            'name'  =>  'ΕΠΟΠΤΗΣ',
+            'email' =>  'epoptis@epoptis.com',
             'password'  =>  Hash::make('password'),
         ]);
 
-        $secretariat = User::create([
-            'name'  =>  'Secretariat',
-            'email' =>  'secr@secr.com',
+        $epistatis = User::create([
+            'name'  =>  'ΕΠΙΣΤΑΤΗΣ',
+            'email' =>  'epistatis@epistatis.com',
+            'password'  =>  Hash::make('password'),
+        ]);
+
+        $doy = User::create([
+            'name'  =>  'ΔΟΥ',
+            'email' =>  'doy@doy.com',
             'password'  =>  Hash::make('password'),
         ]);
 
         $user = User::create([
-            'name'  =>  'Generic User',
+            'name'  =>  'ΓΕΝΙΚΟΣ ΧΡΗΣΤΗΣ',
             'email' =>  'user@user.com',
             'password'  =>  Hash::make('password'),
         ]);
 
         $admin->roles()->attach($adminRole);
-        $rector->roles()->attach($rectorRole);
-        $secretariat->roles()->attach($secretariatRole);
+        $doy->roles()->attach($doyRole);
+        $epitropi->roles()->attach($epitropiRole);
+        $epistatis->roles()->attach($epistatisRole);
         $user->roles()->attach($userRole);
-        $supervisor->roles()->attach($supervisorRole);
+        $epoptis->roles()->attach($epoptisRole);
     }
 }

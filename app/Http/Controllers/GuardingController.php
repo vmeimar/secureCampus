@@ -90,6 +90,7 @@ class GuardingController extends Controller
                 'id'    =>  $activeShift->id,
                 'shift_id'  =>  $activeShift->guarding_shift_id,
                 'shift_name'    =>  $shift->name,
+                'shift_date'    =>  $activeShift->guarding_shift_date,
                 'shift_from'  =>  $shift->shift_from,
                 'shift_until'  =>  $shift->shift_until,
                 'shift_guards'  =>  implode(', ', $guards->pluck('surname')->toArray()),

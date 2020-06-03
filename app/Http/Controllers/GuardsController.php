@@ -118,6 +118,10 @@ class GuardsController extends Controller
 
                 $shiftsFactors[] = $this->calculateFactor($shift, $date[0]);
             }
+            else
+            {
+                $shiftsFactors = [];
+            }
         }
         return $shiftsFactors;
     }
@@ -182,20 +186,16 @@ class GuardsController extends Controller
         {
             return 0;
         }
-        if (
-            ($e1 > $s2)
+
+        if (   ($e1 > $s2)
+            && ($e1 > $e2)
+            && (($e1 - $s2 - 24 * 3600) > 0)
             && ((($midnight - $s1) / 3600 ) > 0)
             && ((($midnight - $s1) / 3600 ) < 12)
             && $when == 'm'
         )                                               // morning shift, ends next day, only morning hours. to be further tested
         {
             $temp = ($e1 - $s2 - 24 * 3600);
-
-            if ($temp < 0)
-            {
-                $temp = 0;
-            }
-
             return $temp;
         }
         if ($s1 > $e2)
@@ -214,7 +214,7 @@ class GuardsController extends Controller
         return $e1 - $s1;
     }
 
-    public function export (Guard $guard)
+    public function exportCsv (Guard $guard)
     {
         $requestData = \request()->validate([
             'month' =>  'required'

@@ -15,6 +15,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Alias</th>
                                 <th scope="col">Guards</th>
+                                <th scope="col">Date</th>
                                 <th scope="col">From</th>
                                 <th scope="col">To</th>
                                 <th scope="col">Confirmed</th>
@@ -29,6 +30,7 @@
                                     <th scope="row">{{ $shift['id'] }}</th>
                                     <td>{{ $shift['shift_name'] }}</td>
                                     <td>{{ $shift['shift_guards'] }}</td>
+                                    <td>{{ date('d M y', strtotime($shift['shift_date'])) }}</td>
                                     <td>{{ $shift['shift_from'] }}</td>
                                     <td>{{ $shift['shift_until'] }}</td>
                                     <td><strong>{{ $shift['shift_confirmed'] }}</strong></td>
