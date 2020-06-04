@@ -11,6 +11,10 @@ class ActiveShift extends Model
 
     protected $guarded = [];
 
+    protected $attributes = [
+        'confirmed' =>  0
+    ];
+
     public function shift()
     {
         return $this->belongsTo(Shift::class);

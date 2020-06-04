@@ -20,6 +20,8 @@ class CreateGuardsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->integer('active');
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 

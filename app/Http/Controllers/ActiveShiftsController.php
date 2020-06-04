@@ -38,12 +38,19 @@ class ActiveShiftsController extends Controller
 
         $staticShift = Shift::findOrFail($data['shift-id']);
 
+        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $staticShift->shift_from);
+
+        if ($overLap)
+        {
+            $request->session()->flash('warning', 'There is a shift conflict');
+            return redirect(route('active-shift.index'));
+        }
+
         $activeShift = ActiveShift::create([
             'name'  =>  $staticShift->name,
             'date'  =>  $data['active-shift-date'],
             'from'  =>  $staticShift->shift_from,
             'until' =>  $staticShift->shift_until,
-            'confirmed' =>  0,
         ]);
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
@@ -134,5 +141,27 @@ class ActiveShiftsController extends Controller
                 break;
         }
         return $data;
+    }
+
+    private function checkShiftOverlap ($assignedGuardIds, $data, $newShiftFrom)
+    {
+        $overLap = 0;
+
+        foreach ($assignedGuardIds as $id)
+        {
+            $guard = Guard::findOrFail($id);
+
+            foreach ($guard->activeShifts()->get() as $existingShift)
+            {
+                if (date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($data['active-shift-date'])))
+                {
+                    if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom))
+                    {
+                        $overLap = 1;
+                    }
+                }
+            }
+        }
+        return $overLap;
     }
 }

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\ActiveShift;
 use App\Company;
 use App\Guard;
 use App\Shift;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Schema;
 
 class GuardsController extends Controller
 {
@@ -26,7 +24,7 @@ class GuardsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
-        return view('guard.show', compact('guard', 'data'));
+        return view('guard.show', compact('guard'));
     }
 
     public function create(Company $company)
@@ -83,6 +81,8 @@ class GuardsController extends Controller
             return redirect()->route('profile', ['user' => Auth::id()]);
         }
 
+//        $guard->activeShifts()->detach();
+
         if ($guard->delete())
         {
             \request()->session()->flash('success', 'Guard deleted successfully');
@@ -95,53 +95,66 @@ class GuardsController extends Controller
         return redirect()->route('company.index');
     }
 
-    private function getGuardsShifts (Guard $guard)
+//    private function calculateFactor(Shift $shift, $date)
+//    {
+//        $start = strtotime($shift->shift_from);
+//
+//        $end = ( $shift->shift_until < $shift->shift_from )
+//            ? ( strtotime($shift->shift_until) + 3600 * 24 )
+//            : strtotime($shift->shift_until);
+//
+//        $duration = ($end - $start) / 3600; // shift's duration in hours
+//        $timestamp = strtotime($date);
+//
+//        $morning_start = strtotime("06:00");
+//        $morning_end = strtotime("14:00");
+//        $afternoon_start = strtotime("14:00");
+//        $afternoon_end = strtotime("22:00");
+//        $night_start = strtotime("22:00");
+//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
+//
+//        switch ( date('l', $timestamp) )
+//        {
+//            case 'Saturday':
+//                $morningFactor = 1;
+//                $eveningFactor = 1.25;
+//                $nightFactor = 1.75;
+//                break;
+//
+//            case 'Sunday':
+//                $morningFactor = 1.25;
+//                $eveningFactor = 1.25;
+//                $nightFactor = 2;
+//                break;
+//
+//            default:
+//                $morningFactor = 1;
+//                $eveningFactor = 1;
+//                $nightFactor = 1.75;
+//                break;
+//        }
+//
+//        $data = [
+//            'start'     =>  $shift->shift_from,
+//            'end'       =>  $shift->shift_until,
+//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
+//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
+//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
+//            'duration'  =>  $duration,
+//            'start_day' =>  $date,
+//        ];
+//
+//        return $data;
+//    }
+
+    private function calculateFactor(ActiveShift $activeShift)
     {
-        if (! Schema::hasTable('guarding'))
-        {
-            return false;
-        }
-
-        $guardingData = DB::table('guarding')
-            ->select('guarding_shift_id', 'guarding_shift_date', 'guarding_guards_ids')
-            ->get()
-            ->toArray();
-
-        foreach ($guardingData as $item)
-        {
-            if ( in_array($guard->id, explode(', ', $item->guarding_guards_ids)) )
-            {
-                $date = explode(' ', $item->guarding_shift_date);
-
-                $shift = (Shift::find($item->guarding_shift_id))
-                    ? Shift::find($item->guarding_shift_id)
-                    : '';
-
-                if ($shift == '')
-                {
-                    continue;
-                }
-
-                $shiftsFactors[] = $this->calculateFactor($shift, $date[0]);
-            }
-            else
-            {
-                $shiftsFactors = [];
-            }
-        }
-        return $shiftsFactors;
-    }
-
-    private function calculateFactor(Shift $shift, $date)
-    {
-        $start = strtotime($shift->shift_from);
-
-        $end = ( $shift->shift_until < $shift->shift_from )
-            ? ( strtotime($shift->shift_until) + 3600 * 24 )
-            : strtotime($shift->shift_until);
+        $start = strtotime($activeShift->from);
+        $end = ( $activeShift->until < $activeShift->from )
+            ? ( strtotime($activeShift->until) + 3600 * 24 )
+            : strtotime($activeShift->until);
 
         $duration = ($end - $start) / 3600; // shift's duration in hours
-        $timestamp = strtotime($date);
 
         $morning_start = strtotime("06:00");
         $morning_end = strtotime("14:00");
@@ -150,7 +163,7 @@ class GuardsController extends Controller
         $night_start = strtotime("22:00");
         $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
 
-        switch ( date('l', $timestamp) )
+        switch ( date('l', strtotime($activeShift->date)) )
         {
             case 'Saturday':
                 $morningFactor = 1;
@@ -172,13 +185,13 @@ class GuardsController extends Controller
         }
 
         $data = [
-            'start'     =>  $shift->shift_from,
-            'end'       =>  $shift->shift_until,
+            'start'     =>  $activeShift->from,
+            'end'       =>  $activeShift->until,
             'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
             'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
             'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
             'duration'  =>  $duration,
-            'start_day' =>  $date,
+            'start_day' =>  date('l', strtotime($activeShift->date)),
         ];
 
         return $data;
@@ -193,13 +206,13 @@ class GuardsController extends Controller
             return 0;
         }
 
-        if (   ($e1 > $s2)
+        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
             && ($e1 > $e2)
             && (($e1 - $s2 - 24 * 3600) > 0)
             && ((($midnight - $s1) / 3600 ) > 0)
             && ((($midnight - $s1) / 3600 ) < 12)
             && $when == 'm'
-        )                                               // morning shift, ends next day, only morning hours. to be further tested
+        )
         {
             $temp = ($e1 - $s2 - 24 * 3600);
             return $temp;
@@ -216,7 +229,6 @@ class GuardsController extends Controller
         {
             $e1 = $e2;
         }
-
         return $e1 - $s1;
     }
 
@@ -232,31 +244,24 @@ class GuardsController extends Controller
             return redirect()->back();
         }
 
-        $guardData = $this->getGuardsShifts($guard);
-
-        if ( $guardData == false)
-        {
-            \request()->session()->flash('error', 'No existing shifts at the time');
-            return redirect()->route('company.index');
-        }
-
+        $guardShifts = $guard->activeShifts()->get();
         $totalHours = 0;
         $totalCredits = 0;
 
-        foreach ($guardData as $row)
+        foreach ($guardShifts as $activeShift)
         {
-            $timestamp = strtotime($row['start_day']);
-
-            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', $timestamp) )
+            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
             {
                 continue;
             }
 
-            $totalHours += $row['duration'];
-            $totalCredits += $row['morning'] + $row['evening'] + $row['night'];
+            $data = $this->calculateFactor($activeShift);
+
+            $totalHours += $data['duration'];
+            $totalCredits += ($data['morning'] + $data['evening'] + $data['night']);
         }
 
-        $fetchData = [
+        $exportData = [
             'Name'  =>  $guard->name,
             'Surname' => $guard->surname,
             'Duration' => $totalHours,
@@ -276,7 +281,7 @@ class GuardsController extends Controller
 
         // output the column headings
         fputcsv($output, $headers, ';');
-        fputcsv($output, $fetchData, ';');
+        fputcsv($output, $exportData, ';');
 
         fclose($output);
         return ob_get_clean();
