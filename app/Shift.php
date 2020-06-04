@@ -11,7 +11,7 @@ class Shift extends Model
 
     public function guards()
     {
-        return $this->belongsToMany(Guard::class);
+        return $this->hasMany(Guard::class);
     }
 
     public function user()
@@ -21,11 +21,16 @@ class Shift extends Model
 
     public function guarded()
     {
-        return $this->belongsToMany(Guard::class);
+        return $this->belongsToMany(Guard::class)->withPivot(['shiftDate']);
     }
 
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function activeShifts()
+    {
+        return $this->hasMany(ActiveShift::class);
     }
 }

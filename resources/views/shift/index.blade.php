@@ -35,7 +35,7 @@
                                     <td>
                                     @can('manage-shifts')
                                         <div class="row">
-                                            <a href="{{ route('shift.show', $shift) }}">
+                                            <a href="{{ route('active-shift.create', $shift) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
                                             </a>
                                         </div>
@@ -62,17 +62,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12 d-flex justify-content-center mt-2">
-                        {{ $shifts->links() }}
-                    </div>
-                </div>
+{{--                <div class="row">--}}
+{{--                    <div class="col-12 d-flex justify-content-center mt-2">--}}
+{{--                        {{ $shifts->links() }}--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="d-flex">
                     <div class="row">
                         <a href="/shift/create" class="btn btn-primary m-4">Create New Shift</a>
                     </div>
                     <div class="row">
-                        <a href="{{ route('guarding.index') }}" class="btn btn-warning m-4">Show active shifts</a>
+                        <a href="{{ route('active-shift.index') }}" class="btn btn-warning m-4">Show active shifts</a>
                     </div>
                     <div class="row">
                         <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>

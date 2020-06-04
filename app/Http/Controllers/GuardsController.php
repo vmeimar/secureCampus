@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 
 class GuardsController extends Controller
 {
@@ -96,6 +97,11 @@ class GuardsController extends Controller
 
     private function getGuardsShifts (Guard $guard)
     {
+        if (! Schema::hasTable('guarding'))
+        {
+            return false;
+        }
+
         $guardingData = DB::table('guarding')
             ->select('guarding_shift_id', 'guarding_shift_date', 'guarding_guards_ids')
             ->get()
@@ -227,6 +233,12 @@ class GuardsController extends Controller
         }
 
         $guardData = $this->getGuardsShifts($guard);
+
+        if ( $guardData == false)
+        {
+            \request()->session()->flash('error', 'No existing shifts at the time');
+            return redirect()->route('company.index');
+        }
 
         $totalHours = 0;
         $totalCredits = 0;

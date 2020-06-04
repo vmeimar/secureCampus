@@ -15,10 +15,10 @@ use Throwable;
 
 class GuardingController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth');
+//    }
 
     public function index()
     {
@@ -32,7 +32,7 @@ class GuardingController extends Controller
 
         $activeShifts = $this->getActiveShifts();
 
-        if ($activeShifts == '')
+        if ( ($activeShifts == '') || ($activeShifts->count() == 0) )
         {
             \request()->session()->flash('warning', 'No active shifts. Please assign guards to a shift.');
             return redirect( route('shift.index') );
@@ -117,13 +117,13 @@ class GuardingController extends Controller
 
         $date  = new \DateTime( $data['date'] );
 
-        if ( isset($shift_guards) && ($shift_guards->count() > 0) )
-        {
-            foreach ($shift_guards as $shift_guard)
-            {
-                $shift->guarded()->detach($shift_guard);
-            }
-        }
+//        if ( isset($shift_guards) && ($shift_guards->count() > 0) )
+//        {
+//            foreach ($shift_guards as $shift_guard)
+//            {
+//                $shift->guarded()->detach($shift_guard);
+//            }
+//        }
 
         $guardIds = $this->fetchData($shift->number_of_guards);
 
@@ -131,12 +131,27 @@ class GuardingController extends Controller
         {
             $guard = Guard::find($guardId);
 
+//            foreach ($guard->guarding()->pluck('shiftDate') as $item)
+//            {
+//                $existingDate = new \DateTime($item);
+//
+//                if ( $date->diff($existingDate)->d == 0 )
+//                {
+//                    echo $guard->name.' yes';
+//                    echo "<br>";
+//                }
+//                else
+//                {
+//                    echo $guard->name.' no';
+//                    echo "<br>";
+//                }
+//            }
+
             try {
-                $shift->guarded()->attach($guard);
+                $shift->guarded()->attach($guard, ['shiftDate' => $date]);
 
             } catch (Throwable $e) {
                 report($e);
-
                 return false;
             }
         }
@@ -179,14 +194,27 @@ class GuardingController extends Controller
             return redirect()->route('profile', Auth::id());
         }
 
-        $dettachId = DB::table('guarding')
+        $staticShiftId = DB::table('guarding')
             ->where('id', $shiftId)
             ->value('guarding_shift_id');
+
+        $shift = Shift::find($staticShiftId);
+
+        $dettachIds[] = DB::table('guarding')
+            ->where('id', $shiftId)
+            ->value('pivot_table_shift_ids');
+
+        dd($shift->guarded()->get());
+
+        foreach ($dettachIds as $dettachId)
+        {
+
+        }
 
         $shift = Shift::find($dettachId);
         $shift_guards = $shift->guarded()->get();
 
-        if ( isset($shift_guards) && $shift_guards->count() > 0)
+        if ( isset($shift_guards) && $shift_guards->count() > 0 )
         {
             foreach ($shift_guards as $shift_guard)
             {
@@ -209,14 +237,16 @@ class GuardingController extends Controller
     {
         $this->createIfNotExistsGuardingTable();
 
-        foreach ($assignedShiftData as $shiftDatum)
+        foreach ($assignedShiftData as $item)
         {
-            $guards_ids[] = $shiftDatum->guard_id;
-            $shift_id   =   $shiftDatum->shift_id;
+            $pivotTableShiftIds[] = $item->id;
+            $guards_ids[] = $item->guard_id;
+            $shift_id   =   $item->shift_id;
         }
 
         try {
             DB::table('guarding')->insert([
+                'pivot_table_shift_ids'   =>  implode(', ', $pivotTableShiftIds),
                 'guarding_guards_ids' =>  implode(', ', $guards_ids),
                 'guarding_shift_id' =>  $shift_id,
                 'guarding_shift_date'   =>  $date,
@@ -236,7 +266,8 @@ class GuardingController extends Controller
                     $table->id();
                     $table->unsignedBigInteger('guarding_shift_id');
                     $table->string('guarding_guards_ids');
-                    $table->string('guarding_shift_date');
+                    $table->string('pivot_table_shift_ids');
+                    $table->dateTime('guarding_shift_date');
                     $table->tinyInteger('confirmed');
                     $table->timestamps();
                 });

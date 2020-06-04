@@ -32,6 +32,12 @@ Route::delete('/shift/{shift}', 'ShiftsController@destroy')->name('shift.destroy
 Route::patch('/shift/{shift}', 'ShiftsController@update')->name('shift.update');
 Route::post('/sh', 'ShiftsController@store');
 
+Route::get('/active-shift/index', 'ActiveShiftsController@index')->name('active-shift.index');
+Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->name('active-shift.create');
+Route::post('/as', 'ActiveShiftsController@store');
+Route::patch('/active-shift/{shift}/confirm', 'ActiveShiftsController@confirmActiveShift');
+Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->name('active-shift.destroy');
+
 Route::get('/security', 'SecurityController@index')->name('company.index');
 Route::get('/security/create', 'SecurityController@create');
 Route::delete('/security/{company}', 'SecurityController@destroy')->name('company.destroy');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGuardShiftTable extends Migration
+class CreateActiveShiftGuardPivotTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateGuardShiftTable extends Migration
      */
     public function up()
     {
-        Schema::create('guard_shift', function (Blueprint $table) {
+        Schema::create('active_shift_guard', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('active_shift_id');
             $table->unsignedBigInteger('guard_id');
-            $table->unsignedBigInteger('shift_id');
-            $table->dateTime('shiftDate');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateGuardShiftTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guard_shift');
+        Schema::dropIfExists('active_shift_guard');
     }
 }
