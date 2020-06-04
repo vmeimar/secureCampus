@@ -39,7 +39,7 @@
                                     <td>{{ $activeShift['until'] }}</td>
                                     <td><strong>{{ $activeShift['confirmed'] }}</strong></td>
                                     <td>
-                                        @can('manage-shifts')
+                                        @can('confirm-shifts')
                                             <div class="row mb-1">
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm" method="POST" class="float-left">
                                                     @csrf

@@ -25,40 +25,66 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('manage-users', function ($user) {
+        Gate::define('admin', function ($user) {
             return $user->hasRole('admin');
+        });
+
+        Gate::define('create-shifts', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis'
+            ]);
+        });
+
+        Gate::define('view-shifts', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
+                'epistatis',
+                'doy',
+                'epitropi'
+            ]);
+        });
+
+        Gate::define('confirm-shifts', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
+                'epitropi'
+            ]);
+        });
+
+        Gate::define('edit-shifts', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
+                'epistatis',
+            ]);
         });
 
         Gate::define('manage-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'rectorate',
-                'secretariat',
-                'supervisor',
+                'epoptis',
+                'epistatis',
+                'doy',
+                'epitropi',
             ]);
         });
 
         Gate::define('manage-security', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'rectorate',
-                'supervisor',
-                'secretariat',
+                'doy',
+                'epoptis',
             ]);
         });
 
-        Gate::define('use-application', function ($user) {
+        Gate::define('see-all', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'rectorate',
-                'supervisor',
-                'secretariat',
-            ]);
-        });
-
-        Gate::define('manage-anything', function ($user) {
-            return $user->hasAnyRoles([
-                'admin',
+                'epitropi',
+                'doy'
             ]);
         });
     }

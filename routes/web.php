@@ -24,9 +24,9 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile');
 
-Route::get('/shift/index', 'ShiftsController@index')->name('shift.index');
-Route::get('/shift/create', 'ShiftsController@create');
-Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->name('shift.edit');
+Route::get('/shift/index', 'ShiftsController@index')->middleware('can:view-shifts')->name('shift.index');
+Route::get('/shift/create', 'ShiftsController@create')->middleware('can:create-shifts');
+Route::get('/shift/{shift}/edit', 'ShiftsController@edit')->middleware('can:edit-shifts')->name('shift.edit');
 Route::get('/shift/{shift}', 'ShiftsController@show')->name('shift.show');
 Route::delete('/shift/{shift}', 'ShiftsController@destroy')->name('shift.destroy');
 Route::patch('/shift/{shift}', 'ShiftsController@update')->name('shift.update');
@@ -38,11 +38,11 @@ Route::post('/as', 'ActiveShiftsController@store');
 Route::patch('/active-shift/{shift}/confirm', 'ActiveShiftsController@confirmActiveShift');
 Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->name('active-shift.destroy');
 
-Route::get('/security', 'SecurityController@index')->name('company.index');
-Route::get('/security/create', 'SecurityController@create');
-Route::delete('/security/{company}', 'SecurityController@destroy')->name('company.destroy');
-Route::get('/security/{company}/edit', 'SecurityController@edit')->name('company.edit');
-Route::post('/s', 'SecurityController@store');
+Route::get('/security', 'SecurityController@index')->middleware('can:manage-security')->name('company.index');
+Route::get('/security/create', 'SecurityController@create')->middleware('can:manage-security');
+Route::delete('/security/{company}', 'SecurityController@destroy')->middleware('can:admin')->name('company.destroy');
+Route::get('/security/{company}/edit', 'SecurityController@edit')->middleware('can:manage-security')->name('company.edit');
+Route::post('/s', 'SecurityController@store')->middleware('can:manage-security');
 
 Route::get('/guard/{company}/create', 'GuardsController@create');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->name('guard.destroy');
@@ -50,15 +50,10 @@ Route::get('/guard/{guard}', 'GuardsController@show')->name('guard.show');
 Route::post('/g', 'GuardsController@store');
 Route::post('/guard/{guard}', 'GuardsController@exportCsv')->name('guard.exportCsv');
 
-Route::get('/guarding/index', 'GuardingController@index')->name('guarding.index');
-Route::post('/guarding/{shift}', 'GuardingController@store');
-Route::patch('/guarding/{shift}', 'GuardingController@update')->name('guarding.update');
-Route::delete('/guarding/{shift}', 'GuardingController@destroy')->name('guarding.destroy');
-
 Route::namespace('Admin')
     ->prefix('admin')
     ->name('admin.')
-    ->middleware('can:manage-users')
+    ->middleware('can:admin')
     ->group(function () {
         Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
 });

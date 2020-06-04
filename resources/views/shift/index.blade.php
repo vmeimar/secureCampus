@@ -16,10 +16,9 @@
                             <tr>
                                 <th scope="col">Alias</th>
                                 <th scope="col">Number of Guards</th>
-{{--                                <th scope="col">Days</th>--}}
                                 <th scope="col">From</th>
                                 <th scope="col">Until</th>
-                                @can('manage-shifts')
+                                @can('edit-shifts')
                                     <th scope="col">Actions</th>
                                 @endcan
                             </tr>
@@ -29,11 +28,11 @@
                                 <tr>
                                     <th scope="row">{{ $shift->name }}</th>
                                     <td>{{ $shift->number_of_guards }}</td>
-{{--                                    <td>{{ $shift->days }}</td>--}}
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>
                                     @can('manage-shifts')
+                                        
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
@@ -41,10 +40,14 @@
                                         </div>
 
                                         <div class="row">
+
+                                            @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Edit</button>
                                             </a>
+                                            @endcan
 
+                                            @can('admin')
                                             <form action="{{ route('shift.destroy', $shift) }}" method="POST" class="float-left">
                                                 @csrf
                                                 {{ method_field('DELETE') }}
@@ -53,6 +56,8 @@
                                                         class="btn btn-danger btn-sm">
                                                     Delete</button>
                                             </form>
+                                            @endcan
+
                                         </div>
                                     @endcan
                                     </td>
@@ -62,15 +67,12 @@
                         </table>
                     </div>
                 </div>
-{{--                <div class="row">--}}
-{{--                    <div class="col-12 d-flex justify-content-center mt-2">--}}
-{{--                        {{ $shifts->links() }}--}}
-{{--                    </div>--}}
-{{--                </div>--}}
                 <div class="d-flex">
+                    @can('create-shifts')
                     <div class="row">
                         <a href="/shift/create" class="btn btn-primary m-4">Create New Shift</a>
                     </div>
+                    @endcan
                     <div class="row">
                         <a href="{{ route('active-shift.index') }}" class="btn btn-warning m-4">Show active shifts</a>
                     </div>

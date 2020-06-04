@@ -20,11 +20,11 @@ class ShiftsController extends Controller
 
     public function index()
     {
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', Auth::id());
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', Auth::id());
+//        }
 
         $shifts = Shift::all();
         return view('shift.index', compact('shifts'));
@@ -32,11 +32,11 @@ class ShiftsController extends Controller
 
     public function show(Shift $shift)
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
+//        if (Gate::denies('manage-security'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', ['user' => Auth::id()]);
+//        }
 
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
 
@@ -47,13 +47,13 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', $authUser->id);
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', $authUser->id);
+//        }
 
-        if (Gate::allows('manage-anything'))
+        if (Gate::allows('see-all'))
         {
             $departments = Department::all();
         }
@@ -69,13 +69,13 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', $authUser->id);
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', $authUser->id);
+//        }
 
-        if (Gate::allows('manage-anything'))
+        if (Gate::allows('see-all'))
         {
             $departments = Department::all();
         }
@@ -91,11 +91,11 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', $authUser->id);
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', $authUser->id);
+//        }
 
         $data = \request()->validate([
             'location' => 'required',
@@ -127,11 +127,11 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', $authUser->id);
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', $authUser->id);
+//        }
 
         $data = \request()->validate([
             'location' => 'required',
@@ -168,11 +168,11 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-        if (Gate::denies('manage-shifts'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', $authUser->id);
-        }
+//        if (Gate::denies('manage-shifts'))
+//        {
+//            \request()->session()->flash('warning', 'unauthorized action');
+//            return redirect()->route('profile', $authUser->id);
+//        }
 
         $shift_guards = $shift->guarded()->get();
 

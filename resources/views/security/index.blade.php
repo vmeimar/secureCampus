@@ -34,6 +34,7 @@
                                                 <a href="security/{{ $company->id }}/edit">
                                                     <button type="button" class="btn btn-primary btn-sm mb-1">View Guards</button>
                                                 </a>
+                                                @can('admin')
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
@@ -42,6 +43,7 @@
                                                             class="btn btn-danger btn-sm">
                                                         Delete</button>
                                                 </form>
+                                                @endcan
                                             </div>
                                         @endcan
 

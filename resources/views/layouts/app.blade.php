@@ -63,7 +63,7 @@
                                         {{ __('Logout') }}
                                     </a>
 
-                                    @can('manage-users')
+                                    @can('admin')
                                     <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                                         User Management
                                     </a>

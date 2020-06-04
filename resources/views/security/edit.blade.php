@@ -32,6 +32,7 @@
                                                     <a href="{{route('guard.show', $guard->id)}}" class="btn btn-primary btn-sm">Details</a>
                                                 </div>
 
+                                                @can('admin')
                                                 <div class="row">
                                                     <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
                                                         @csrf
@@ -42,6 +43,7 @@
                                                             Delete</button>
                                                     </form>
                                                 </div>
+                                                @endcan
                                             </div>
                                         @endcan
 
