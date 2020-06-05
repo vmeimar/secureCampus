@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Guard;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class SecurityController extends Controller
 {
@@ -19,47 +17,23 @@ class SecurityController extends Controller
     {
         $user_id = Auth::id();
 
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         $companies = Company::all();
         return view('security.index', compact('companies', 'user_id'));
     }
 
     public function edit(Company $company)
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
-        $guards = Guard::where('company_id', $company->id)->get();
-        return view('security.edit', compact('company', 'guards'));
+        return view('security.edit', compact('company'));
     }
 
     public function create()
     {
-        if (Gate::denies('manage-security'))
-        {
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         $user_id = Auth::id();
-
         return view('security.create', compact('user_id'));
     }
 
     public function store()
     {
-        if (Gate::denies('manage-security'))
-        {
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         $data = \request()->validate([
             'name' => 'required',
         ]);
@@ -78,13 +52,28 @@ class SecurityController extends Controller
         return redirect()->route('company.index');
     }
 
-    public function destroy(Company $company)
+    public function update(Company $company)
     {
-        if (Gate::denies('manage-security'))
+        $data = \request()->validate([
+            'name' => 'required',
+        ]);
+
+        $company->name = $data['name'];
+
+        if ($company->save())
         {
-            return redirect()->route('profile', ['user' => Auth::id()]);
+            \request()->session()->flash('success', 'Updated successfully');
+        }
+        else
+        {
+            \request()->session()->flash('error', 'Error while updating');
         }
 
+        return redirect()->route('company.index');
+    }
+
+    public function destroy(Company $company)
+    {
         if ($company->guards()->count())
         {
             $company->guards()->delete();

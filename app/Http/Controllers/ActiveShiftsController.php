@@ -17,7 +17,7 @@ class ActiveShiftsController extends Controller
 
     public function index()
     {
-        $activeShifts = ActiveShift::latest()->paginate(5);
+        $activeShifts = ActiveShift::latest()->paginate(10);
         return view('active-shift.index', compact('activeShifts'));
     }
 

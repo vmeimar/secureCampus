@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'epoptis'
+                'epoptis',
             ]);
         });
 
@@ -67,7 +67,14 @@ class AuthServiceProvider extends ServiceProvider
                 'admin',
                 'epoptis',
                 'epistatis',
-                'doy',
+                'epitropi',
+            ]);
+        });
+
+        Gate::define('confirm-shifts', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
                 'epitropi',
             ]);
         });
@@ -80,11 +87,30 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('create-guard', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'doy',
+                'epoptis',
+            ]);
+        });
+
         Gate::define('see-all', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
                 'epitropi',
                 'doy'
+            ]);
+        });
+
+        Gate::define('use-application', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
+                'epistatis',
+                'doy',
+                'epitropi',
+                'user',
             ]);
         });
     }

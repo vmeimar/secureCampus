@@ -18,7 +18,7 @@ class ShiftsTableSeeder extends Seeder
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
             'shift_from'    =>  '06:00',
-            'shift_until'   =>  '14.00',
+            'shift_until'   =>  '14:00',
         ]);
 
         Shift::create([
@@ -27,7 +27,7 @@ class ShiftsTableSeeder extends Seeder
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
             'shift_from'    =>  '14:00',
-            'shift_until'   =>  '22.00',
+            'shift_until'   =>  '22:00',
         ]);
 
         Shift::create([
@@ -36,7 +36,7 @@ class ShiftsTableSeeder extends Seeder
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
             'shift_from'    =>  '22:00',
-            'shift_until'   =>  '06.00',
+            'shift_until'   =>  '06:00',
         ]);
     }
 }

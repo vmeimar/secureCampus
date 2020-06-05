@@ -16,14 +16,20 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index(Request $request)
+//    /**
+//     * Show the application dashboard.
+//     *
+//     * @return \Illuminate\Contracts\Support\Renderable
+//     */
+//    public function index(Request $request)
+//    {
+//        $user = $request->user();
+//        return view('home', compact('user'));
+//    }
+
+    public function index (Request $request)
     {
         $user = $request->user();
-        return view('home', compact('user'));
+        return redirect( route('profile', $user) );
     }
 }

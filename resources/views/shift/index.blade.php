@@ -32,12 +32,14 @@
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>
                                     @can('manage-shifts')
-                                        
+
+                                        @can('edit-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
                                                 <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
                                             </a>
                                         </div>
+                                        @endcan
 
                                         <div class="row">
 

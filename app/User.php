@@ -52,6 +52,11 @@ class User extends Authenticatable
         return $this->belongsTo(Department::class);
     }
 
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class);
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);

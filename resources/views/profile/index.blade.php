@@ -36,7 +36,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Manage Security Guards and Companies</h5>
                             <p class="card-text">Press button bellow to manage</p>
-                            <a href="/security" class="btn btn-primary">Manage</a>
+                            <a href="/security/index" class="btn btn-primary">Manage</a>
                         </div>
                     </div>
                     @endcan

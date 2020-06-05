@@ -17,4 +17,9 @@ class Location extends Model
     {
         return $this->hasMany(Shift::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

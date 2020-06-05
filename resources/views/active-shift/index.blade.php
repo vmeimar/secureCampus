@@ -19,7 +19,7 @@
                                 <th scope="col">From</th>
                                 <th scope="col">To</th>
                                 <th scope="col">Confirmed</th>
-                                @can('manage-shifts')
+                                @can('confirm-shifts')
                                     <th scope="col">Actions</th>
                                 @endcan
                             </tr>
@@ -51,7 +51,7 @@
                                             </div>
                                         @endcan
 
-                                        @can('manage-shifts')
+                                        @can('admin')
                                             <div class="row">
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
                                                     @csrf

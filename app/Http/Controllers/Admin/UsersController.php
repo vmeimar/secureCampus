@@ -7,8 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class UsersController extends Controller
 {
@@ -25,8 +23,6 @@ class UsersController extends Controller
      */
     public function index()
     {
-        dd(Auth::user());
-
         $users = User::all();
         return view('admin.users.index', compact('users'));
     }

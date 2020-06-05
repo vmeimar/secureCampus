@@ -6,7 +6,6 @@ use App\Department;
 use App\Guard;
 use App\Shift;
 use App\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -20,38 +19,19 @@ class ShiftsController extends Controller
 
     public function index()
     {
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', Auth::id());
-//        }
-
         $shifts = Shift::all();
         return view('shift.index', compact('shifts'));
     }
 
     public function show(Shift $shift)
     {
-//        if (Gate::denies('manage-security'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', ['user' => Auth::id()]);
-//        }
-
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
-
         return view('shift.show', compact('guards', 'shift'));
     }
 
     public function edit(Shift $shift)
     {
         $authUser = User::find(Auth::id());
-
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', $authUser->id);
-//        }
 
         if (Gate::allows('see-all'))
         {
@@ -69,12 +49,6 @@ class ShiftsController extends Controller
     {
         $authUser = User::find(Auth::id());
 
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', $authUser->id);
-//        }
-
         if (Gate::allows('see-all'))
         {
             $departments = Department::all();
@@ -89,14 +63,6 @@ class ShiftsController extends Controller
 
     public function store()
     {
-        $authUser = User::find(Auth::id());
-
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', $authUser->id);
-//        }
-
         $data = \request()->validate([
             'location' => 'required',
             'shift-from' => 'required',
@@ -125,14 +91,6 @@ class ShiftsController extends Controller
 
     public function update(Shift $shift)
     {
-        $authUser = User::find(Auth::id());
-
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', $authUser->id);
-//        }
-
         $data = \request()->validate([
             'location' => 'required',
             'shift-from' => 'required',
@@ -166,25 +124,7 @@ class ShiftsController extends Controller
 
     public function destroy(Shift $shift)
     {
-        $authUser = User::find(Auth::id());
-
-//        if (Gate::denies('manage-shifts'))
-//        {
-//            \request()->session()->flash('warning', 'unauthorized action');
-//            return redirect()->route('profile', $authUser->id);
-//        }
-
-        $shift_guards = $shift->guarded()->get();
-
-        if ( isset($shift_guards) && $shift_guards->count() > 0 )
-        {
-            foreach ($shift_guards as $shift_guard)
-            {
-                $shift->guarded()->detach($shift_guard);
-            }
-        }
-
-        if ($shift->delete())
+        if ( $shift->delete() )
         {
             \request()->session()->flash('success', 'Shift deleted successfully');
         }

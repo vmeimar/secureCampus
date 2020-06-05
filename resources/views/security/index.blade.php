@@ -31,8 +31,11 @@
 
                                         @can('manage-security')
                                             <div class="row d-flex">
-                                                <a href="security/{{ $company->id }}/edit">
+                                                <a href="/guard/{{ $company->id }}/index">
                                                     <button type="button" class="btn btn-primary btn-sm mb-1">View Guards</button>
+                                                </a>
+                                                <a href="/security/{{ $company->id }}/edit" class="ml-1">
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
                                                 </a>
                                                 @can('admin')
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">

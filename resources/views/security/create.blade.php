@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="row">
-                    <a href="/security" class="btn btn-secondary m-4">Back</a>
+                    <a href="/security/index" class="btn btn-secondary m-4">Back</a>
                 </div>
 
             </div>

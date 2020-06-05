@@ -20,11 +20,6 @@ class Guard extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function guarding()
-    {
-        return $this->belongsToMany(Shift::class)->withPivot(['shiftDate']);
-    }
-
     public function activeShifts()
     {
         return $this->belongsToMany(ActiveShift::class);

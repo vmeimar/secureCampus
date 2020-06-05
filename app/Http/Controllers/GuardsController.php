@@ -5,9 +5,6 @@ namespace App\Http\Controllers;
 use App\ActiveShift;
 use App\Company;
 use App\Guard;
-use App\Shift;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 class GuardsController extends Controller
 {
@@ -16,36 +13,24 @@ class GuardsController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Company $company)
+    {
+        $guards = Guard::where('company_id', $company->id)->get();
+        return view('guard.index', compact('company', 'guards'));
+    }
+
     public function show(Guard $guard)
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         return view('guard.show', compact('guard'));
     }
 
     public function create(Company $company)
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         return view('guard.create', compact('company'));
     }
 
     public function store()
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
         $data = \request()->validate([
             'name' => 'required',
             'surname' => 'required',
@@ -56,12 +41,12 @@ class GuardsController extends Controller
         $company_id = Company::where('name', $data['company'])->value('id');
 
 
-        if ($guard->create([
+        if ( $guard->create([
             'name' => $data['name'],
             'surname' => $data['surname'],
             'company_id' => $company_id,
 
-        ]))
+        ]) )
         {
             \request()->session()->flash('success', 'New Guard created successfully');
         }
@@ -70,19 +55,36 @@ class GuardsController extends Controller
             \request()->session()->flash('error', 'Error while creating new Guard');
         }
 
-        return redirect()->route('company.edit', ['company' => $company_id]);
+        return redirect()->route('guard.index', $company_id);
+    }
+
+    public function edit(Guard $guard)
+    {
+        return view('guard.edit', compact('guard'));
+    }
+
+    public function update(Guard $guard)
+    {
+        $data = request()->validate([
+            'name'  =>  'required',
+            'surname'  =>  'required',
+            'company'  =>  'required',
+        ]);
+
+        $company_id = Company::where('name', $data['company'])->value('id');
+
+        $guard->update([
+            'name'  =>  $data['name'],
+            'surname'  =>  $data['surname'],
+            'company_id'  =>  $company_id,
+        ])  ? request()->session()->flash('success', 'Updated successfully')
+            : request()->session()->flash('error', 'Error while updating');
+
+        return redirect()->route('guard.index', $company_id);
     }
 
     public function destroy(Guard $guard)
     {
-        if (Gate::denies('manage-security'))
-        {
-            \request()->session()->flash('warning', 'unauthorized action');
-            return redirect()->route('profile', ['user' => Auth::id()]);
-        }
-
-//        $guard->activeShifts()->detach();
-
         if ($guard->delete())
         {
             \request()->session()->flash('success', 'Guard deleted successfully');
@@ -92,60 +94,8 @@ class GuardsController extends Controller
             \request()->session()->flash('error', 'Error while deleting guard');
         }
 
-        return redirect()->route('company.index');
+        return redirect()->route('guard.index', $guard->company()->value('id'));
     }
-
-//    private function calculateFactor(Shift $shift, $date)
-//    {
-//        $start = strtotime($shift->shift_from);
-//
-//        $end = ( $shift->shift_until < $shift->shift_from )
-//            ? ( strtotime($shift->shift_until) + 3600 * 24 )
-//            : strtotime($shift->shift_until);
-//
-//        $duration = ($end - $start) / 3600; // shift's duration in hours
-//        $timestamp = strtotime($date);
-//
-//        $morning_start = strtotime("06:00");
-//        $morning_end = strtotime("14:00");
-//        $afternoon_start = strtotime("14:00");
-//        $afternoon_end = strtotime("22:00");
-//        $night_start = strtotime("22:00");
-//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
-//
-//        switch ( date('l', $timestamp) )
-//        {
-//            case 'Saturday':
-//                $morningFactor = 1;
-//                $eveningFactor = 1.25;
-//                $nightFactor = 1.75;
-//                break;
-//
-//            case 'Sunday':
-//                $morningFactor = 1.25;
-//                $eveningFactor = 1.25;
-//                $nightFactor = 2;
-//                break;
-//
-//            default:
-//                $morningFactor = 1;
-//                $eveningFactor = 1;
-//                $nightFactor = 1.75;
-//                break;
-//        }
-//
-//        $data = [
-//            'start'     =>  $shift->shift_from,
-//            'end'       =>  $shift->shift_until,
-//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
-//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
-//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
-//            'duration'  =>  $duration,
-//            'start_day' =>  $date,
-//        ];
-//
-//        return $data;
-//    }
 
     private function calculateFactor(ActiveShift $activeShift)
     {
