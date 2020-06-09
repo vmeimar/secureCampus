@@ -83,18 +83,18 @@ class ActiveShiftsController extends Controller
         {
             $activeShift->confirmed = 0;
             $activeShift->save();
-            \request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
             return redirect( route('active-shift.index') );
         }
 
         $activeShift->confirmed = 1;
         $activeShift->save();
 
-        \request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+        request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
         return redirect( route('active-shift.index') );
     }
 
-    private function fetchData ($numberOfGuards)
+    private function fetchData($numberOfGuards)
     {
         switch ($numberOfGuards)
         {
@@ -143,7 +143,7 @@ class ActiveShiftsController extends Controller
         return $data;
     }
 
-    private function checkShiftOverlap ($assignedGuardIds, $data, $newShiftFrom)
+    private function checkShiftOverlap($assignedGuardIds, $data, $newShiftFrom)
     {
         $overLap = 0;
 
@@ -151,11 +151,11 @@ class ActiveShiftsController extends Controller
         {
             $guard = Guard::findOrFail($id);
 
-            foreach ($guard->activeShifts()->get() as $existingShift)
+            foreach ( $guard->activeShifts()->get() as $existingShift )
             {
-                if (date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($data['active-shift-date'])))
+                if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($data['active-shift-date'])) )
                 {
-                    if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom))
+                    if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom) )
                     {
                         $overLap = 1;
                     }
