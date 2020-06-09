@@ -48,6 +48,8 @@ Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('ca
 Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
 Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-shifts')->name('guard.show');
 Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
+Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
+Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
 Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');

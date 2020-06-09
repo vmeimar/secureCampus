@@ -67,6 +67,14 @@
                         <div class="row">
                             <a href="/security/index" class="btn btn-secondary m-4">Back</a>
                         </div>
+                        <form action="{{ route('guard.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <input type="file" name="import_file" class="mt-4 ml-4"/>
+                                <br />
+                                <input type="submit" value="Import Excel" class="btn btn-success mt-4 ml-2"/>
+                            </div>
+                        </form>
                     </div>
                 @endcan
             </div>

@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\ActiveShift;
 use App\Company;
+use App\Exports\GuardsExport;
 use App\Guard;
+use App\Imports\GuardsImport;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuardsController extends Controller
 {
@@ -235,5 +239,58 @@ class GuardsController extends Controller
 
         fclose($output);
         return ob_get_clean();
+    }
+
+    public function export(Guard $guard)
+    {
+        $requestData = \request()->validate([
+            'month' =>  'required'
+        ]);
+
+        if ($requestData['month'] == '')
+        {
+            \request()->session()->flash('warning', 'select month');
+            return redirect()->back();
+        }
+
+        $guardShifts = $guard->activeShifts()->get();
+        $totalHours = 0;
+        $totalCredits = 0;
+
+        foreach ($guardShifts as $activeShift)
+        {
+            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
+            {
+                continue;
+            }
+
+            $data = $this->calculateFactor($activeShift);
+
+            $totalHours += $data['duration'];
+            $totalCredits += ($data['morning'] + $data['evening'] + $data['night']);
+        }
+
+        $exportData[] = [
+            'Name'  =>  $guard->name,
+            'Surname' => $guard->surname,
+            'Hours' => $totalHours,
+            'Credits' => $totalCredits,
+        ];
+
+        return Excel::download(new GuardsExport(collect($exportData)), 'guard.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        if (Excel::import(new GuardsImport(), $request->file('import_file')))
+        {
+            $request->session()->flash('success', 'Import successful');
+        }
+        else
+        {
+            $request->session()->flash('error', 'Import error');
+        }
+
+        return redirect()->back();
     }
 }

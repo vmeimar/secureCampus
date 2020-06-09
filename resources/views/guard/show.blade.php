@@ -9,7 +9,7 @@
                         <strong>{{ $guard->name }} {{ $guard->surname }}</strong>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="/guard/{{$guard->id}}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.export', $guard->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label for="month" class="col-md-4 col-form-label text-md-right">Month</label>
@@ -104,10 +104,11 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-success">Export to CSV</button>
+                                    <button type="submit" class="btn btn-success">Export to Excel</button>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
                 <div class="row">
