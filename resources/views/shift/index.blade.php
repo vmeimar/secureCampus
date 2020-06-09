@@ -7,19 +7,19 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <strong>Shifts</strong>
+                        <strong>Σημεία Φύλαξης / Ορισμένες Βάρδιες</strong>
                     </div>
 
                     <div class="card-body">
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Alias</th>
-                                <th scope="col">Number of Guards</th>
-                                <th scope="col">From</th>
-                                <th scope="col">Until</th>
+                                <th scope="col">Όνομα</th>
+                                <th scope="col">Αριθμός Φυλάκων</th>
+                                <th scope="col">Έναρξη</th>
+                                <th scope="col">Λήξη</th>
                                 @can('edit-shifts')
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Ενέργεις</th>
                                 @endcan
                             </tr>
                             </thead>
@@ -36,7 +36,7 @@
                                         @can('edit-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1">Assign Guards</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1">Ανάθεση σε Φύλακες</button>
                                             </a>
                                         </div>
                                         @endcan
@@ -45,7 +45,7 @@
 
                                             @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Edit</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Επεξεργασία</button>
                                             </a>
                                             @endcan
 
@@ -54,9 +54,9 @@
                                                 @csrf
                                                 {{ method_field('DELETE') }}
                                                 <button type="submit"
-                                                        onclick="return confirm('Are you sure you want to Delete?')"
+                                                        onclick="return confirm('Επιβεβαίωση Διαγραφής')"
                                                         class="btn btn-danger btn-sm">
-                                                    Delete</button>
+                                                    Διαγραφή</button>
                                             </form>
                                             @endcan
 
@@ -72,14 +72,14 @@
                 <div class="d-flex">
                     @can('create-shifts')
                     <div class="row">
-                        <a href="/shift/create" class="btn btn-primary m-4">Create New Shift</a>
+                        <a href="/shift/create" class="btn btn-primary m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
                     </div>
                     @endcan
                     <div class="row">
-                        <a href="{{ route('active-shift.index') }}" class="btn btn-warning m-4">Show active shifts</a>
+                        <a href="{{ route('active-shift.index') }}" class="btn btn-warning m-4">Προβολή Ανατεθειμένων Βαρδιών</a>
                     </div>
                     <div class="row">
-                        <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                        <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Επιστροφή στο Προφίλ</a>
                     </div>
                 </div>
             </div>

@@ -5,16 +5,16 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Create New Shift</strong></div>
+                    <div class="card-header"><strong>Δημιουργία Βάρδιας σε Σημείο Φύλαξης</strong></div>
 
                     <div class="card-body">
                         <form method="post" action="/sh" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
+                                <label for="location" class="col-md-4 col-form-label text-md-right">Σημείο Φύλαξης</label>
                                 <div class="col-md-6">
                                     <select name="location" id="location" class="form-control input-lg dynamic">
-                                        <option selected disabled>Select Location</option>
+                                        <option selected disabled>Επιλέξτε Σημείο Φύλαξης</option>
                                             @foreach($departments as $department)
                                                 <optgroup label="{{ $department->name }}">
                                                     @foreach($department->locations as $location)
@@ -26,29 +26,29 @@
                                             @endforeach
                                     </select>
                                     @error('location')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Επιλέξτε Σημείο Φύλαξης</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Number of Guards</label>
+                                <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Αριθμός Φυλάκων</label>
                                 <div class="col-md-6">
                                     <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic">
-                                        <option selected disabled>Number of Guards</option>
+                                        <option selected disabled>Επιλέξτε Αριθμό Φυλάκων</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
                                     </select>
                                     @error('number-of-guards')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Επιλέξτε Αριθμό Φυλάκων</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="time" class="col-md-4 col-form-label text-md-right">Time</label>
+                                <label for="time" class="col-md-4 col-form-label text-md-right">Ώρες Φύλαξης (Έναρξη - Λήξη)</label>
                                 <div class="col-md-6 d-flex">
                                     <div class="col-md-6">
                                         <input id="shift-from"
@@ -57,9 +57,10 @@
                                                name="shift-from"
                                                value="{{ old('shift-from') }}"
                                                autocomplete="shift-from"
+                                               required
                                                autofocus>
                                         @error('shift-from')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Επιλέξτε Ώρα Έναρξης</strong>
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
@@ -69,22 +70,23 @@
                                                name="shift-until"
                                                value="{{ old('shift-until') }}"
                                                autocomplete="shift-until"
+                                               required
                                                autofocus>
                                         @error('shift-until')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Επιλέξτε Ώρα Λήξης</strong>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Shift's Alias</label>
+                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Όνομα Βάρδιας</label>
 
                                 <div class="col-md-6">
-                                    <input id="shift-name" type="text" class="form-control @error('shift-name') is-invalid @enderror" name="shift-name" value="{{ old('shift-name') }}" required autocomplete="shift-name" autofocus>
+                                    <input id="shift-name" type="text" class="form-control" name="shift-name" value="{{ old('shift-name') }}" autocomplete="shift-name" autofocus>
 
                                     @error('shift-name')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Εισάγετε Όνομα Βάρδιας (π.χ. Σημείο Φύλαξης Χ, πρωινή βάρδια)</strong>
                                     @enderror
                                 </div>
                             </div>
@@ -92,7 +94,7 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('Create') }}
+                                        Δημιουργία
                                     </button>
                                 </div>
                             </div>
@@ -100,7 +102,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
+                    <a href="/shift/index" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

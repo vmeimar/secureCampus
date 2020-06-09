@@ -79,11 +79,11 @@ class ShiftsController extends Controller
             'shift_until'    =>  $data['shift-until'],
         ]) )
         {
-            \request()->session()->flash('success', 'Shift created successfully');
+            \request()->session()->flash('success', 'Επιτυχής δημιουργία βάρδιας σε σημείο φύλαξης');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while creating shift');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
         }
 
         return redirect('/shift/index');
@@ -112,11 +112,11 @@ class ShiftsController extends Controller
             'shift_until'    =>  $data['shift-until'],
         ]))
         {
-            \request()->session()->flash('success', 'Shift updated successfully');
+            \request()->session()->flash('success', 'Επιτυχής αποθήκευση');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while updating shift');
+            \request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
         }
 
         return redirect('/shift/index');
@@ -126,11 +126,11 @@ class ShiftsController extends Controller
     {
         if ( $shift->delete() )
         {
-            \request()->session()->flash('success', 'Shift deleted successfully');
+            \request()->session()->flash('success', 'Επιτυχής διαγραφή');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while deleting shift');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
         }
 
         return redirect('/shift/index');

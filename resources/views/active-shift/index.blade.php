@@ -6,21 +6,21 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Active Shifts</strong>
+                        <strong>Ενεργές Βάρδιες</strong>
                     </div>
                     <div class="card-body">
                         <table class="table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Alias</th>
-                                <th scope="col">Guards</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">From</th>
-                                <th scope="col">To</th>
-                                <th scope="col">Confirmed</th>
+                                <th scope="col">Βάρδια</th>
+                                <th scope="col">Φύλακες</th>
+                                <th scope="col">Ημερομηνία</th>
+                                <th scope="col">Από</th>
+                                <th scope="col">Μέχρι</th>
+                                <th scope="col">Επιβεβαιωμένη</th>
                                 @can('confirm-shifts')
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Ενέργειες</th>
                                 @endcan
                             </tr>
                             </thead>
@@ -37,7 +37,7 @@
                                     <td>{{ date('d M y', strtotime($activeShift['date'])) }}</td>
                                     <td>{{ $activeShift['from'] }}</td>
                                     <td>{{ $activeShift['until'] }}</td>
-                                    <td><strong>{{ $activeShift['confirmed'] }}</strong></td>
+                                    <td><strong>{{ $activeShift['confirmed'] ? 'Ναι' : 'Όχι'}}</strong></td>
                                     <td>
                                         @can('confirm-shifts')
                                             <div class="row mb-1">
@@ -45,7 +45,7 @@
                                                     @csrf
                                                     @method('patch')
                                                     <button type="submit" class="btn btn-primary btn-sm">
-                                                        {{ $activeShift->confirmed == 0 ? 'Confirm' : 'Unconfirm'}}
+                                                        {{ $activeShift->confirmed == 0 ? 'Επιβαβαίωση' : 'Αλλαγή κατάστασης'}}
                                                     </button>
                                                 </form>
                                             </div>
@@ -56,7 +56,7 @@
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm">Διαγραφή</button>
                                                 </form>
                                             </div>
                                         @endcan
@@ -74,7 +74,7 @@
                 </div>
                 <div class="d-flex">
                     <div class="row">
-                        <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
+                        <a href="/shift/index" class="btn btn-secondary m-4">Πίσω</a>
                     </div>
                 </div>
             </div>

@@ -57,11 +57,11 @@ class UsersController extends Controller
 
         if ($user->save())
         {
-            $request->session()->flash('success', $user->name.' has been updated');
+            $request->session()->flash('success', $user->name.' αποθηκεύτηκε επιτυχώς');
         }
         else
         {
-            $request->session()->flash('error', 'Error while updating user '.$user->name);
+            $request->session()->flash('error', 'Παρουσιάστηκε σφάλμα κατά την αποθήκευση του χρήστη '.$user->name);
         }
 
         return redirect()->route('admin.users.index');

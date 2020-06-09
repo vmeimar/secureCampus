@@ -5,14 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Edit Shift</strong></div>
+                    <div class="card-header"><strong>Επεξεργασία</strong></div>
 
                     <div class="card-body">
                         <form method="post" action="/shift/{{ $shift->id }}" enctype="multipart/form-data">
                             @method('PATCH')
                             @csrf
                             <div class="form-group row">
-                                <label for="location" class="col-md-4 col-form-label text-md-right">Location</label>
+                                <label for="location" class="col-md-4 col-form-label text-md-right">Σημείο Φύλαξης</label>
                                 <div class="col-md-6">
                                     <select name="location" id="location" class="form-control input-lg dynamic">
                                         <option selected>{{ $shift->location->name }}</option>
@@ -27,13 +27,13 @@
                                         @endforeach
                                     </select>
                                     @error('location')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Επιλέξτε Σημείο Φύλαξης</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Number of Guards</label>
+                                <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Αριθμός Φυλάκων</label>
                                 <div class="col-md-6">
                                     <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic">
                                         <option value="{{ $shift->number_of_guards }}" selected>
@@ -45,13 +45,13 @@
                                         <option value="4">4</option>
                                     </select>
                                     @error('number-of-guards')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Επιλέξτε Αριθμό Φυλάκων</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="time" class="col-md-4 col-form-label text-md-right">Time</label>
+                                <label for="time" class="col-md-4 col-form-label text-md-right">Ώρες Φύλαξης (Έναρξη - Λήξη)</label>
                                 <div class="col-md-6 d-flex">
                                     <div class="col-md-6">
                                         <input id="shift-from"
@@ -62,7 +62,7 @@
                                                autocomplete="shift-from"
                                                autofocus>
                                         @error('shift-from')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Επιλέξτε Έναρξη</strong>
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
@@ -74,14 +74,14 @@
                                                autocomplete="shift-until"
                                                autofocus>
                                         @error('shift-until')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Επιλέξτε Λήξη</strong>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Shift's Alias</label>
+                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Όνομα Βάρδιας</label>
 
                                 <div class="col-md-6">
                                     <input id="shift-name"
@@ -93,21 +93,21 @@
                                         autofocus>
 
                                     @error('shift-name')
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Εισάγετε Όνομα Βάρδιας (π.χ. Σημείο Φύλαξης Χ, πρωινή βάρδια)</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Update</button>
+                                    <button type="submit" class="btn btn-primary">Αποθήκευση</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/shift/index" class="btn btn-secondary m-4">Back</a>
+                    <a href="/shift/index" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

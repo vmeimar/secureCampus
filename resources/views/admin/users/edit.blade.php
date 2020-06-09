@@ -5,20 +5,20 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Edit User {{ $user->name }}</strong></div>
+                    <div class="card-header"><strong>Επεξεργασία Χρήστη {{ $user->name }}</strong></div>
 
                     <div class="card-body">
                        <form action="{{ route('admin.users.update', $user) }}" method="POST">
 
                            <div class="form-group row">
-                               <label for="name" class="col-md-2 col-form-label text-md-right">Name</label>
+                               <label for="name" class="col-md-2 col-form-label text-md-right">Όνομα</label>
 
                                <div class="col-md-6">
                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required>
 
                                    @error('name')
                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Εισάγετε όνομα</strong>
                                     </span>
                                    @enderror
                                </div>
@@ -32,14 +32,14 @@
 
                                    @error('email')
                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Εισάγετε email</strong>
                                     </span>
                                    @enderror
                                </div>
                            </div>
 
                            <div class="form-group row">
-                               <label for="department" class="col-md-2 col-form-label text-md-right">Department</label>
+                               <label for="department" class="col-md-2 col-form-label text-md-right">Τμήμα</label>
                                <div class="col-md-6">
                                    <select name="department" id="department" class="form-control input-lg dynamic">
                                        <option
@@ -58,7 +58,7 @@
                                        @endforeach
                                    </select>
                                    @error('department')
-                                   <strong>{{ $message }}</strong>
+                                   <strong>Εισάγετε τμήμα</strong>
                                    @enderror
                                </div>
                            </div>
@@ -66,7 +66,7 @@
                            @csrf
                            {{ method_field('PUT') }}
                            <div class="form-group row">
-                               <label for="roles" class="col-md-2 col-form-label text-md-right">Roles</label>
+                               <label for="roles" class="col-md-2 col-form-label text-md-right">Ρόλος</label>
                                <div class="col-md-6">
                                    @foreach($roles as $role)
                                        <div class="form-check">
@@ -78,7 +78,7 @@
                                    @endforeach
                                </div>
                            </div>
-                           <button class="btn btn-primary">Update</button>
+                           <button class="btn btn-primary">Αποθήκευση</button>
                        </form>
                     </div>
                 </div>

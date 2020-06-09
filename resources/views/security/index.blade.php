@@ -5,18 +5,18 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header"><strong>Companies</strong></div>
+                    <div class="card-header"><strong>Εταιρίες Φύλαξης</strong></div>
 
                     <div class="card-body">
                         <table class="table">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
+                                <th scope="col">Όνομα</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Phone</th>
+                                <th scope="col">Τηλέφωνο</th>
                                 @can('manage-security')
-                                    <th scope="col">Actions</th>
+                                    <th scope="col">Ενέργειες</th>
                                 @endcan
                             </tr>
                             </thead>
@@ -32,19 +32,19 @@
                                         @can('manage-security')
                                             <div class="row d-flex">
                                                 <a href="/guard/{{ $company->id }}/index">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">View Guards</button>
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Προβολή Φυλάκων</button>
                                                 </a>
                                                 <a href="/security/{{ $company->id }}/edit" class="ml-1">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Edit</button>
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Επεξεργασία</button>
                                                 </a>
                                                 @can('admin')
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
                                                     @csrf
                                                     {{ method_field('DELETE') }}
                                                     <button type="submit"
-                                                            onclick="return confirm('Are you sure you want to Delete?')"
+                                                            onclick="return confirm('Επιβεβαίωση Διαγραφής')"
                                                             class="btn btn-danger btn-sm">
-                                                        Delete</button>
+                                                        Διαγραφή</button>
                                                 </form>
                                                 @endcan
                                             </div>
@@ -61,10 +61,10 @@
                 @can('manage-security')
                     <div class="d-flex">
                         <div class="row">
-                            <a href="/security/create" class="btn btn-primary m-4">Add New Security Company</a>
+                            <a href="/security/create" class="btn btn-primary m-4">Δημιουργία Νέας Εταιρίας</a>
                         </div>
                         <div class="row">
-                            <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Back to Profile</a>
+                            <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Επιστροφή στο Προφίλ</a>
                         </div>
                     </div>
 

@@ -52,11 +52,11 @@ class GuardsController extends Controller
 
         ]) )
         {
-            \request()->session()->flash('success', 'New Guard created successfully');
+            \request()->session()->flash('success', 'Επιτυχής δημιουργία');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while creating new Guard');
+            \request()->session()->flash('error', 'Αποτυχία δημιουργίας');
         }
 
         return redirect()->route('guard.index', $company_id);
@@ -81,8 +81,8 @@ class GuardsController extends Controller
             'name'  =>  $data['name'],
             'surname'  =>  $data['surname'],
             'company_id'  =>  $company_id,
-        ])  ? request()->session()->flash('success', 'Updated successfully')
-            : request()->session()->flash('error', 'Error while updating');
+        ])  ? request()->session()->flash('success', 'Επιτυχής αποθήκευση')
+            : request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
 
         return redirect()->route('guard.index', $company_id);
     }
@@ -91,11 +91,11 @@ class GuardsController extends Controller
     {
         if ($guard->delete())
         {
-            \request()->session()->flash('success', 'Guard deleted successfully');
+            \request()->session()->flash('success', 'Επιτυχής διαγραφή φύλακα');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while deleting guard');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
         }
 
         return redirect()->route('guard.index', $guard->company()->value('id'));
@@ -186,6 +186,7 @@ class GuardsController extends Controller
         return $e1 - $s1;
     }
 
+    //  CSV EXPORT - WORKS
 //    public function exportCsv (Guard $guard)
 //    {
 //        $requestData = \request()->validate([
@@ -249,7 +250,7 @@ class GuardsController extends Controller
 
         if ($requestData['month'] == '')
         {
-            \request()->session()->flash('warning', 'select month');
+            \request()->session()->flash('warning', 'Επιλέξτε Μήνα');
             return redirect()->back();
         }
 
@@ -284,11 +285,11 @@ class GuardsController extends Controller
     {
         if (Excel::import(new GuardsImport(), $request->file('import_file')))
         {
-            $request->session()->flash('success', 'Import successful');
+            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
         }
         else
         {
-            $request->session()->flash('error', 'Import error');
+            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
         }
 
         return redirect()->back();

@@ -5,14 +5,14 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Add New Guard</strong></div>
+                    <div class="card-header"><strong>Δημιουργία Φύλακα</strong></div>
 
                     <div class="card-body">
                         <form method="post" action="/g" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">Guard's Name</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">Όνομα</label>
                                 <div class="col-md-6">
 
                                     <input id="name"
@@ -23,13 +23,13 @@
                                            autocomplete="name" autofocus>
 
                                     @error('name')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Συμπληρώστε όνομα</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="surname" class="col-md-4 col-form-label text-md-right">Guard's Surname</label>
+                                <label for="surname" class="col-md-4 col-form-label text-md-right">Επώνυμο</label>
                                 <div class="col-md-6">
 
                                     <input id="surname"
@@ -40,13 +40,13 @@
                                            autocomplete="surname" autofocus>
 
                                     @error('surname')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Συμπληρώστε επώνυμο</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="company" class="col-md-4 col-form-label text-md-right">Company</label>
+                                <label for="company" class="col-md-4 col-form-label text-md-right">Εταιρία</label>
                                 <div class="col-md-6">
 
                                     <input id="company"
@@ -58,21 +58,21 @@
                                            autocomplete="company" autofocus>
 
                                     @error('company')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Διαλέξτε εταιρία</strong>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Δημιουργία</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/security/index" class="btn btn-secondary m-4">Back</a>
+                    <a href="/security/index" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

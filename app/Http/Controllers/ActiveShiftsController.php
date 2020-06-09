@@ -42,7 +42,7 @@ class ActiveShiftsController extends Controller
 
         if ($overLap)
         {
-            $request->session()->flash('warning', 'There is a shift conflict');
+            $request->session()->flash('warning', 'Δεν ανατέθηκε. Υπάρχει σύγκρουση ωραρίου.');
             return redirect(route('active-shift.index'));
         }
 
@@ -62,7 +62,7 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        $request->session()->flash('success', 'Shift assigned successfully');
+        $request->session()->flash('success', 'Επιτυχής ανάθεση');
         return redirect(route('active-shift.index'));
     }
 
@@ -71,7 +71,7 @@ class ActiveShiftsController extends Controller
         $activeShift->guards()->detach();
         $activeShift->delete();
 
-        \request()->session()->flash('success', 'Shift deleted successfully');
+        \request()->session()->flash('success', 'Επιτυχής διαγραφή');
         return redirect(route('active-shift.index'));
     }
 
@@ -83,14 +83,14 @@ class ActiveShiftsController extends Controller
         {
             $activeShift->confirmed = 0;
             $activeShift->save();
-            \request()->session()->flash('success', 'Shift is now not confirmed');
+            \request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
             return redirect( route('active-shift.index') );
         }
 
         $activeShift->confirmed = 1;
         $activeShift->save();
 
-        \request()->session()->flash('success', 'Shift confirmed successfully');
+        \request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
         return redirect( route('active-shift.index') );
     }
 

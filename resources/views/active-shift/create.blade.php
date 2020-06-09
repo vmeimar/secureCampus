@@ -16,7 +16,7 @@
                                     <label for="guard{{$i}}" class="col-md-4 col-form-label text-md-right">Guard {{$i}}</label>
                                     <div class="col-md-6">
                                         <select required name="guard{{$i}}" id="guard{{$i}}" class="form-control input-lg dynamic">
-                                            <option selected disabled>Select Guard</option>
+                                            <option selected disabled>Επιλέξτε Φύλακα</option>
                                             @foreach($guards as $guard)
                                                 <option value="{{ $guard->id }}">
                                                     {{ $guard->surname }} {{ $guard->name }}
@@ -27,7 +27,7 @@
                                 </div>
                             @endfor
                             <div class="form-group row">
-                                <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Shift's Date</label>
+                                <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>
                                 <div class="col-md-6">
                                     <input id="active-shift-date"
                                            type="date"
@@ -37,7 +37,7 @@
                                            autocomplete="active-shift-date"
                                            autofocus>
                                     @error('active-shift-date')
-                                    <strong>Shift's Date is required</strong>
+                                    <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
                                     @enderror
                                 </div>
                             </div>
@@ -46,14 +46,14 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Assign</button>
+                                    <button type="submit" class="btn btn-primary">Ανάθεση</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ route('shift.index') }}" class="btn btn-secondary m-4">Back</a>
+                    <a href="{{ route('shift.index') }}" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

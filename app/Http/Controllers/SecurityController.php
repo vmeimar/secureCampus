@@ -42,11 +42,11 @@ class SecurityController extends Controller
 
         if ($company->create(['name'  =>  $data['name']]))
         {
-            \request()->session()->flash('success', 'New Company created successfully');
+            \request()->session()->flash('success', 'Επιτυχής δημιουργία');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while creating new Company');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
         }
 
         return redirect()->route('company.index');
@@ -62,11 +62,11 @@ class SecurityController extends Controller
 
         if ($company->save())
         {
-            \request()->session()->flash('success', 'Updated successfully');
+            \request()->session()->flash('success', 'Επιτυχής αποθήκευση');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while updating');
+            \request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
         }
 
         return redirect()->route('company.index');
@@ -81,11 +81,11 @@ class SecurityController extends Controller
 
         if ($company->delete())
         {
-            \request()->session()->flash('success', 'Successfully deleted security company');
+            \request()->session()->flash('success', 'Επιτυχής διαγραφή');
         }
         else
         {
-            \request()->session()->flash('error', 'Error while deleting security company');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
         }
 
         return redirect()->route('company.index');
