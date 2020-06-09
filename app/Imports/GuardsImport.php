@@ -16,9 +16,9 @@ class GuardsImport implements ToModel
     public function model(array $row)
     {
         return new Guard([
-            'name'  =>  $row[1],
-            'surname'   =>  $row[2],
-            'company_id'    =>  Company::where('name', $row[3])->value('id'),
+            'name'  =>  $row[0],
+            'surname'   =>  $row[1],
+            'company_id'    =>  Company::where('name', $row[2])->value('id'),
         ]);
     }
 }

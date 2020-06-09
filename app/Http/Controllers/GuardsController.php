@@ -186,60 +186,60 @@ class GuardsController extends Controller
         return $e1 - $s1;
     }
 
-    public function exportCsv (Guard $guard)
-    {
-        $requestData = \request()->validate([
-            'month' =>  'required'
-        ]);
-
-        if ($requestData['month'] == '')
-        {
-            \request()->session()->flash('warning', 'select month');
-            return redirect()->back();
-        }
-
-        $guardShifts = $guard->activeShifts()->get();
-        $totalHours = 0;
-        $totalCredits = 0;
-
-        foreach ($guardShifts as $activeShift)
-        {
-            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
-            {
-                continue;
-            }
-
-            $data = $this->calculateFactor($activeShift);
-
-            $totalHours += $data['duration'];
-            $totalCredits += ($data['morning'] + $data['evening'] + $data['night']);
-        }
-
-        $exportData = [
-            'Name'  =>  $guard->name,
-            'Surname' => $guard->surname,
-            'Duration' => $totalHours,
-            'Total Credits' => $totalCredits,
-        ];
-
-        $headers = [
-            'Name', 'Surname', 'Duration', 'Credits'
-        ];
-
-        // output headers so that the file is downloaded rather than displayed
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename=data.csv');
-
-        // create a file pointer connected to the output stream
-        $output = fopen('php://output', 'w');
-
-        // output the column headings
-        fputcsv($output, $headers, ';');
-        fputcsv($output, $exportData, ';');
-
-        fclose($output);
-        return ob_get_clean();
-    }
+//    public function exportCsv (Guard $guard)
+//    {
+//        $requestData = \request()->validate([
+//            'month' =>  'required'
+//        ]);
+//
+//        if ($requestData['month'] == '')
+//        {
+//            \request()->session()->flash('warning', 'select month');
+//            return redirect()->back();
+//        }
+//
+//        $guardShifts = $guard->activeShifts()->get();
+//        $totalHours = 0;
+//        $totalCredits = 0;
+//
+//        foreach ($guardShifts as $activeShift)
+//        {
+//            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
+//            {
+//                continue;
+//            }
+//
+//            $data = $this->calculateFactor($activeShift);
+//
+//            $totalHours += $data['duration'];
+//            $totalCredits += ($data['morning'] + $data['evening'] + $data['night']);
+//        }
+//
+//        $exportData = [
+//            'Name'  =>  $guard->name,
+//            'Surname' => $guard->surname,
+//            'Duration' => $totalHours,
+//            'Total Credits' => $totalCredits,
+//        ];
+//
+//        $headers = [
+//            'Name', 'Surname', 'Duration', 'Credits'
+//        ];
+//
+//        // output headers so that the file is downloaded rather than displayed
+//        header('Content-Type: text/csv; charset=utf-8');
+//        header('Content-Disposition: attachment; filename=data.csv');
+//
+//        // create a file pointer connected to the output stream
+//        $output = fopen('php://output', 'w');
+//
+//        // output the column headings
+//        fputcsv($output, $headers, ';');
+//        fputcsv($output, $exportData, ';');
+//
+//        fclose($output);
+//        return ob_get_clean();
+//    }
 
     public function export(Guard $guard)
     {
