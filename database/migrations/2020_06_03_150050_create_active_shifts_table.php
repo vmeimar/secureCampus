@@ -20,6 +20,7 @@ class CreateActiveShiftsTable extends Migration
             $table->string('from');
             $table->string('until');
             $table->tinyInteger('confirmed');
+            $table->text('comments')->nullable();
             $table->timestamps();
 
             $table->softDeletes();

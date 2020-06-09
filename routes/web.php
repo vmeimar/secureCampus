@@ -32,8 +32,10 @@ Route::delete('/shift/{shift}', 'ShiftsController@destroy')->middleware('can:adm
 
 Route::get('/active-shift/index', 'ActiveShiftsController@index')->middleware('can:view-shifts')->name('active-shift.index');
 Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:edit-shifts')->name('active-shift.create');
+Route::get('/active-shift/edit/{activeShift}', 'ActiveShiftsController@edit')->middleware('can:edit-shifts')->name('active-shift.edit');
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:edit-shifts');
 Route::patch('/active-shift/{shift}/confirm', 'ActiveShiftsController@confirmActiveShift')->middleware('can:confirm-shifts');
+Route::patch('/as/{activeShift}', 'ActiveShiftsController@update')->middleware('can:confirm-shifts')->name('active-shift.update');
 Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->middleware('can:admin')->name('active-shift.destroy');
 
 Route::get('/security/index', 'SecurityController@index')->middleware('can:manage-security')->name('company.index');

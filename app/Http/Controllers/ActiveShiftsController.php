@@ -27,6 +27,45 @@ class ActiveShiftsController extends Controller
         return view('active-shift.create', compact('shift', 'guards'));
     }
 
+    public function edit(ActiveShift $activeShift)
+    {
+//        dd($activeShift->guards()->get()->toArray()[0]['name']);
+        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
+        return view('active-shift.edit', compact('activeShift', 'guards'));
+    }
+
+    public function update(ActiveShift $activeShift)
+    {
+//        dd(request()->get('active-shift-comments'));
+
+//        dd(request()->all());
+        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
+        {
+            $assignedGuardIds[] = $item;
+        }
+
+        $data = $this->fetchData( count($assignedGuardIds) );
+
+        dd($data);
+
+        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $activeShift->from);
+
+        if ($overLap)
+        {
+            request()->session()->flash('warning', 'Δεν αποθηκεύτηκε. Υπάρχει σύγκρουση ωραρίου.');
+            return redirect(route('active-shift.index'));
+        }
+
+        dd($data);
+
+//        $activeShift->update([
+//            'name'  =>  $activeShift->name,
+//            'date'  =>  $data['active-shift-date'],
+//            'from'  =>  $activeShift->shift_from,
+//            'until' =>  $staticShift->shift_until,
+//        ]);
+    }
+
     public function store(Request $request)
     {
         foreach ($request->except(['_token', 'active-shift-date', 'shift-id']) as $item)
@@ -75,7 +114,7 @@ class ActiveShiftsController extends Controller
         return redirect(route('active-shift.index'));
     }
 
-    public function confirmActiveShift ($id)
+    public function confirmActiveShift($id)
     {
         $activeShift = ActiveShift::findOrFail($id);
 
@@ -101,7 +140,7 @@ class ActiveShiftsController extends Controller
             case 1:
                 $data = \request()->validate([
                     'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
+                    'shift-id'  =>  'required',  //     HERE
                     'guard1'    =>  'required'
                 ]);
                 break;

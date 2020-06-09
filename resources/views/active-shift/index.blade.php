@@ -51,6 +51,10 @@
                                             </div>
                                         @endcan
 
+                                        <div class="row">
+                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm mb-1">Επεξεργασία</a>
+                                        </div>
+
                                         @can('admin')
                                             <div class="row">
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
