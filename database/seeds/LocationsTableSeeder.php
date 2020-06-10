@@ -14,47 +14,47 @@ class LocationsTableSeeder extends Seeder
     {
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 1 ΜΑΘ',
-            'department_id'    =>  1
+//            'department_id'    =>  1
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 2 ΜΑΘ',
-            'department_id'    =>  1
+//            'department_id'    =>  1
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 1 ΦΥΣΙΚΟ',
-            'department_id'    =>  2
+//            'department_id'    =>  2
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 2 ΦΥΣΙΚΟ',
-            'department_id'    =>  2
+//            'department_id'    =>  2
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 1 ΒΙΟΛΟΓΙΑ',
-            'department_id'    =>  3
+//            'department_id'    =>  3
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 2 ΒΙΟΛΟΦΙΑ',
-            'department_id'    =>  3
+//            'department_id'    =>  3
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΑΓΓΛΙΚΑ',
-            'department_id'    =>  4
+//            'department_id'    =>  4
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΙΣΠΑΝΙΚΑ',
-            'department_id'    =>  5
+//            'department_id'    =>  5
         ]);
 
         Location::create([
             'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΙΣΤΟΡΙΚΟ',
-            'department_id'    =>  6
+//            'department_id'    =>  6
         ]);
     }
 }

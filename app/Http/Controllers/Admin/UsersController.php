@@ -54,7 +54,7 @@ class UsersController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->department_id = $request->department;
+//        $user->department_id = $request->department;
 
         if ($user->save())
         {

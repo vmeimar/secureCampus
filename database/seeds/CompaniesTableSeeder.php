@@ -17,7 +17,7 @@ class CompaniesTableSeeder extends Seeder
         ]);
 
         Company::create([
-            'name'  =>  'Securitades'
+            'name'  =>  'Campus Security'
         ]);
     }
 }
