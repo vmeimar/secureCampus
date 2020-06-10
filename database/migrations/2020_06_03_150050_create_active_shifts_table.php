@@ -15,11 +15,13 @@ class CreateActiveShiftsTable extends Migration
     {
         Schema::create('active_shifts', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('shift_id');
             $table->string('name');
             $table->dateTime('date');
             $table->string('from');
             $table->string('until');
-            $table->tinyInteger('confirmed');
+            $table->tinyInteger('confirmed_steward');
+            $table->tinyInteger('confirmed_supervisor');
             $table->text('comments')->nullable();
             $table->timestamps();
 

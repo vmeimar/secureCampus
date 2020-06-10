@@ -6,6 +6,7 @@ use App\ActiveShift;
 use App\Guard;
 use App\Shift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -17,7 +18,29 @@ class ActiveShiftsController extends Controller
 
     public function index()
     {
-        $activeShifts = ActiveShift::latest()->paginate(10);
+        $user = Auth::user();
+
+        if ($user->hasRole('admin'))
+        {
+            $activeShifts = ActiveShift::latest()->paginate(10);
+        }
+        else
+        {
+            $allActiveShifts = ActiveShift::all();
+
+            foreach ($allActiveShifts as $item)
+            {
+                if ( in_array( $item->shift()->value('location_id'), $user->locations()->pluck('location_id')->toArray() ) )
+                {
+                    $activeShiftsIds[] = $item->id;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            $activeShifts = ActiveShift::whereIn('id', $activeShiftsIds)->latest()->paginate(10);
+        }
         return view('active-shift.index', compact('activeShifts'));
     }
 
@@ -29,24 +52,20 @@ class ActiveShiftsController extends Controller
 
     public function edit(ActiveShift $activeShift)
     {
-//        dd($activeShift->guards()->get()->toArray()[0]['name']);
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
         return view('active-shift.edit', compact('activeShift', 'guards'));
     }
 
     public function update(ActiveShift $activeShift)
     {
-//        dd(request()->get('active-shift-comments'));
-
-//        dd(request()->all());
         foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
 
-        $data = $this->fetchData( count($assignedGuardIds) );
+        $data = request()->all();
 
-        dd($data);
+        $data['active-shift-id'] = $activeShift->id;
 
         $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $activeShift->from);
 
@@ -56,14 +75,30 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        dd($data);
+        if (! $activeShift->update([
+            'name'  =>  $activeShift->name,
+            'date'  =>  $data['active-shift-date'],
+            'from'  =>  $activeShift->from,
+            'until' =>  $activeShift->until,
+            'comments'  =>  $data['active-shift-comments'],
+        ]))
+        {
+            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
+            return redirect(route('active-shift.index'));
+        }
 
-//        $activeShift->update([
-//            'name'  =>  $activeShift->name,
-//            'date'  =>  $data['active-shift-date'],
-//            'from'  =>  $activeShift->shift_from,
-//            'until' =>  $staticShift->shift_until,
-//        ]);
+        $guards = Guard::whereIn('id', $assignedGuardIds)->get();
+        $activeShift->guards()->detach();
+
+        try {
+            $activeShift->guards()->attach($guards);
+        } catch (Throwable $e) {
+            report($e);
+            return false;
+        }
+
+        request()->session()->flash('success', 'Επιτυχής ανάθεση');
+        return redirect(route('active-shift.index'));
     }
 
     public function store(Request $request)
@@ -86,6 +121,7 @@ class ActiveShiftsController extends Controller
         }
 
         $activeShift = ActiveShift::create([
+            'shift_id'  =>  $staticShift->id,
             'name'  =>  $staticShift->name,
             'date'  =>  $data['active-shift-date'],
             'from'  =>  $staticShift->shift_from,
@@ -114,19 +150,38 @@ class ActiveShiftsController extends Controller
         return redirect(route('active-shift.index'));
     }
 
-    public function confirmActiveShift($id)
+    public function confirmActiveShiftSupervisor($id)
     {
         $activeShift = ActiveShift::findOrFail($id);
 
-        if ($activeShift->confirmed == 1)
+        if ($activeShift->confirmed_supervisor == 1)
         {
-            $activeShift->confirmed = 0;
+            $activeShift->confirmed_supervisor = 0;
             $activeShift->save();
-            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+            request()->session()->flash('success', 'Επιτυχής υποβολή');
             return redirect( route('active-shift.index') );
         }
 
-        $activeShift->confirmed = 1;
+        $activeShift->confirmed_supervisor = 1;
+        $activeShift->save();
+
+        request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+        return redirect( route('active-shift.index') );
+    }
+
+    public function confirmActiveShiftSteward($id)
+    {
+        $activeShift = ActiveShift::findOrFail($id);
+
+        if ($activeShift->confirmed_steward == 1)
+        {
+            $activeShift->confirmed_steward = 0;
+            $activeShift->save();
+            request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
+            return redirect( route('active-shift.index') );
+        }
+
+        $activeShift->confirmed_steward = 1;
         $activeShift->save();
 
         request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
@@ -140,7 +195,7 @@ class ActiveShiftsController extends Controller
             case 1:
                 $data = \request()->validate([
                     'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',  //     HERE
+                    'shift-id'  =>  'required',
                     'guard1'    =>  'required'
                 ]);
                 break;
@@ -192,6 +247,11 @@ class ActiveShiftsController extends Controller
 
             foreach ( $guard->activeShifts()->get() as $existingShift )
             {
+                if ( isset($data['active-shift-id']) && ($existingShift->id == $data['active-shift-id']) )
+                {
+                    continue;
+                }
+
                 if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($data['active-shift-date'])) )
                 {
                     if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom) )

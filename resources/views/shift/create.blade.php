@@ -15,14 +15,14 @@
                                 <div class="col-md-6">
                                     <select name="location" id="location" class="form-control input-lg dynamic">
                                         <option selected disabled>Επιλέξτε Σημείο Φύλαξης</option>
-                                            @foreach($departments as $department)
-                                                <optgroup label="{{ $department->name }}">
-                                                    @foreach($department->locations as $location)
+                                            @foreach($locations as $location)
+{{--                                                <optgroup label="{{ $location->name }}">--}}
+{{--                                                    @foreach($department->locations as $location)--}}
                                                         <option value="{{ $location->id }}">
                                                             {{ $location->name }}
                                                         </option>
-                                                    @endforeach
-                                                </optgroup>
+{{--                                                    @endforeach--}}
+{{--                                                </optgroup>--}}
                                             @endforeach
                                     </select>
                                     @error('location')

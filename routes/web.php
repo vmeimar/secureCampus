@@ -34,7 +34,8 @@ Route::get('/active-shift/index', 'ActiveShiftsController@index')->middleware('c
 Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:edit-shifts')->name('active-shift.create');
 Route::get('/active-shift/edit/{activeShift}', 'ActiveShiftsController@edit')->middleware('can:edit-shifts')->name('active-shift.edit');
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:edit-shifts');
-Route::patch('/active-shift/{shift}/confirm', 'ActiveShiftsController@confirmActiveShift')->middleware('can:confirm-shifts');
+Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
+Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
 Route::patch('/as/{activeShift}', 'ActiveShiftsController@update')->middleware('can:confirm-shifts')->name('active-shift.update');
 Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->middleware('can:admin')->name('active-shift.destroy');
 
@@ -49,12 +50,13 @@ Route::get('/guard/{company}/index', 'GuardsController@index')->middleware('can:
 Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('can:create-guard');
 Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
 Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-shifts')->name('guard.show');
-//Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
 Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
 Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
+
+//Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 
 Route::namespace('Admin')
     ->prefix('admin')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Department;
 use App\Guard;
+use App\Location;
 use App\Shift;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,15 @@ class ShiftsController extends Controller
 
     public function index()
     {
-        $shifts = Shift::all();
+        $user = Auth::user();
+
+        if ($user->hasRole('admin'))
+        {
+            $shifts = Shift::all();
+            return view('shift.index', compact('shifts'));
+        }
+
+        $shifts = Shift::whereIn('location_id', $user->locations()->pluck('location_id')->toArray())->get();
         return view('shift.index', compact('shifts'));
     }
 
@@ -51,14 +60,14 @@ class ShiftsController extends Controller
 
         if (Gate::allows('see-all'))
         {
-            $departments = Department::all();
+            $locations = Location::all();
         }
         else
         {
-            $departments = Department::where('id', $authUser->department_id)->get();
+            $locations = $authUser->locations()->get();
         }
 
-        return view('shift.create', compact( 'departments') );
+        return view('shift.create', compact( 'locations') );
     }
 
     public function store()

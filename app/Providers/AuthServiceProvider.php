@@ -54,6 +54,14 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('confirm-shifts-steward', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epistatis',
+                'epitropi'
+            ]);
+        });
+
         Gate::define('edit-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
@@ -67,14 +75,6 @@ class AuthServiceProvider extends ServiceProvider
                 'admin',
                 'epoptis',
                 'epistatis',
-                'epitropi',
-            ]);
-        });
-
-        Gate::define('confirm-shifts', function ($user) {
-            return $user->hasAnyRoles([
-                'admin',
-                'epoptis',
                 'epitropi',
             ]);
         });

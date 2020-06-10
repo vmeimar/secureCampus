@@ -49,7 +49,7 @@
                                 <textarea name="active-shift-comments"
                                           rows="5"
                                           id="active-shift-comments"
-                                          class="col-md-6 form-control input-lg dynamic">{{ $activeShift->name }}</textarea>
+                                          class="col-md-6 form-control input-lg dynamic">{{ $activeShift->comments }}</textarea>
                             </div>
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">

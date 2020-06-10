@@ -12,7 +12,8 @@ class ActiveShift extends Model
     protected $guarded = [];
 
     protected $attributes = [
-        'confirmed' =>  0
+        'confirmed_steward' =>  0,
+        'confirmed_supervisor' =>  0,
     ];
 
     public function shift()

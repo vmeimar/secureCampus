@@ -14,7 +14,8 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Όνομα</th>
+                                <th scope="col">Αναγνωριστικό</th>
+                                <th scope="col">Σημείο Φύλαξης</th>
                                 <th scope="col">Αριθμός Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
@@ -27,6 +28,7 @@
                             @foreach($shifts as $shift)
                                 <tr>
                                     <th scope="row">{{ $shift->name }}</th>
+                                    <td>{{ $shift->location->name }}</td>
                                     <td>{{ $shift->number_of_guards }}</td>
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>

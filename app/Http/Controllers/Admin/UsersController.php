@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Faculty;
 use App\Http\Controllers\Controller;
+use App\Location;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -35,9 +35,9 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        $faculties = Faculty::all();
+        $locations = Location::all();
         $roles = Role::all();
-        return view('admin.users.edit', compact('roles', 'user', 'faculties'));
+        return view('admin.users.edit', compact('roles', 'user', 'locations'));
     }
 
     /**
@@ -50,6 +50,7 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         $user->roles()->sync($request->roles);
+        $user->locations()->sync($request->locations);
 
         $user->name = $request->name;
         $user->email = $request->email;
