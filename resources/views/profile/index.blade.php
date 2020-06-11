@@ -14,9 +14,6 @@
             <div class="pt-2">
                 <div>Είστε συνδεδεμένος/η ως <strong>{{ $user->name }}</strong></div>
                 @can('admin')
-                <div><strong>Τμήμα:</strong>
-                    {{ isset($user->department['name']) ? $user->department['name'] : 'Δεν έχει οριστεί' }}
-                </div>
                 <div><strong>Ρόλος:</strong> {{ implode(", ", $userRoles) }}</div>
                 @endcan
                 <div class="pt-3">

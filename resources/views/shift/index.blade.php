@@ -47,7 +47,7 @@
 
                                             @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1 mr-1">Επεξεργασία</button>
+                                                <button type="button" class="btn btn-info btn-sm mb-1 mr-1">Επεξεργασία</button>
                                             </a>
                                             @endcan
 
@@ -70,6 +70,9 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-2">
+                    {{ $shifts->links() }}
                 </div>
                 <div class="d-flex">
                     @can('create-shifts')

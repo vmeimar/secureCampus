@@ -24,11 +24,11 @@ class ShiftsController extends Controller
 
         if ($user->hasRole('admin'))
         {
-            $shifts = Shift::all();
+            $shifts = Shift::paginate(10);
             return view('shift.index', compact('shifts'));
         }
 
-        $shifts = Shift::whereIn('location_id', $user->locations()->pluck('location_id')->toArray())->get();
+        $shifts = Shift::whereIn('location_id', $user->locations()->pluck('location_id')->toArray())->paginate(10);
         return view('shift.index', compact('shifts'));
     }
 
