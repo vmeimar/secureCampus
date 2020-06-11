@@ -75,12 +75,16 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
+        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $data['active-shift-date']);
+
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
             'date'  =>  $data['active-shift-date'],
             'from'  =>  $activeShift->from,
             'until' =>  $activeShift->until,
             'comments'  =>  $data['active-shift-comments'],
+            'duration'  =>  $calculations['duration'],
+            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
         ]))
         {
             request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
@@ -96,7 +100,7 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        request()->session()->flash('success', 'Επιτυχής ανάθεση');
+        request()->session()->flash('success', 'Επιτυχής αποθήκευση');
         return redirect(route('active-shift.index'));
     }
 

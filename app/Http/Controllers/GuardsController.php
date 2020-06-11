@@ -101,91 +101,6 @@ class GuardsController extends Controller
         return redirect()->route('guard.index', $guard->company()->value('id'));
     }
 
-//    private function calculateFactor(ActiveShift $activeShift)
-//    {
-//        $start = strtotime($activeShift->from);
-//        $end = ( $activeShift->until < $activeShift->from )
-//            ? ( strtotime($activeShift->until) + 3600 * 24 )
-//            : strtotime($activeShift->until);
-//
-//        $duration = ($end - $start) / 3600; // shift's duration in hours
-//
-//        $morning_start = strtotime("06:00");
-//        $morning_end = strtotime("14:00");
-//        $afternoon_start = strtotime("14:00");
-//        $afternoon_end = strtotime("22:00");
-//        $night_start = strtotime("22:00");
-//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
-//
-//        switch ( date('l', strtotime($activeShift->date)) )
-//        {
-//            case 'Saturday':
-//                $morningFactor = 1;
-//                $eveningFactor = 1.25;
-//                $nightFactor = 1.75;
-//                break;
-//
-//            case 'Sunday':
-//                $morningFactor = 1.25;
-//                $eveningFactor = 1.25;
-//                $nightFactor = 2;
-//                break;
-//
-//            default:
-//                $morningFactor = 1;
-//                $eveningFactor = 1;
-//                $nightFactor = 1.75;
-//                break;
-//        }
-//
-//        $data = [
-//            'start'     =>  $activeShift->from,
-//            'end'       =>  $activeShift->until,
-//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
-//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
-//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
-//            'duration'  =>  $duration,
-//            'start_day' =>  date('l', strtotime($activeShift->date)),
-//        ];
-//
-//        return $data;
-//    }
-//
-//    private function intersection($s1, $e1, $s2, $e2, $when)
-//    {
-//        $midnight = strtotime('24:00');
-//
-//        if ($e1 < $s2)
-//        {
-//            return 0;
-//        }
-//
-//        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
-//            && ($e1 > $e2)
-//            && (($e1 - $s2 - 24 * 3600) > 0)
-//            && ((($midnight - $s1) / 3600 ) > 0)
-//            && ((($midnight - $s1) / 3600 ) < 12)
-//            && $when == 'm'
-//        )
-//        {
-//            $temp = ($e1 - $s2 - 24 * 3600);
-//            return $temp;
-//        }
-//        if ($s1 > $e2)
-//        {
-//            return 0;
-//        }
-//        if ($s1 < $s2)
-//        {
-//            $s1 = $s2;
-//        }
-//        if ($e1 > $e2)
-//        {
-//            $e1 = $e2;
-//        }
-//        return $e1 - $s1;
-//    }
-
     public function showCustomRangeShifts(Guard $guard)
     {
         $data = request()->validate([
@@ -234,8 +149,6 @@ class GuardsController extends Controller
                 continue;
             }
 
-//            $data = $this->calculateFactor($activeShift);
-
             $totalHours += $activeShift->duration;
             $totalCredits += $activeShift->factor;
         }
@@ -247,7 +160,7 @@ class GuardsController extends Controller
             'Credits' => $totalCredits,
         ];
 
-        return Excel::download(new GuardsExport(collect($exportData)), 'guard.xlsx');
+        return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');
     }
 
     public function import(Request $request)
@@ -264,7 +177,9 @@ class GuardsController extends Controller
         return redirect()->back();
     }
 
-    //  CSV EXPORT - WORKS
+    /*
+     *  CSV EXPORT - WORKING
+     */
 //    public function exportCsv (Guard $guard)
 //    {
 //        $requestData = \request()->validate([
@@ -319,4 +234,7 @@ class GuardsController extends Controller
 //        fclose($output);
 //        return ob_get_clean();
 //    }
+    /*
+     *  END OF CSV EXPORT
+     */
 }

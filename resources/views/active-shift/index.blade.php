@@ -19,6 +19,7 @@
                                 <th scope="col">Από</th>
                                 <th scope="col">Μέχρι</th>
                                 <th scope="col">Επιβεβαιωμένη</th>
+                                <th scope="col">Συντελεστής</th>
                                 @can('confirm-shifts')
                                     <th scope="col">Ενέργειες</th>
                                 @endcan
@@ -38,6 +39,7 @@
                                     <td>{{ $activeShift['from'] }}</td>
                                     <td>{{ $activeShift['until'] }}</td>
                                     <td><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
+                                    <td>{{ $activeShift['factor'] }}</td>
                                     <td>
                                         @can('confirm-shifts')
                                             <div class="row mb-1">
