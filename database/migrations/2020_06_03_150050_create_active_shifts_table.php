@@ -23,6 +23,8 @@ class CreateActiveShiftsTable extends Migration
             $table->tinyInteger('confirmed_steward');
             $table->tinyInteger('confirmed_supervisor');
             $table->text('comments')->nullable();
+            $table->float('duration');
+            $table->float('factor');
             $table->timestamps();
 
             $table->softDeletes();

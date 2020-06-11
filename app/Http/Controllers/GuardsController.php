@@ -101,89 +101,167 @@ class GuardsController extends Controller
         return redirect()->route('guard.index', $guard->company()->value('id'));
     }
 
-    private function calculateFactor(ActiveShift $activeShift)
+//    private function calculateFactor(ActiveShift $activeShift)
+//    {
+//        $start = strtotime($activeShift->from);
+//        $end = ( $activeShift->until < $activeShift->from )
+//            ? ( strtotime($activeShift->until) + 3600 * 24 )
+//            : strtotime($activeShift->until);
+//
+//        $duration = ($end - $start) / 3600; // shift's duration in hours
+//
+//        $morning_start = strtotime("06:00");
+//        $morning_end = strtotime("14:00");
+//        $afternoon_start = strtotime("14:00");
+//        $afternoon_end = strtotime("22:00");
+//        $night_start = strtotime("22:00");
+//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
+//
+//        switch ( date('l', strtotime($activeShift->date)) )
+//        {
+//            case 'Saturday':
+//                $morningFactor = 1;
+//                $eveningFactor = 1.25;
+//                $nightFactor = 1.75;
+//                break;
+//
+//            case 'Sunday':
+//                $morningFactor = 1.25;
+//                $eveningFactor = 1.25;
+//                $nightFactor = 2;
+//                break;
+//
+//            default:
+//                $morningFactor = 1;
+//                $eveningFactor = 1;
+//                $nightFactor = 1.75;
+//                break;
+//        }
+//
+//        $data = [
+//            'start'     =>  $activeShift->from,
+//            'end'       =>  $activeShift->until,
+//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
+//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
+//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
+//            'duration'  =>  $duration,
+//            'start_day' =>  date('l', strtotime($activeShift->date)),
+//        ];
+//
+//        return $data;
+//    }
+//
+//    private function intersection($s1, $e1, $s2, $e2, $when)
+//    {
+//        $midnight = strtotime('24:00');
+//
+//        if ($e1 < $s2)
+//        {
+//            return 0;
+//        }
+//
+//        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
+//            && ($e1 > $e2)
+//            && (($e1 - $s2 - 24 * 3600) > 0)
+//            && ((($midnight - $s1) / 3600 ) > 0)
+//            && ((($midnight - $s1) / 3600 ) < 12)
+//            && $when == 'm'
+//        )
+//        {
+//            $temp = ($e1 - $s2 - 24 * 3600);
+//            return $temp;
+//        }
+//        if ($s1 > $e2)
+//        {
+//            return 0;
+//        }
+//        if ($s1 < $s2)
+//        {
+//            $s1 = $s2;
+//        }
+//        if ($e1 > $e2)
+//        {
+//            $e1 = $e2;
+//        }
+//        return $e1 - $s1;
+//    }
+
+    public function showCustomRangeShifts(Guard $guard)
     {
-        $start = strtotime($activeShift->from);
-        $end = ( $activeShift->until < $activeShift->from )
-            ? ( strtotime($activeShift->until) + 3600 * 24 )
-            : strtotime($activeShift->until);
+        $data = request()->validate([
+            'date-from' => 'required',
+            'date-to' => 'required',
+        ]);
 
-        $duration = ($end - $start) / 3600; // shift's duration in hours
+        $from = $this->formatDate($data['date-from']);
+        $to = $this->formatDate($data['date-to']);
 
-        $morning_start = strtotime("06:00");
-        $morning_end = strtotime("14:00");
-        $afternoon_start = strtotime("14:00");
-        $afternoon_end = strtotime("22:00");
-        $night_start = strtotime("22:00");
-        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
-
-        switch ( date('l', strtotime($activeShift->date)) )
+        foreach ( ActiveShift::all() as $item )
         {
-            case 'Saturday':
-                $morningFactor = 1;
-                $eveningFactor = 1.25;
-                $nightFactor = 1.75;
-                break;
-
-            case 'Sunday':
-                $morningFactor = 1.25;
-                $eveningFactor = 1.25;
-                $nightFactor = 2;
-                break;
-
-            default:
-                $morningFactor = 1;
-                $eveningFactor = 1;
-                $nightFactor = 1.75;
-                break;
+            if ( ($this->formatDate($item->date) >= $from) && ($this->formatDate($item->date) <= $to) )
+            {
+                $activeShifts[] = $item;
+            }
         }
-
-        $data = [
-            'start'     =>  $activeShift->from,
-            'end'       =>  $activeShift->until,
-            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
-            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
-            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
-            'duration'  =>  $duration,
-            'start_day' =>  date('l', strtotime($activeShift->date)),
-        ];
-
-        return $data;
+        return view('guard.custom-range', compact('activeShifts', 'guard'));
     }
 
-    private function intersection($s1, $e1, $s2, $e2, $when)
+    private function formatDate($d)
     {
-        $midnight = strtotime('24:00');
+        return date('d m y', strtotime($d));
+    }
 
-        if ($e1 < $s2)
+    public function export(Guard $guard)
+    {
+        $requestData = \request()->validate([
+            'month' =>  'required'
+        ]);
+
+        if ($requestData['month'] == '')
         {
-            return 0;
+            \request()->session()->flash('warning', 'Επιλέξτε Μήνα');
+            return redirect()->back();
         }
 
-        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
-            && ($e1 > $e2)
-            && (($e1 - $s2 - 24 * 3600) > 0)
-            && ((($midnight - $s1) / 3600 ) > 0)
-            && ((($midnight - $s1) / 3600 ) < 12)
-            && $when == 'm'
-        )
+        $guardShifts = $guard->activeShifts()->get();
+        $totalHours = 0;
+        $totalCredits = 0;
+
+        foreach ($guardShifts as $activeShift)
         {
-            $temp = ($e1 - $s2 - 24 * 3600);
-            return $temp;
+            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
+            {
+                continue;
+            }
+
+//            $data = $this->calculateFactor($activeShift);
+
+            $totalHours += $activeShift->duration;
+            $totalCredits += $activeShift->factor;
         }
-        if ($s1 > $e2)
+
+        $exportData[] = [
+            'Name'  =>  $guard->name,
+            'Surname' => $guard->surname,
+            'Hours' => $totalHours,
+            'Credits' => $totalCredits,
+        ];
+
+        return Excel::download(new GuardsExport(collect($exportData)), 'guard.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        if (Excel::import(new GuardsImport(), $request->file('import_file')))
         {
-            return 0;
+            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
         }
-        if ($s1 < $s2)
+        else
         {
-            $s1 = $s2;
+            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
         }
-        if ($e1 > $e2)
-        {
-            $e1 = $e2;
-        }
-        return $e1 - $s1;
+
+        return redirect()->back();
     }
 
     //  CSV EXPORT - WORKS
@@ -241,57 +319,4 @@ class GuardsController extends Controller
 //        fclose($output);
 //        return ob_get_clean();
 //    }
-
-    public function export(Guard $guard)
-    {
-        $requestData = \request()->validate([
-            'month' =>  'required'
-        ]);
-
-        if ($requestData['month'] == '')
-        {
-            \request()->session()->flash('warning', 'Επιλέξτε Μήνα');
-            return redirect()->back();
-        }
-
-        $guardShifts = $guard->activeShifts()->get();
-        $totalHours = 0;
-        $totalCredits = 0;
-
-        foreach ($guardShifts as $activeShift)
-        {
-            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
-            {
-                continue;
-            }
-
-            $data = $this->calculateFactor($activeShift);
-
-            $totalHours += $data['duration'];
-            $totalCredits += ($data['morning'] + $data['evening'] + $data['night']);
-        }
-
-        $exportData[] = [
-            'Name'  =>  $guard->name,
-            'Surname' => $guard->surname,
-            'Hours' => $totalHours,
-            'Credits' => $totalCredits,
-        ];
-
-        return Excel::download(new GuardsExport(collect($exportData)), 'guard.xlsx');
-    }
-
-    public function import(Request $request)
-    {
-        if (Excel::import(new GuardsImport(), $request->file('import_file')))
-        {
-            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
-        }
-        else
-        {
-            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
-        }
-
-        return redirect()->back();
-    }
 }

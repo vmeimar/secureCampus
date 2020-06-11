@@ -88,10 +88,9 @@ class ActiveShiftsController extends Controller
         }
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
-        $activeShift->guards()->detach();
 
         try {
-            $activeShift->guards()->attach($guards);
+            $activeShift->guards()->sync($guards);
         } catch (Throwable $e) {
             report($e);
             return false;
@@ -120,12 +119,16 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
+        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date']);
+
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'name'  =>  $staticShift->name,
             'date'  =>  $data['active-shift-date'],
             'from'  =>  $staticShift->shift_from,
             'until' =>  $staticShift->shift_until,
+            'duration'  =>  $calculations['duration'],
+            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
         ]);
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
@@ -143,7 +146,6 @@ class ActiveShiftsController extends Controller
 
     public function destroy(ActiveShift $activeShift)
     {
-        $activeShift->guards()->detach();
         $activeShift->delete();
 
         \request()->session()->flash('success', 'Επιτυχής διαγραφή');
@@ -262,5 +264,91 @@ class ActiveShiftsController extends Controller
             }
         }
         return $overLap;
+    }
+
+    private function calculateFactor($from, $until, $date)
+    {
+        $start = strtotime($from);
+
+        $end = ( $until < $from )
+            ? ( strtotime($until) + 3600 * 24 )
+            : strtotime($until);
+
+        $duration = ($end - $start) / 3600; // shift's duration in hours
+
+        $morning_start = strtotime("06:00");
+        $morning_end = strtotime("14:00");
+        $afternoon_start = strtotime("14:00");
+        $afternoon_end = strtotime("22:00");
+        $night_start = strtotime("22:00");
+        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
+
+        switch ( date('l', strtotime($date)) )
+        {
+            case 'Saturday':
+                $morningFactor = 1;
+                $eveningFactor = 1.25;
+                $nightFactor = 1.75;
+                break;
+
+            case 'Sunday':
+                $morningFactor = 1.25;
+                $eveningFactor = 1.25;
+                $nightFactor = 2;
+                break;
+
+            default:
+                $morningFactor = 1;
+                $eveningFactor = 1;
+                $nightFactor = 1.75;
+                break;
+        }
+
+        $data = [
+            'start'     =>  $from,
+            'end'       =>  $until,
+            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
+            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
+            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
+            'duration'  =>  $duration,
+            'start_day' =>  date('l', strtotime($date)),
+        ];
+
+        return $data;
+    }
+
+    private function intersection($s1, $e1, $s2, $e2, $when)
+    {
+        $midnight = strtotime('24:00');
+
+        if ($e1 < $s2)
+        {
+            return 0;
+        }
+
+        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
+            && ($e1 > $e2)
+            && (($e1 - $s2 - 24 * 3600) > 0)
+            && ((($midnight - $s1) / 3600 ) > 0)
+            && ((($midnight - $s1) / 3600 ) < 12)
+            && $when == 'm'
+        )
+        {
+            $temp = ($e1 - $s2 - 24 * 3600);
+            return $temp;
+        }
+        if ($s1 > $e2)
+        {
+            return 0;
+        }
+        if ($s1 < $s2)
+        {
+            $s1 = $s2;
+        }
+        if ($e1 > $e2)
+        {
+            $e1 = $e2;
+        }
+        return $e1 - $s1;
     }
 }

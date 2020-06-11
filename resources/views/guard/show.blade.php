@@ -9,10 +9,56 @@
                         <strong>{{ $guard->name }} {{ $guard->surname }}</strong>
                     </div>
                     <div class="card-body">
+
+                        <div class="d-flex justify-content-center mb-4">
+                            <div class="row col-md-8">
+                                <h6>
+                                    <strong>
+                                        Έχετε τη δυνατότητα να εμφανίσετε τις βάρδιες του φύλακα {{ $guard->name }} {{ $guard->surname }}
+                                        για συγκεκριμένο διάστημα ή να εξάγετε αρχείο τύπου excel για ένα μήνα ή συνολικά για όλες τις βάρδιες.
+                                    </strong>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <form method="post" action="{{ route('guard.custom-range', $guard->id) }}" enctype="multipart/form-data">
+                            @csrf
+                                <div class="form-group row">
+                                    <label for="date-from" class="col-md-4 col-form-label text-md-right">Επιλέξτε ημερομηνία εμφάνισης (από - μέχρι)</label>
+                                    <div class="col-md-2">
+                                        <input id="date-from"
+                                               type="date"
+                                               class="form-control"
+                                               name="date-from"
+                                               value="{{ old('date-from') }}"
+                                               autocomplete="date-from"
+                                               autofocus>
+                                        @error('date-from')
+                                        <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input id="date-to"
+                                               type="date"
+                                               class="form-control"
+                                               name="date-to"
+                                               value="{{ old('date-to') }}"
+                                               autocomplete="date-to"
+                                               autofocus>
+                                        @error('date-to')
+                                        <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" style="max-height: 35px">Εμφάνιση</button>
+                                </div>
+                        </form>
+
+
+
                         <form method="post" action="{{ route('guard.export', $guard->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="month" class="col-md-4 col-form-label text-md-right">Μήνας</label>
+                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή</label>
                                 <div class="col-md-4">
                                     <select name="month" id="month" class="form-control input-lg dynamic">
                                         <option disabled selected value="">Επιλέξτε Μήνα</option>
@@ -34,11 +80,12 @@
                                     <strong>{{ $message }}</strong>
                                     @enderror
                                 </div>
+                                <button type="submit" class="btn btn-success">Εξαγωγή Excel</button>
                             </div>
                             <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-success">Εξαγωγή Excel</button>
-                                </div>
+{{--                                <div class="col-md-6 offset-md-4">--}}
+{{--                                    --}}
+{{--                                </div>--}}
                             </div>
                         </form>
 

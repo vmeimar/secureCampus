@@ -38,7 +38,7 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 2 ΒΙΟΛΟΦΙΑ',
+            'name' =>  'ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ 2 ΒΙΟΛΟΓΙΑ',
 //            'department_id'    =>  3
         ]);
 
