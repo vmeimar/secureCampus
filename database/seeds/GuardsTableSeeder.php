@@ -13,38 +13,50 @@ class GuardsTableSeeder extends Seeder
     public function run()
     {
         Guard::create([
-            'name' => 'Vaggelis',
-            'surname' => 'Meimaroglou',
+            'name' => 'Βαγγέλης',
+            'surname' => 'Μεϊμάρογλου',
             'company_id' => 1,
         ]);
 
         Guard::create([
-            'name' => 'Chris',
-            'surname' => 'Filippa',
+            'name' => 'Χριστίνα',
+            'surname' => 'Φίλιππα',
             'company_id' => 1,
         ]);
 
         Guard::create([
-            'name' => 'Vagia',
-            'surname' => 'Kyriakidou',
+            'name' => 'Βάγια',
+            'surname' => 'Κυριακίδου',
             'company_id' => 1,
         ]);
 
         Guard::create([
-            'name' => 'Thomas',
-            'surname' => 'Sfikopoulos',
+            'name' => 'Θωμάς',
+            'surname' => 'Σφηκόπουλος',
             'company_id' => 1,
         ]);
 
         Guard::create([
-            'name' => 'John',
-            'surname' => 'Venet',
+            'name' => 'Γιάννης',
+            'surname' => 'Βενετικίδης',
             'company_id' => 2,
         ]);
 
         Guard::create([
-            'name' => 'Vasilis',
-            'surname' => 'Pier',
+            'name' => 'Βασίλης',
+            'surname' => 'Πιέρρος',
+            'company_id' => 2,
+        ]);
+
+        Guard::create([
+            'name' => 'Νίκος',
+            'surname' => 'Χειλάκος',
+            'company_id' => 2,
+        ]);
+
+        Guard::create([
+            'name' => 'Βασίλης',
+            'surname' => 'Κανέλης',
             'company_id' => 2,
         ]);
     }

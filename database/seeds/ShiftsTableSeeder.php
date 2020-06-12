@@ -938,5 +938,482 @@ class ShiftsTableSeeder extends Seeder
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
         ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μονάδων Ιατρικής Παπαδιαμαντοπούλου Πρωί',
+            'location_id'   => 23,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μονάδων Ιατρικής Παπαδιαμαντοπούλου Απόγευμα',
+            'location_id'   => 23,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Βιβλιοθήκης Επιστημών Υγείας Πρωί',
+            'location_id'   => 24,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Βιβλιοθήκης Επιστημών Υγείας Απόγευμα',
+            'location_id'   => 24,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Βιβλιοθήκης Επιστημών Υγείας Βράδυ',
+            'location_id'   => 24,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Νοσηλευτικής Απόγευμα',
+            'location_id'   => 25,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΣΕΦΑΑ Πρωί',
+            'location_id'   => 26,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΣΕΦΑΑ Απόγευμα',
+            'location_id'   => 26,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΣΕΦΑΑ Βράδυ',
+            'location_id'   => 26,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Καθημερινές Απόγευμα',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '15:00',
+            'shift_until'   =>  '23:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Σάββατο Πρωί',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Σάββατο Απόγευμα',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Σάββατο Βράδυ',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Κυριακή / Αργίες Πρωί',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Κυριακή / Αργίες Απόγευμα',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '16:30',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημιακής Λέσχης Κυριακή / Αργίες Βράδυ',
+            'location_id'   => 27,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Νέου Χημείου Πρωί',
+            'location_id'   => 28,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Νέου Χημείου Απόγευμα',
+            'location_id'   => 28,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Νέου Χημείου Βράδυ',
+            'location_id'   => 28,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΠΤΔΕ Ιπποκράτους 20 Πρωί',
+            'location_id'   => 29,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '08:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΠΤΔΕ Ιπποκράτους 20 Απόγευμα',
+            'location_id'   => 29,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Τουρκικών & Ασιατικών Σπουδών Πρωί',
+            'location_id'   => 30,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '07:50',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Τουρκικών & Ασιατικών Σπουδών Απόγευμα',
+            'location_id'   => 30,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '21:50',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΠΕΔΔ Θεμιστοκλέους & Γαμβέττα Πρωί',
+            'location_id'   => 31,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΠΕΔΔ Θεμιστοκλέους & Γαμβέττα Απόγευμα',
+            'location_id'   => 31,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο ΠΕΔΔ Αιόλου 42 Απόγευμα',
+            'location_id'   => 32,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Γρυπάρειο Αριστείδου 11 Απόγευμα',
+            'location_id'   => 33,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Γρυπάρειο Σοφοκλέους 1 Απόγευμα',
+            'location_id'   => 34,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Παλαιού Χημείου Πρωί',
+            'location_id'   => 35,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Παλαιού Χημείου Απόγευμα',
+            'location_id'   => 35,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Παλαιού Χημείου Βράδυ',
+            'location_id'   => 35,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μουσείου Ιστορίας Θόλου Καθημερινές Απόγευμα',
+            'location_id'   => 36,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '15:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μουσείου Ιστορίας Θόλου Καθημερινές Βράδυ',
+            'location_id'   => 36,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '07:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μουσείου Ιστορίας Θόλου Σ/Κ Πρωί',
+            'location_id'   => 36,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μουσείου Ιστορίας Θόλου Σ/Κ Απόγευμα',
+            'location_id'   => 36,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Μουσείου Ιστορίας Θόλου Σ/Κ Βράδυ',
+            'location_id'   => 36,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημίου 30 Πρωί',
+            'location_id'   => 37,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημίου 30 Απόγευμα',
+            'location_id'   => 37,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Πανεπιστημίου 30 Βράδυ',
+            'location_id'   => 37,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Καθημερινές Πρωί',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Καθημερινές Απόγευμα',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Καθημερινές Βράδυ',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  3,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Σ/Κ Πρωί',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  3,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Σ/Κ Απόγευμα',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  3,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 1 Σ/Κ Βράδυ',
+            'location_id'   => 38,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  3,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Καθημερινές Πρωί (6-8)',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '08:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Καθημερινές Πρωί (8-14)',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '08:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Καθημερινές Απόγευμα (14-16)',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '16:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Καθημερινές Απόγευμα (16-22)',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '16:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Καθημερινές Βράδυ',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  4,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Σ/Κ Πρωί',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Σ/Κ Απόγευμα',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  2,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Εποπτείας Παν/πολης 2 Σ/Κ Βράδυ',
+            'location_id'   => 39,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  4,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+        ]);
     }
 }

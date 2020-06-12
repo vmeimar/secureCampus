@@ -43,29 +43,33 @@
                            <div class="form-group row">
                                <label for="locations" class="col-md-3 col-form-label text-md-right"><strong>Ανάθεση Σημείων Φύλαξης</strong></label>
                                <div class="col-md-6">
-                                   <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                       <thead>
-                                       <tr class="d-flex">
-                                           <th class="col-3">Επιλογή</th>
-                                           <th class="col-9">Σημείο Φύλαξης (Δυνατότητα πολλαπλής ανάθεσης)</th>
-                                       </tr>
-                                       </thead>
-                                       <tbody>
-                                       @foreach($locations as $location)
-                                       <tr class="d-flex">
-                                           <td class="col-3">
-                                               <div class="form-check custom-control custom-checkbox">
-                                                   <input type="checkbox" class="custom-control-input" name="locations[]"
-                                                          id="{{ $location->id }}" value="{{ $location->id }}"
-                                                          @if($user->locations()->pluck('location_id')->contains($location->id)) checked @endif>
-                                                   <label class="custom-control-label" for="{{ $location->id }}"></label>
-                                               </div>
-                                           </td>
-                                           <td class="col-9">{{ $location->name }}</td>
-                                       </tr>
-                                       @endforeach
-                                       </tbody>
-                                   </table>
+
+                                   <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; height: 420px; overflow: auto; display: block">
+                                       <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                           <thead>
+                                           <tr class="d-flex">
+                                               <th class="col-3">Επιλογή</th>
+                                               <th class="col-9">Σημείο Φύλαξης (Δυνατότητα πολλαπλής ανάθεσης)</th>
+                                           </tr>
+                                           </thead>
+                                           <tbody>
+                                           @foreach($locations as $location)
+                                           <tr class="d-flex">
+                                               <td class="col-3">
+                                                   <div class="form-check custom-control custom-checkbox">
+                                                       <input type="checkbox" class="custom-control-input" name="locations[]"
+                                                              id="{{ $location->id }}" value="{{ $location->id }}"
+                                                              @if($user->locations()->pluck('location_id')->contains($location->id)) checked @endif>
+                                                       <label class="custom-control-label" for="{{ $location->id }}"></label>
+                                                   </div>
+                                               </td>
+                                               <td class="col-9">{{ $location->name }}</td>
+                                           </tr>
+                                           @endforeach
+                                           </tbody>
+                                       </table>
+                                   </div>
+
                                </div>
                            </div>
 

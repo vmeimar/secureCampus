@@ -16,7 +16,7 @@
                             <tr>
                                 <th scope="col">Αναγνωριστικό</th>
                                 <th scope="col">Σημείο Φύλαξης</th>
-                                <th scope="col">Αριθμός Φυλάκων</th>
+                                <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
                                 @can('edit-shifts')
@@ -29,7 +29,7 @@
                                 <tr>
                                     <th scope="row">{{ $shift->name }}</th>
                                     <td>{{ $shift->location->name }}</td>
-                                    <td>{{ $shift->number_of_guards }}</td>
+                                    <td style="text-align: center">{{ $shift->number_of_guards }}</td>
                                     <td>{{ $shift->shift_from }}</td>
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>
