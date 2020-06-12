@@ -35,18 +35,18 @@
                                             {{ $guard['surname'] }} <br>
                                         @endforeach
                                     </td>
-                                    <td>{{ date('d M y', strtotime($activeShift['date'])) }}</td>
+                                    <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>
                                     <td>{{ $activeShift['from'] }}</td>
                                     <td>{{ $activeShift['until'] }}</td>
-                                    <td><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
-                                    <td>{{ $activeShift['factor'] }}</td>
+                                    <td style="text-align: center"><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
+                                    <td style="text-align: center">{{ $activeShift['factor'] }}</td>
                                     <td>
                                         @can('confirm-shifts')
                                             <div class="row mb-1">
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm-supervisor" method="POST" class="float-left">
                                                     @csrf
                                                     @method('patch')
-                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                    <button type="submit" class="btn btn-primary btn-sm ml-2 mr-2">
                                                         {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Κατάργηση υποβολής'}}
                                                     </button>
                                                 </form>
@@ -58,15 +58,15 @@
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm-steward" method="POST" class="float-left">
                                                     @csrf
                                                     @method('patch')
-                                                    <button type="submit" class="btn btn-primary btn-sm">
+                                                    <button type="submit" class="btn btn-info btn-sm ml-2 mr-2">
                                                         {{ $activeShift->confirmed_steward == 0 ? 'Επιβαβαίωση' : 'Αλλαγή κατάστασης'}}
                                                     </button>
                                                 </form>
                                             </div>
                                         @endcan
 
-                                        <div class="row">
-                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm mb-1">Επεξεργασία</a>
+                                        <div class="row mb-1">
+                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
                                         </div>
 
                                         @can('admin')
@@ -74,7 +74,7 @@
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" class="btn btn-danger btn-sm">Διαγραφή</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm ml-2 mr-2">Διαγραφή</button>
                                                 </form>
                                             </div>
                                         @endcan

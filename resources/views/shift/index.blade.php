@@ -11,7 +11,7 @@
                     </div>
 
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">Αναγνωριστικό</th>
@@ -38,7 +38,7 @@
                                         @can('edit-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1">Ανάθεση σε Φύλακες</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2">Ανάθεση σε Φύλακες</button>
                                             </a>
                                         </div>
                                         @endcan
@@ -47,7 +47,7 @@
 
                                             @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
-                                                <button type="button" class="btn btn-info btn-sm mb-1 mr-1">Επεξεργασία</button>
+                                                <button type="button" class="btn btn-info btn-sm mb-1 mr-1 ml-2">Επεξεργασία</button>
                                             </a>
                                             @endcan
 

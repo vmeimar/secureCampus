@@ -19,8 +19,9 @@ class ActiveShiftsController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $activeShiftsIds = [];
 
-        if ($user->hasRole('admin'))
+        if ($user->hasAnyRoles(['admin', 'epitropi']))
         {
             $activeShifts = ActiveShift::latest()->paginate(10);
         }

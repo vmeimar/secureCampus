@@ -22,7 +22,7 @@ class ShiftsController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->hasRole('admin'))
+        if ($user->hasAnyRoles(['admin', 'epitropi']))
         {
             $shifts = Shift::paginate(10);
             return view('shift.index', compact('shifts'));
