@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Faculty;
 use App\Http\Controllers\Controller;
 use App\Location;
 use App\Role;
@@ -54,7 +53,6 @@ class UsersController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-//        $user->department_id = $request->department;
 
         if ($user->save())
         {

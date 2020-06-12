@@ -35,10 +35,7 @@ class ActiveShiftsController extends Controller
                 {
                     $activeShiftsIds[] = $item->id;
                 }
-                else
-                {
-                    continue;
-                }
+                else continue;
             }
             $activeShifts = ActiveShift::whereIn('id', $activeShiftsIds)->latest()->paginate(10);
         }
@@ -331,7 +328,7 @@ class ActiveShiftsController extends Controller
             return 0;
         }
 
-        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours. to be further tested
+        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours
             && ($e1 > $e2)
             && (($e1 - $s2 - 24 * 3600) > 0)
             && ((($midnight - $s1) / 3600 ) > 0)

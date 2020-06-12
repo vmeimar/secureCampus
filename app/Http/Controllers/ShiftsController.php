@@ -133,14 +133,9 @@ class ShiftsController extends Controller
 
     public function destroy(Shift $shift)
     {
-        if ( $shift->delete() )
-        {
-            \request()->session()->flash('success', 'Επιτυχής διαγραφή');
-        }
-        else
-        {
-            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
-        }
+        $shift->delete()
+            ? request()->session()->flash('success', 'Επιτυχής διαγραφή')
+            : request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
 
         return redirect('/shift/index');
     }

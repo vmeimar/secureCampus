@@ -57,7 +57,7 @@
                                                 {{ method_field('DELETE') }}
                                                 <button type="submit"
                                                         onclick="return confirm('Επιβεβαίωση Διαγραφής')"
-                                                        class="btn btn-danger btn-sm">
+                                                        class="btn btn-danger btn-sm mb-1 mr-1 ml-2">
                                                     Διαγραφή</button>
                                             </form>
                                             @endcan

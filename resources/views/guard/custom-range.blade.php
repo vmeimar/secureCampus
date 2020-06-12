@@ -9,8 +9,8 @@
                         <strong>Ενεργές Βάρδιες</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-bordered">
-                            <thead>
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="thead-light">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Βάρδια</th>
@@ -31,7 +31,7 @@
                                             {{ $shiftGuard['surname'] }} <br>
                                         @endforeach
                                     </td>
-                                    <td>{{ date('d M y', strtotime($activeShift['date'])) }}</td>
+                                    <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>
                                     <td>{{ $activeShift['from'] }}</td>
                                     <td>{{ $activeShift['until'] }}</td>
                                     <td>{{ $activeShift['factor'] }}</td>

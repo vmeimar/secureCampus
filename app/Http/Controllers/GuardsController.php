@@ -103,6 +103,8 @@ class GuardsController extends Controller
 
     public function showCustomRangeShifts(Guard $guard)
     {
+        $activeShifts = [];
+
         $data = request()->validate([
             'date-from' => 'required',
             'date-to' => 'required',
