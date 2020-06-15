@@ -8,10 +8,8 @@
                     <div class="card-header">
                         <strong>Επεξεργασία Χρήστη: {{ $user->name }}</strong>
                     </div>
-
                     <div class="card-body">
                        <form action="{{ route('admin.users.update', $user) }}" method="POST">
-
                            <div class="form-group row">
                                <label for="name" class="col-md-3 col-form-label text-md-right"><strong>Όνομα</strong></label>
 
@@ -25,7 +23,6 @@
                                    @enderror
                                </div>
                            </div>
-
                            <div class="form-group row">
                                <label for="email" class="col-md-3 col-form-label text-md-right"><strong>Email</strong></label>
 
@@ -39,17 +36,16 @@
                                    @enderror
                                </div>
                            </div>
-
                            <div class="form-group row">
                                <label for="locations" class="col-md-3 col-form-label text-md-right"><strong>Ανάθεση Σημείων Φύλαξης</strong></label>
                                <div class="col-md-6">
 
-                                   <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; height: 420px; overflow: auto; display: block">
+                                   <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; height: 395px; overflow: auto; display: block">
                                        <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                            <thead>
                                            <tr class="d-flex">
                                                <th class="col-3">Επιλογή</th>
-                                               <th class="col-9">Σημείο Φύλαξης (Δυνατότητα πολλαπλής ανάθεσης)</th>
+                                               <th class="col-9">Κτήριο (Δυνατότητα πολλαπλής ανάθεσης)</th>
                                            </tr>
                                            </thead>
                                            <tbody>
@@ -76,7 +72,7 @@
                            @csrf
                            {{ method_field('PUT') }}
                            <div class="form-group row">
-                               <label for="roles" class="col-md-3 col-form-label text-md-right"><strong>Ρόλοι Χρήστη</strong></label>
+                               <label for="roles" class="col-md-3 col-form-label text-md-right"><strong>Ανάθεση Ρόλου Χρήστη</strong></label>
                                <div class="col-md-6">
                                    <table class="table table-bordered table-striped">
                                        <thead>
@@ -114,15 +110,7 @@
                        </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
-{{--    <script>--}}
-{{--        $(document).ready(function(){--}}
-{{--            $('#myTable').dataTable();--}}
-{{--        });--}}
-{{--    </script>--}}
 @endsection

@@ -15,7 +15,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">Αναγνωριστικό</th>
-                                <th scope="col">Σημείο Φύλαξης</th>
+                                <th scope="col">Κτήριο</th>
                                 <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
