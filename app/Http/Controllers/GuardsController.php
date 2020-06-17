@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ActiveShift;
 use App\Company;
 use App\Exports\GuardsExport;
 use App\Guard;
@@ -103,6 +102,8 @@ class GuardsController extends Controller
 
     public function showCustomRangeShifts(Guard $guard)
     {
+        $duration = 0;
+        $totalCredits = 0;
         $activeShifts = [];
 
         $data = request()->validate([
@@ -113,14 +114,28 @@ class GuardsController extends Controller
         $from = $this->formatDate($data['date-from']);
         $to = $this->formatDate($data['date-to']);
 
-        foreach ( ActiveShift::all() as $item )
+        foreach ( $guard->activeShifts()->get() as $item )
         {
             if ( ($this->formatDate($item->date) >= $from) && ($this->formatDate($item->date) <= $to) )
             {
                 $activeShifts[] = $item;
+                $duration += $item->duration;
+                $totalCredits += $item->factor;
             }
         }
-        return view('guard.custom-range', compact('activeShifts', 'guard'));
+        $totalDuration = $this->decimal_to_time($duration * 60);
+
+        return view('guard.custom-range', compact('activeShifts', 'guard', 'totalCredits', 'totalDuration'));
+    }
+
+    private function decimal_to_time($decimal)
+    {
+        $hours = floor($decimal / 60);
+        $minutes = floor($decimal % 60);
+        $seconds = $decimal - (int)$decimal;
+        $seconds = round($seconds * 60);
+
+        return str_pad($hours, 2, "0", STR_PAD_LEFT) . " Ώρες, " . str_pad($minutes, 2, "0", STR_PAD_LEFT) . " Λεπτά ";
     }
 
     private function formatDate($d)

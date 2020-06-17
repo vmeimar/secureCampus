@@ -7,7 +7,7 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <strong>Σημεία Φύλαξης / Ορισμένες Βάρδιες</strong>
+                        <strong>Σημεία Φύλαξης / Βάρδιες</strong>
                     </div>
 
                     <div class="card-body">

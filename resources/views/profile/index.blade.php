@@ -53,6 +53,23 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-8">
+                    @can('admin')
+                        <div class="card mr-2">
+                            <div class="card-header">
+                                Διαχείριση Συστήματος
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Διαχειριστείτε τις Λειτουργίες της Εφαρμογής</h5>
+                                <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                                <a href="{{ route('app.index') }}" class="btn btn-primary">Διαχείριση</a>
+                            </div>
+                        </div>
+                    @endcan
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

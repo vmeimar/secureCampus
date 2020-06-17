@@ -39,7 +39,36 @@ class ActiveShiftsController extends Controller
             }
             $activeShifts = ActiveShift::whereIn('id', $activeShiftsIds)->latest()->paginate(10);
         }
-        return view('active-shift.index', compact('activeShifts'));
+
+        return view('active-shift.index', compact('activeShifts', 'user'));
+    }
+
+    public function showByLocation(Request $request)
+    {
+        $activeShifts = [];
+
+        $data = $request->validate([
+            'location'  =>  'required',
+        ]);
+
+        $locationId = $data['location'];
+        $allActiveShifts = ActiveShift::all();
+
+        foreach ($allActiveShifts as $row)
+        {
+            if ( $row->shift->location->id == $locationId)
+            {
+                $activeShifts[] = $row;
+            }
+        }
+
+        if ($activeShifts == [])
+        {
+            $request->session()->flash('warning', 'Δεν υπάρχουν ενεργές βάρδιες για αυτό το σημείο φύλαξης.');
+            return redirect(route('active-shift.index'));
+        }
+
+        return view('active-shift.custom-index', compact('activeShifts'));
     }
 
     public function create(Shift $shift)
@@ -162,14 +191,14 @@ class ActiveShiftsController extends Controller
         {
             $activeShift->confirmed_supervisor = 0;
             $activeShift->save();
-            request()->session()->flash('success', 'Επιτυχής υποβολή');
+            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
             return redirect( route('active-shift.index') );
         }
 
         $activeShift->confirmed_supervisor = 1;
         $activeShift->save();
 
-        request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+        request()->session()->flash('success', 'Επιτυχής υποβολή');
         return redirect( route('active-shift.index') );
     }
 
@@ -353,4 +382,33 @@ class ActiveShiftsController extends Controller
         }
         return $e1 - $s1;
     }
+
+    /**
+     * AJAX for fetching active shifts
+     */
+    //    function fetch(Request $request)
+//    {
+//        $select = $request->get('select');
+//        $value = $request->get('value');
+//        $dependent = $request->get('dependent');
+//
+//        $activeShifts = ActiveShift::all();
+//
+//        foreach ($activeShifts as $activeShift)
+//        {
+//            if ($activeShift->shift->location->id == $value)
+//            {
+//                $data[] = $activeShift;
+//            }
+//        }
+//
+//        $output = '<option value="">Select Shift</option>';
+//
+//        foreach ($data as $row)
+//        {
+//            $output .= '<option value="'.$row->id.'">'.$row->name.'</option>';
+//        }
+//
+//        echo $output;
+//    }
 }

@@ -19,19 +19,51 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '23:00',
             'shift_until'   =>  '07:00',
+            'shift_type'   =>  'weekdays',
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φιλοσοφικής Σ/Κ Πρωί',
+            'name'  =>  'Κτήριο Φιλοσοφικής Σάββατο Πρωί',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
+            'shift_type'   =>  'saturday',
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φιλοσοφικής Σ/Κ Απόγευμα',
+            'name'  =>  'Κτήριο Φιλοσοφικής Σάββατο Απόγευμα',
+            'location_id'   => 1,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+            'shift_type'   =>  'saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Φιλοσοφικής Σάββατο Βράδυ',
+            'location_id'   => 1,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+            'shift_type'   =>  'saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Φιλοσοφικής Κυριακή / Αργία Πρωί',
+            'location_id'   => 1,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+            'shift_type'   =>  'holiday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Φιλοσοφικής Κυριακή / Αργία Απόγευμα',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -40,12 +72,13 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φιλοσοφικής Σ/Κ Βράδυ',
+            'name'  =>  'Κτήριο Φιλοσοφικής Κυριακή / Αργία Βράδυ',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
+            'shift_type'   =>  'holiday',
         ]);
 
         Shift::create([
@@ -55,6 +88,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
+            'shift_type'   =>  'holiday',
         ]);
 
         Shift::create([

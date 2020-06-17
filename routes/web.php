@@ -33,6 +33,8 @@ Route::delete('/shift/{shift}', 'ShiftsController@destroy')->middleware('can:adm
 Route::get('/active-shift/index', 'ActiveShiftsController@index')->middleware('can:view-shifts')->name('active-shift.index');
 Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:edit-shifts')->name('active-shift.create');
 Route::get('/active-shift/edit/{activeShift}', 'ActiveShiftsController@edit')->middleware('can:edit-shifts')->name('active-shift.edit');
+Route::post('/active-shift/show-by-location', 'ActiveShiftsController@showByLocation')->middleware('can:view-shifts')->name('active-shift.show-by-location');
+//Route::post('active-shift/index/fetch', 'ActiveShiftsController@fetch')->name('active-shift.fetch');       //   AJAX
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:edit-shifts');
 Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
 Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
@@ -56,6 +58,8 @@ Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
 Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
+
+Route::get('/app/index', 'AppController@index')->middleware('can:admin')->name('app.index');
 
 //Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 

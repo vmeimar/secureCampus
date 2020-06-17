@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header"><strong>Δημιουργία Βάρδιας σε Σημείο Φύλαξης</strong></div>
 
@@ -16,13 +16,9 @@
                                     <select name="location" id="location" class="form-control input-lg dynamic">
                                         <option selected disabled>Επιλέξτε Σημείο Φύλαξης</option>
                                             @foreach($locations as $location)
-{{--                                                <optgroup label="{{ $location->name }}">--}}
-{{--                                                    @foreach($department->locations as $location)--}}
                                                         <option value="{{ $location->id }}">
                                                             {{ $location->name }}
                                                         </option>
-{{--                                                    @endforeach--}}
-{{--                                                </optgroup>--}}
                                             @endforeach
                                     </select>
                                     @error('location')
@@ -87,6 +83,21 @@
 
                                     @error('shift-name')
                                         <strong>Εισάγετε Όνομα Βάρδιας (π.χ. Σημείο Φύλαξης Χ, πρωινή βάρδια)</strong>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="shift-type" class="col-md-4 col-form-label text-md-right">Τύπος Βάρδιας</label>
+                                <div class="col-md-6">
+                                    <select name="shift-type" id="shift-type" class="form-control input-lg dynamic">
+                                        <option selected disabled>Επιλέξτε Τύπο</option>
+                                            <option value="weekdays">Καθημερινές</option>
+                                            <option value="saturday">Σάββατο</option>
+                                            <option value="holiday">Κυριακή/Αργίες</option>
+                                    </select>
+                                    @error('shift-type')
+                                    <strong>Επιλέξτε Τύπο</strong>
                                     @enderror
                                 </div>
                             </div>

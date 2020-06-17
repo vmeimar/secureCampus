@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
 
 class ShiftsController extends Controller
 {
@@ -40,18 +41,22 @@ class ShiftsController extends Controller
 
     public function edit(Shift $shift)
     {
-        $authUser = User::find(Auth::id());
+        $user = User::find(Auth::id());
 
-        if (Gate::allows('see-all'))
+        switch ($shift->shift_type)
         {
-            $departments = Department::all();
-        }
-        else
-        {
-            $departments = Department::where('id', $authUser->department_id)->get();
+            case 'weekdays':
+                $type = 'Καθημερινές';
+                break;
+            case 'saturday':
+                $type = 'Σάββατο';
+                break;
+            case 'holiday':
+                $type = 'Κυριακή/Αργίες';
+                break;
         }
 
-        return view('shift.edit', compact('shift', 'departments'));
+        return view('shift.edit', compact('shift', 'user', 'type'));
     }
 
     public function create()
@@ -70,14 +75,15 @@ class ShiftsController extends Controller
         return view('shift.create', compact( 'locations') );
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $data = \request()->validate([
+        $data = $request->validate([
             'location' => 'required',
             'shift-from' => 'required',
             'shift-until' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
+            'shift-type' => 'required',
         ]);
 
         if ( auth()->user()->shifts()->create([
@@ -86,13 +92,14 @@ class ShiftsController extends Controller
             'name'  =>  $data['shift-name'],
             'shift_from'    =>  $data['shift-from'],
             'shift_until'    =>  $data['shift-until'],
+            'shift-type'    =>  $data['shift-type'],
         ]) )
         {
-            \request()->session()->flash('success', 'Επιτυχής δημιουργία βάρδιας σε σημείο φύλαξης');
+            $request->session()->flash('success', 'Επιτυχής δημιουργία βάρδιας σε σημείο φύλαξης');
         }
         else
         {
-            \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
+            $request->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
         }
 
         return redirect('/shift/index');
@@ -106,6 +113,7 @@ class ShiftsController extends Controller
             'shift-until' => 'required',
             'number-of-guards' => 'required',
             'shift-name' => 'required',
+            'shift-type' => 'required',
         ]);
 
         $location_id = DB::table('locations')
@@ -119,6 +127,7 @@ class ShiftsController extends Controller
             'name'  =>  $data['shift-name'],
             'shift_from'    =>  $data['shift-from'],
             'shift_until'    =>  $data['shift-until'],
+            'shift_type'    =>  $data['shift-type'],
         ]))
         {
             \request()->session()->flash('success', 'Επιτυχής αποθήκευση');

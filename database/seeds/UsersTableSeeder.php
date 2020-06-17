@@ -1,5 +1,6 @@
 <?php
 
+use App\Location;
 use App\Role;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -60,6 +61,8 @@ class UsersTableSeeder extends Seeder
             'email' =>  'user@user.com',
             'password'  =>  Hash::make('password'),
         ]);
+
+        $admin->locations()->attach(Location::all());
 
         $admin->roles()->attach($adminRole);
         $doy->roles()->attach($doyRole);
