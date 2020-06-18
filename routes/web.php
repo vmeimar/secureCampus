@@ -52,14 +52,16 @@ Route::get('/guard/{company}/index', 'GuardsController@index')->middleware('can:
 Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('can:create-guard');
 Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
 Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-shifts')->name('guard.show');
-Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
 Route::post('/guard/{guard}/custom-range', 'GuardsController@showCustomRangeShifts')->name('guard.custom-range');
 Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
+Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
 Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
 
 Route::get('/app/index', 'AppController@index')->middleware('can:admin')->name('app.index');
+Route::post('/app/populate-days-table', 'AppController@populateDaysTable')->name('app.populate-days');
+Route::post('/app/holidays/import', 'AppController@import')->name('holidays.import');
 
 Route::get('/factor/index', 'FactorsController@index')->name('factor.index');
 Route::get('/factor/edit/{factor}', 'FactorsController@edit')->name('factor.edit');
