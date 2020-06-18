@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ActiveShift;
+use App\Factor;
 use App\Guard;
 use App\Shift;
 use Illuminate\Http\Request;
@@ -317,21 +318,21 @@ class ActiveShiftsController extends Controller
         switch ( date('l', strtotime($date)) )
         {
             case 'Saturday':
-                $morningFactor = 1;
-                $eveningFactor = 1.25;
-                $nightFactor = 1.75;
+                $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+                $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+                $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
                 break;
 
             case 'Sunday':
-                $morningFactor = 1.25;
-                $eveningFactor = 1.25;
-                $nightFactor = 2;
+                $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+                $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+                $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
                 break;
 
             default:
-                $morningFactor = 1;
-                $eveningFactor = 1;
-                $nightFactor = 1.75;
+                $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+                $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+                $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
                 break;
         }
 

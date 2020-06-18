@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
                         <strong>Λειτουργίες</strong>
@@ -30,17 +30,12 @@
                             </div>
                         </form>
 
-
-
-                        <form method="post" action="#" enctype="multipart/form-data">
-                            @csrf
-                            <div class="col-md-4">
-                                <p>manage factors</p>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <button type="submit" class="btn btn-primary">Edit</button>
-                            </div>
-                        </form>
+                        <div class="col-md-4">
+                            <p>manage factors</p>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <a href="{{ route('factor.index') }}" class="btn btn-primary">Show Factors</a>
+                        </div>
 
                     </div>
                 </div>
