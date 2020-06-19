@@ -170,23 +170,14 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        $activeShiftData = explode('|', $data['active-shift-date']);
+        $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
 
-        if ($activeShiftData[1] == 1)
-        {
-            dd('is holiday');
-        }
-        else
-        {
-            dd('not holiday');
-        }
-
-        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date']);
+        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date'], $activeShiftData[1]);   // IS_HOLIDAY
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'name'  =>  $staticShift->name,
-            'date'  =>  $activeShiftData[0],
+            'date'  =>  $activeShiftData[0],    // DATE
             'from'  =>  $staticShift->shift_from,
             'until' =>  $staticShift->shift_until,
             'duration'  =>  $calculations['duration'],
@@ -328,7 +319,7 @@ class ActiveShiftsController extends Controller
         return $overLap;
     }
 
-    private function calculateFactor($from, $until, $date)
+    private function calculateFactor($from, $until, $date, $isHoliday)
     {
         $start = strtotime($from);
 
@@ -364,6 +355,13 @@ class ActiveShiftsController extends Controller
                 $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
                 $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
                 break;
+        }
+
+        if ($isHoliday)
+        {
+            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
         }
 
         $data = [
