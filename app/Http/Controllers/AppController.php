@@ -23,47 +23,53 @@ class AppController extends Controller
         $startDay = $currentDate['year'].'-01-01';
         $endOfYear = $currentDate['year'].'-12-31';
 
+        $this->createDaysTable();
+
         while ( strtotime($startDay) <= strtotime($endOfYear) )
         {
             $loopingDate = getdate(strtotime($startDay));
-            $date = $loopingDate['year'].'-'.$loopingDate['mon'].'-'.$loopingDate['year'];
+            $date = $loopingDate['year'].'-'.$loopingDate['mon'].'-'.$loopingDate['mday'];
 
-            DB::table('days_of_year')->insert([
+            if (! DB::table('days_of_year')->insert([
                 'day'   =>  $loopingDate['weekday'],
                 'date'  =>  $date,
                 'is_holiday'    =>  $this->isHoliday($date)
-                ]);
+            ]))
+            {
+                request()->session()->flash('error', 'Εκδηλώθηκε σφάλμα κατά το γέμισμα του πίνακα');
+                return redirect(route('app.index'));
+            }
 
             $startDay = date("y-m-d", strtotime("+1 day", strtotime($startDay)));
         }
-
+        request()->session()->flash('success', 'Επιτυχές γέμισμα του πίνακα');
+        return redirect(route('app.index'));
     }
-
 
     private function isHoliday($date)
     {
+        $holiday = DB::table('holidays')
+            ->where('date', date('d/m/Y', strtotime($date)))
+            ->first();
 
+        is_null($holiday) ? $isHoliday = 0 : $isHoliday = 1;
+
+        return $isHoliday;
     }
 
     private function createDaysTable()
     {
         if (! Schema::hasTable('days_of_year'))
         {
-            if (Schema::create('days_of_year', function (Blueprint $table) {
+            Schema::create('days_of_year', function (Blueprint $table) {
                 $table->id();
                 $table->string('day');
                 $table->string('date');
                 $table->tinyInteger('is_holiday');
                 $table->timestamps();
-            })) {
-                return true;
-            }
-            else
-            {
-                request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία του πίνακα days_of_year');
-                return false;
-            }
+            });
         }
+        DB::table('days_of_year')->truncate();
         return true;
     }
 
@@ -72,7 +78,7 @@ class AppController extends Controller
     {
         DB::table('holidays')->truncate();
 
-        if (Excel::import(new HolidaysImport(), $request->file('import_file')))
+        if ( Excel::import(new HolidaysImport(), $request->file('import_file')) )
         {
             $request->session()->flash('success', 'Επιτυχής εισαγωγή');
         }

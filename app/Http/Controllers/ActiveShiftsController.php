@@ -8,6 +8,7 @@ use App\Guard;
 use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -74,8 +75,26 @@ class ActiveShiftsController extends Controller
 
     public function create(Shift $shift)
     {
+        switch ($shift->shift_type)
+        {
+            case 'saturday':
+                $availableDates = DB::table('days_of_year')
+                    ->where('day', 'Saturday')
+                    ->get();
+                break;
+            case 'holiday':
+                $availableDates = DB::table('days_of_year')
+                    ->where('day', 'Sunday')
+                    ->get();
+                break;
+            default:
+                $availableDates = DB::table('days_of_year')
+                    ->whereNotIn('day', ['Saturday', 'Sunday'])
+                    ->get();
+                break;
+        }
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
-        return view('active-shift.create', compact('shift', 'guards'));
+        return view('active-shift.create', compact('shift', 'guards', 'availableDates'));
     }
 
     public function edit(ActiveShift $activeShift)
@@ -151,12 +170,23 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
+        $activeShiftData = explode('|', $data['active-shift-date']);
+
+        if ($activeShiftData[1] == 1)
+        {
+            dd('is holiday');
+        }
+        else
+        {
+            dd('not holiday');
+        }
+
         $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date']);
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'name'  =>  $staticShift->name,
-            'date'  =>  $data['active-shift-date'],
+            'date'  =>  $activeShiftData[0],
             'from'  =>  $staticShift->shift_from,
             'until' =>  $staticShift->shift_until,
             'duration'  =>  $calculations['duration'],

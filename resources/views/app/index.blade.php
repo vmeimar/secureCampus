@@ -19,19 +19,14 @@
                                 </h6>
                             </div>
                         </div>
-
-                        <form method="post" action="{{ route('app.populate-days') }}" enctype="multipart/form-data">
-                            <div class="d-flex">
-                                    @csrf
-                                    <div class="col-md-6">
-                                        <p><strong>Γέμισμα πίνακα ημερών του έτους</strong></p>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <button type="submit" class="btn btn-primary">Εκτέλεση</button>
-                                    </div>
+                        <div class="d-flex">
+                            <div class="col-md-6">
+                                <p><strong>Γέμισμα πίνακα ημερών του έτους</strong></p>
                             </div>
-                        </form>
-
+                            <div class="form-group col-md-6">
+                                <a href="{{ route('app.populate-days') }}" class="btn btn-primary">Εκτέλεση</a>
+                            </div>
+                        </div>
                         <div class="d-flex">
                             <div class="col-md-6">
                                 <p><strong>Εμφάνιση και Επεξεργασία Συντελεστών Βαρδιών</strong></p>
@@ -40,8 +35,6 @@
                                 <a href="{{ route('factor.index') }}" class="btn btn-primary">Προβολή</a>
                             </div>
                         </div>
-
-
                         <div class="col-md-12 mt-5">
                             <div class="row">
                                 <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τις αργίες του έτους.</strong></p>
@@ -56,7 +49,6 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="row">

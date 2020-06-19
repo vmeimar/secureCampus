@@ -13,7 +13,7 @@
                             @csrf
                             @for( $i=1; $i<=$shift->number_of_guards; $i++ )
                                 <div class="form-group row">
-                                    <label for="guard{{$i}}" class="col-md-4 col-form-label text-md-right">Guard {{$i}}</label>
+                                    <label for="guard{{$i}}" class="col-md-4 col-form-label text-md-right">Φύλακας {{$i}}</label>
                                     <div class="col-md-6">
                                         <select required name="guard{{$i}}" id="guard{{$i}}" class="form-control input-lg dynamic">
                                             <option selected disabled>Επιλέξτε Φύλακα</option>
@@ -26,21 +26,34 @@
                                     </div>
                                 </div>
                             @endfor
-                            <div class="form-group row">
-                                <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>
-                                <div class="col-md-6">
-                                    <input id="active-shift-date"
-                                           type="date"
-                                           class="form-control"
-                                           name="active-shift-date"
-                                           value="{{ old('active-shift-date') }}"
-                                           autocomplete="active-shift-date"
-                                           autofocus>
-                                    @error('active-shift-date')
-                                    <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
-                                    @enderror
+                                <div class="form-group row">
+                                    <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>
+                                    <div class="col-md-6">
+                                        <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">
+                                            <option selected disabled>Παρακαλώ επιλέξτε ημερομηνία</option>
+                                            @foreach($availableDates as $date)
+                                                <option value="{{ $date->date }}|{{ $date->is_holiday }}">
+                                                    {{ $date->day }} {{ date('d-M-Y', strtotime($date->date)) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+{{--                            <div class="form-group row">--}}
+{{--                                <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>--}}
+{{--                                <div class="col-md-6">--}}
+{{--                                    <input id="active-shift-date"--}}
+{{--                                           type="date"--}}
+{{--                                           class="form-control"--}}
+{{--                                           name="active-shift-date"--}}
+{{--                                           value="{{ old('active-shift-date') }}"--}}
+{{--                                           autocomplete="active-shift-date"--}}
+{{--                                           autofocus>--}}
+{{--                                    @error('active-shift-date')--}}
+{{--                                    <strong>Παρακαλώ εισάγετε ημερομηνία</strong>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <!-- Get shift's id on hidden element -->
                             <input type="hidden" id="shift-id" name="shift-id" value="{{ $shift->id }}">
 
