@@ -144,7 +144,8 @@ class ActiveShiftsController extends Controller
 
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
 
-        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
+
+//        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
@@ -152,8 +153,8 @@ class ActiveShiftsController extends Controller
             'date'  =>  $activeShiftData[0],    // DATE
             'from'  =>  $staticShift->shift_from,
             'until' =>  $staticShift->shift_until,
-            'duration'  =>  $calculations['duration'],
-            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
+//            'duration'  =>  $calculations['duration'],
+//            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
             'is_holiday' => $activeShiftData[1],
         ]);
 
@@ -165,6 +166,13 @@ class ActiveShiftsController extends Controller
             report($e);
             return false;
         }
+
+        $hourAnalysis = $this->hoursAnalysis($activeShift);
+
+        $activeShift->update([
+            'duration'  =>  $hourAnalysis['duration'],
+            'factor'    =>  $hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night'],
+        ]);
 
         $request->session()->flash('success', 'Επιτυχής ανάθεση');
         return redirect(route('active-shift.index'));
@@ -191,7 +199,8 @@ class ActiveShiftsController extends Controller
 
 
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
-        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $activeShiftData[0], $activeShiftData[1]);
+//        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $activeShiftData[0], $activeShiftData[1]);
+        $hourAnalysis = $this->hoursAnalysis($activeShift);
 
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
@@ -199,8 +208,8 @@ class ActiveShiftsController extends Controller
             'from'  =>  $activeShift->from,
             'until' =>  $activeShift->until,
             'comments'  =>  $data['active-shift-comments'],
-            'duration'  =>  $calculations['duration'],
-            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
+            'duration'  =>  $hourAnalysis['duration'],
+            'factor'    =>  ($hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night']),
             'is_holiday' => $activeShiftData[1],
         ]))
         {
@@ -341,6 +350,131 @@ class ActiveShiftsController extends Controller
             }
         }
         return $overLap;
+    }
+
+    private function hoursAnalysis(ActiveShift $activeShift)
+    {
+        $morningStart = strtotime('06:00');
+        $eveningStart = strtotime('14:00');
+        $nightStart = strtotime('22:00');
+        $nextMorning = $morningStart + 3600 * 24;
+
+        $morningHours = 0;
+        $eveningHours = 0;
+        $nightHours = 0;
+
+        $start = strtotime($activeShift->from);
+        $end = strtotime($activeShift->until);
+
+        if ($start > $end)  // next day
+        {
+            $end += 24 * 3600;
+
+            if ($start < $nightStart)
+            {
+                $eveningHours = ($nightStart - $start) / 3600;
+            }
+
+            $nightHours = (($nextMorning - $start) / 3600) - $eveningHours;
+
+            if ($end > $nextMorning)
+            {
+                $morningHours = ($end - $nextMorning) / 3600;
+            }
+
+            $hoursAnalysis = [
+                'morning'   =>  $morningHours,
+                'evening'   =>  $eveningHours,
+                'night'     =>  $nightHours,
+            ];
+        }
+        else
+        {
+            if ($start >= $eveningStart)
+            {
+                if ($end > $nightStart)
+                {
+                    $nightHours = ($end - $nightStart) / 3600;
+                }
+
+                if ($end > $eveningStart)
+                {
+                    $eveningHours = (($end - $eveningStart) / 3600) - $nightHours - (($start - $eveningStart) / 3600);
+                }
+
+                $hoursAnalysis = [
+                    'morning'   =>  $morningHours,
+                    'evening'   =>  $eveningHours,
+                    'night'     =>  $nightHours,
+                ];
+            }
+            else
+            {
+                if ($end > $nightStart)
+                {
+                    $nightHours = ($end - $nightStart) / 3600;
+                }
+
+                if ($end > $eveningStart)
+                {
+                    $eveningHours = (($end - $eveningStart) / 3600) - $nightHours;
+                }
+
+                if ($start < $morningStart)
+                {
+                    $nightHours += ($morningStart - $start) / 3600;
+                }
+
+                $morningHours = ($eveningStart - $start) / 3600;
+
+                $hoursAnalysis = [
+                    'morning'   =>  $morningHours,
+                    'evening'   =>  $eveningHours,
+                    'night'     =>  $nightHours,
+                ];
+            }
+        }
+
+        if (!$activeShift->is_holiday)
+        {
+            switch ( date('l', strtotime($activeShift->date)) )
+            {
+                case 'Saturday':
+                    $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+                    $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+                    $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
+                    break;
+
+                case 'Sunday':
+                    $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+                    $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+                    $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
+                    break;
+
+                default:
+                    $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+                    $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+                    $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
+                    break;
+            }
+        }
+        else
+        {
+            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
+        }
+
+        $duration = ($end - $start) / 3600; // activeShift's duration in hours
+
+        $data = [
+            'morning'   =>  $hoursAnalysis['morning'] * $morningFactor,
+            'evening'   =>  $hoursAnalysis['evening'] * $eveningFactor,
+            'night'     =>  $hoursAnalysis['night'] * $nightFactor,
+            'duration'  =>  $duration,
+        ];
+
+        return $data;
     }
 
     private function calculateFactor($from, $until, $date, $isHoliday)
