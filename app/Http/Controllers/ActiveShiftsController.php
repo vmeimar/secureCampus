@@ -477,98 +477,98 @@ class ActiveShiftsController extends Controller
         return $data;
     }
 
-    private function calculateFactor($from, $until, $date, $isHoliday)
-    {
-        $start = strtotime($from);
+//    private function calculateFactor($from, $until, $date, $isHoliday)
+//    {
+//        $start = strtotime($from);
+//
+//        $end = ( $until < $from )
+//            ? ( strtotime($until) + 3600 * 24 )
+//            : strtotime($until);
+//
+//        $duration = ($end - $start) / 3600; // shift's duration in hours
+//
+//        $morning_start = strtotime("06:00");
+//        $morning_end = strtotime("14:00");
+//        $afternoon_start = strtotime("14:00");
+//        $afternoon_end = strtotime("22:00");
+//        $night_start = strtotime("22:00");
+//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
+//
+//        switch ( date('l', strtotime($date)) )
+//        {
+//            case 'Saturday':
+//                $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+//                $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
+//                $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
+//                break;
+//
+//            case 'Sunday':
+//                $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+//                $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+//                $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
+//                break;
+//
+//            default:
+//                $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+//                $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
+//                $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
+//                break;
+//        }
+//
+//        if ($isHoliday)
+//        {
+//            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+//            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
+//            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
+//        }
+//
+//        $data = [
+//            'start'     =>  $from,
+//            'end'       =>  $until,
+//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
+//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
+//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
+//            'duration'  =>  $duration,
+//            'start_day' =>  date('l', strtotime($date)),
+//        ];
+//
+//        return $data;
+//    }
 
-        $end = ( $until < $from )
-            ? ( strtotime($until) + 3600 * 24 )
-            : strtotime($until);
-
-        $duration = ($end - $start) / 3600; // shift's duration in hours
-
-        $morning_start = strtotime("06:00");
-        $morning_end = strtotime("14:00");
-        $afternoon_start = strtotime("14:00");
-        $afternoon_end = strtotime("22:00");
-        $night_start = strtotime("22:00");
-        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
-
-        switch ( date('l', strtotime($date)) )
-        {
-            case 'Saturday':
-                $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-                $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-                $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
-                break;
-
-            case 'Sunday':
-                $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-                $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-                $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-                break;
-
-            default:
-                $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-                $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-                $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
-                break;
-        }
-
-        if ($isHoliday)
-        {
-            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-        }
-
-        $data = [
-            'start'     =>  $from,
-            'end'       =>  $until,
-            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
-            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
-            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
-            'duration'  =>  $duration,
-            'start_day' =>  date('l', strtotime($date)),
-        ];
-
-        return $data;
-    }
-
-    private function intersection($s1, $e1, $s2, $e2, $when)
-    {
-        $midnight = strtotime('24:00');
-
-        if ($e1 < $s2)
-        {
-            return 0;
-        }
-
-        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours
-            && ($e1 > $e2)
-            && (($e1 - $s2 - 24 * 3600) > 0)
-            && ((($midnight - $s1) / 3600 ) > 0)
-            && ((($midnight - $s1) / 3600 ) < 12)
-            && $when == 'm'
-        )
-        {
-            $temp = ($e1 - $s2 - 24 * 3600);
-            return $temp;
-        }
-        if ($s1 > $e2)
-        {
-            return 0;
-        }
-        if ($s1 < $s2)
-        {
-            $s1 = $s2;
-        }
-        if ($e1 > $e2)
-        {
-            $e1 = $e2;
-        }
-        return $e1 - $s1;
-    }
+//    private function intersection($s1, $e1, $s2, $e2, $when)
+//    {
+//        $midnight = strtotime('24:00');
+//
+//        if ($e1 < $s2)
+//        {
+//            return 0;
+//        }
+//
+//        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours
+//            && ($e1 > $e2)
+//            && (($e1 - $s2 - 24 * 3600) > 0)
+//            && ((($midnight - $s1) / 3600 ) > 0)
+//            && ((($midnight - $s1) / 3600 ) < 12)
+//            && $when == 'm'
+//        )
+//        {
+//            $temp = ($e1 - $s2 - 24 * 3600);
+//            return $temp;
+//        }
+//        if ($s1 > $e2)
+//        {
+//            return 0;
+//        }
+//        if ($s1 < $s2)
+//        {
+//            $s1 = $s2;
+//        }
+//        if ($e1 > $e2)
+//        {
+//            $e1 = $e2;
+//        }
+//        return $e1 - $s1;
+//    }
 
     /**
      * AJAX for fetching active shifts
