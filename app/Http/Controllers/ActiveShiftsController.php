@@ -77,12 +77,12 @@ class ActiveShiftsController extends Controller
     {
         switch ($shift->shift_type)
         {
-            case 'saturday':
+            case 'Saturday':
                 $availableDates = DB::table('days_of_year')
                     ->where('day', 'Saturday')
                     ->get();
                 break;
-            case 'holiday':
+            case 'Sunday':
                 $availableDates = DB::table('days_of_year')
                     ->where('day', 'Sunday')
                     ->get();
@@ -93,62 +93,34 @@ class ActiveShiftsController extends Controller
                     ->get();
                 break;
         }
+
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
         return view('active-shift.create', compact('shift', 'guards', 'availableDates'));
     }
 
     public function edit(ActiveShift $activeShift)
     {
+        switch (date('l', strtotime($activeShift->date)))
+        {
+            case 'Saturday':
+                $availableDates = DB::table('days_of_year')
+                    ->where('day', 'Saturday')
+                    ->get();
+                break;
+            case 'Sunday':
+                $availableDates = DB::table('days_of_year')
+                    ->where('day', 'Sunday')
+                    ->get();
+                break;
+            default:
+                $availableDates = DB::table('days_of_year')
+                    ->whereNotIn('day', ['Saturday', 'Sunday'])
+                    ->get();
+                break;
+        }
+
         $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
-        return view('active-shift.edit', compact('activeShift', 'guards'));
-    }
-
-    public function update(ActiveShift $activeShift)
-    {
-        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
-        {
-            $assignedGuardIds[] = $item;
-        }
-
-        $data = request()->all();
-
-        $data['active-shift-id'] = $activeShift->id;
-
-        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $activeShift->from);
-
-        if ($overLap)
-        {
-            request()->session()->flash('warning', 'Δεν αποθηκεύτηκε. Υπάρχει σύγκρουση ωραρίου.');
-            return redirect(route('active-shift.index'));
-        }
-
-        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $data['active-shift-date']);
-
-        if (! $activeShift->update([
-            'name'  =>  $activeShift->name,
-            'date'  =>  $data['active-shift-date'],
-            'from'  =>  $activeShift->from,
-            'until' =>  $activeShift->until,
-            'comments'  =>  $data['active-shift-comments'],
-            'duration'  =>  $calculations['duration'],
-            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
-        ]))
-        {
-            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
-            return redirect(route('active-shift.index'));
-        }
-
-        $guards = Guard::whereIn('id', $assignedGuardIds)->get();
-
-        try {
-            $activeShift->guards()->sync($guards);
-        } catch (Throwable $e) {
-            report($e);
-            return false;
-        }
-
-        request()->session()->flash('success', 'Επιτυχής αποθήκευση');
-        return redirect(route('active-shift.index'));
+        return view('active-shift.edit', compact('activeShift', 'guards', 'availableDates'));
     }
 
     public function store(Request $request)
@@ -172,7 +144,7 @@ class ActiveShiftsController extends Controller
 
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
 
-        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date'], $activeShiftData[1]);   // IS_HOLIDAY
+        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
@@ -182,6 +154,7 @@ class ActiveShiftsController extends Controller
             'until' =>  $staticShift->shift_until,
             'duration'  =>  $calculations['duration'],
             'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
+            'is_holiday' => $activeShiftData[1],
         ]);
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
@@ -194,6 +167,57 @@ class ActiveShiftsController extends Controller
         }
 
         $request->session()->flash('success', 'Επιτυχής ανάθεση');
+        return redirect(route('active-shift.index'));
+    }
+
+    public function update(ActiveShift $activeShift)
+    {
+        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
+        {
+            $assignedGuardIds[] = $item;
+        }
+
+        $data = request()->all();
+
+        $data['active-shift-id'] = $activeShift->id;
+
+        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $activeShift->from);
+
+        if ($overLap)
+        {
+            request()->session()->flash('warning', 'Δεν αποθηκεύτηκε. Υπάρχει σύγκρουση ωραρίου.');
+            return redirect(route('active-shift.index'));
+        }
+
+
+        $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
+        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $activeShiftData[0], $activeShiftData[1]);
+
+        if (! $activeShift->update([
+            'name'  =>  $activeShift->name,
+            'date'  =>  $activeShiftData[0],
+            'from'  =>  $activeShift->from,
+            'until' =>  $activeShift->until,
+            'comments'  =>  $data['active-shift-comments'],
+            'duration'  =>  $calculations['duration'],
+            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
+            'is_holiday' => $activeShiftData[1],
+        ]))
+        {
+            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
+            return redirect(route('active-shift.index'));
+        }
+
+        $guards = Guard::whereIn('id', $assignedGuardIds)->get();
+
+        try {
+            $activeShift->guards()->sync($guards);
+        } catch (Throwable $e) {
+            report($e);
+            return false;
+        }
+
+        request()->session()->flash('success', 'Επιτυχής αποθήκευση');
         return redirect(route('active-shift.index'));
     }
 

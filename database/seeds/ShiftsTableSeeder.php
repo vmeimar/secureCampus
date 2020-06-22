@@ -19,7 +19,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '23:00',
             'shift_until'   =>  '07:00',
-            'shift_type'   =>  'weekdays',
+            'shift_type'   =>  'Weekdays',
         ]);
 
         Shift::create([
@@ -29,7 +29,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
-            'shift_type'   =>  'saturday',
+            'shift_type'   =>  'Saturday',
         ]);
 
         Shift::create([
@@ -39,7 +39,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '14:00',
             'shift_until'   =>  '22:00',
-            'shift_type'   =>  'saturday',
+            'shift_type'   =>  'Saturday',
         ]);
 
         Shift::create([
@@ -49,7 +49,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
-            'shift_type'   =>  'saturday',
+            'shift_type'   =>  'Saturday',
         ]);
 
         Shift::create([
@@ -59,7 +59,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
-            'shift_type'   =>  'holiday',
+            'shift_type'   =>  'Sunday',
         ]);
 
         Shift::create([
@@ -69,6 +69,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '14:00',
             'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Sunday',
         ]);
 
         Shift::create([
@@ -78,7 +79,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
-            'shift_type'   =>  'holiday',
+            'shift_type'   =>  'Sunday',
         ]);
 
         Shift::create([
@@ -88,7 +89,6 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
-            'shift_type'   =>  'holiday',
         ]);
 
         Shift::create([

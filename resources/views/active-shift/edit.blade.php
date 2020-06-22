@@ -32,16 +32,14 @@
                             <div class="form-group row">
                                 <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>
                                 <div class="col-md-6">
-                                    <input id="active-shift-date"
-                                           type="date"
-                                           class="form-control"
-                                           name="active-shift-date"
-                                           value="{{ date('yy-m-d', strtotime($activeShift->date)) }}"
-                                           autocomplete="active-shift-date"
-                                           autofocus>
-                                    @error('active-shift-date')
-                                    <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
-                                    @enderror
+                                    <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">
+                                        <option value="{{ $activeShift->date }}|{{ $activeShift->is_holiday }}" selected>{{ date('l', strtotime($activeShift->date)) }} {{ date('d-M-Y', strtotime($activeShift->date)) }}</option>
+                                        @foreach($availableDates as $date)
+                                            <option value="{{ $date->date }}|{{ $date->is_holiday }}">
+                                                {{ $date->day }} {{ date('d-M-Y', strtotime($date->date)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row">

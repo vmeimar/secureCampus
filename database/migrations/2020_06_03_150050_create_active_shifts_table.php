@@ -25,6 +25,7 @@ class CreateActiveShiftsTable extends Migration
             $table->text('comments')->nullable();
             $table->float('duration');
             $table->float('factor');
+            $table->tinyInteger('is_holiday');
             $table->timestamps();
 
             $table->softDeletes();
