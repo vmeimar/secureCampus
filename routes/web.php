@@ -31,11 +31,11 @@ Route::patch('/shift/{shift}', 'ShiftsController@update')->middleware('can:edit-
 Route::delete('/shift/{shift}', 'ShiftsController@destroy')->middleware('can:admin')->name('shift.destroy');
 
 Route::get('/active-shift/index', 'ActiveShiftsController@index')->middleware('can:view-shifts')->name('active-shift.index');
-Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:edit-shifts')->name('active-shift.create');
+Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:assign-shifts')->name('active-shift.create');
 Route::get('/active-shift/edit/{activeShift}', 'ActiveShiftsController@edit')->middleware('can:edit-shifts')->name('active-shift.edit');
 Route::post('/active-shift/show-by-location', 'ActiveShiftsController@showByLocation')->middleware('can:view-shifts')->name('active-shift.show-by-location');
 //Route::post('active-shift/index/fetch', 'ActiveShiftsController@fetch')->name('active-shift.fetch');       //   AJAX
-Route::post('/as', 'ActiveShiftsController@store')->middleware('can:edit-shifts');
+Route::post('/as', 'ActiveShiftsController@store')->middleware('can:assign-shifts');
 Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
 Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
 Route::patch('/as/{activeShift}', 'ActiveShiftsController@update')->middleware('can:confirm-shifts')->name('active-shift.update');
@@ -51,7 +51,7 @@ Route::delete('/security/{company}', 'SecurityController@destroy')->middleware('
 Route::get('/guard/{company}/index', 'GuardsController@index')->middleware('can:manage-security')->name('guard.index');
 Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('can:create-guard');
 Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
-Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-shifts')->name('guard.show');
+Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-security')->name('guard.show');
 Route::post('/guard/{guard}/custom-range', 'GuardsController@showCustomRangeShifts')->name('guard.custom-range');
 Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
 Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');

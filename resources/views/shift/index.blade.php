@@ -19,9 +19,7 @@
                                 <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
-                                @can('edit-shifts')
-                                    <th scope="col">Ενέργεις</th>
-                                @endcan
+                                <th scope="col">Ενέργεις</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,10 +33,10 @@
                                     <td>
                                     @can('manage-shifts')
 
-                                        @can('edit-shifts')
+                                        @can('assign-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2">Ανάθεση σε Φύλακες</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2 mr-2">Παρουσιολόγιο Βάρδιας</button>
                                             </a>
                                         </div>
                                         @endcan

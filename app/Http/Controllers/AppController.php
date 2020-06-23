@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\GuardsImport;
 use App\Imports\HolidaysImport;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
@@ -12,6 +11,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AppController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         return view('app.index');
@@ -73,17 +77,13 @@ class AppController extends Controller
         return true;
     }
 
-
     public function import(Request $request)
     {
         DB::table('holidays')->truncate();
 
-        if ( Excel::import(new HolidaysImport(), $request->file('import_file')) )
-        {
+        if ( Excel::import(new HolidaysImport(), $request->file('import_file')) ) {
             $request->session()->flash('success', 'Επιτυχής εισαγωγή');
-        }
-        else
-        {
+        } else {
             $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
         }
 

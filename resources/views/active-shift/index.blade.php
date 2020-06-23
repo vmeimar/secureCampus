@@ -106,9 +106,11 @@
                                             </div>
                                         @endcan
 
-                                        <div class="row mb-1">
-                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
-                                        </div>
+                                            @can('edit-shifts')
+                                            <div class="row mb-1">
+                                                <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
+                                            </div>
+                                            @endcan
 
                                         @can('admin')
                                             <div class="row">

@@ -92,7 +92,7 @@ class ShiftsController extends Controller
             'name'  =>  $data['shift-name'],
             'shift_from'    =>  $data['shift-from'],
             'shift_until'    =>  $data['shift-until'],
-            'shift-type'    =>  $data['shift-type'],
+            'shift_type'    =>  $data['shift-type'],
         ]) )
         {
             $request->session()->flash('success', 'Επιτυχής δημιουργία βάρδιας σε σημείο φύλαξης');
