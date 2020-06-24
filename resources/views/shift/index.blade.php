@@ -36,7 +36,7 @@
                                         @can('assign-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2 mr-2">Παρουσιολόγιο Βάρδιας</button>
+                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2 mr-2">Ανάθεση σε Φύλακα</button>
                                             </a>
                                         </div>
                                         @endcan

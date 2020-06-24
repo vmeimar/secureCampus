@@ -100,6 +100,8 @@ class ActiveShiftsController extends Controller
 
     public function edit(ActiveShift $activeShift)
     {
+        $dayFrameArray = $this->calculateFrames($activeShift);
+
         switch (date('l', strtotime($activeShift->date)))
         {
             case 'Saturday':
@@ -350,6 +352,59 @@ class ActiveShiftsController extends Controller
             }
         }
         return $overLap;
+    }
+
+    private function calculateFrames(ActiveShift $activeShift)
+    {
+        $start = strtotime($activeShift->from);
+
+        if ( $start > strtotime($activeShift->until) )
+        {
+            $end = strtotime($activeShift->until." +1 day");
+        }
+        else
+        {
+            $end = strtotime($activeShift->until);
+        }
+
+        $duration = ($end - $start) / 60;     //IN MINUTES
+
+        $startTime = date('H:i:s', strtotime($activeShift->from));
+        $startDate = date('Y-m-d', strtotime($activeShift->date));
+        $startDateTime = date('Y-m-d H:i:s', strtotime($startDate.$startTime));
+        $endDateTime = date('Y-m-d H:i:s', strtotime($startDateTime." +".$duration." minutes"));
+
+        $quantum = $startDateTime;
+        $dayFrameArray = [];
+
+        $frames = DB::table('day_frames')->get()->toArray();
+
+        while ($quantum < $endDateTime)
+        {
+            $quantumDate = date('Y-m-d', strtotime($quantum));
+
+            foreach ($frames as $frame)
+            {
+                $startFrame = date('Y-m-d H:i:s', strtotime($startDate.$frame->start_frame));
+                $endFrame = date('Y-m-d H:i:s', strtotime($startFrame." +8 hours"));
+
+                if ( strtotime($quantum) >= strtotime($endFrame))
+                {
+                    $startFrame = date('Y-m-d H:i:s', strtotime($quantumDate.$frame->start_frame));
+                    $endFrame = date('Y-m-d H:i:s', strtotime($startFrame." +8 hours"));
+                }
+
+                if ( (strtotime($quantum) >= strtotime($startFrame)) && (strtotime($quantum) < strtotime($endFrame)) )
+                {
+                    $dayFrameArray[] = [
+                        'datetime'  =>  $quantum,
+                        'frame'     =>  $frame->name
+                    ];
+                }
+            }
+            $quantum = date('Y-m-d H:i:s', strtotime($quantum." +10 minutes"));
+        }
+        return $dayFrameArray;
     }
 
     private function hoursAnalysis(ActiveShift $activeShift)

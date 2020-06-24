@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GuardsTableSeeder::class);
         $this->call(ShiftsTableSeeder::class);
         $this->call(FactorsTableSeeder::class);
+        $this->call(DayFramesTableSeeder::class);
     }
 }
