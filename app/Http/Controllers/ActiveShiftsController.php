@@ -145,7 +145,7 @@ class ActiveShiftsController extends Controller
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
 
         $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0]);
-        $this->assignFactors($dayFrameArray);
+        $this->assignFactors($dayFrameArray, $activeShiftData[0]);
 
 
 //        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
@@ -379,6 +379,7 @@ class ActiveShiftsController extends Controller
         $dayFrameArray = [];
 
         $frames = DB::table('day_frames')->get()->toArray();
+        $name = null;
 
         while ($quantum < $endDateTime)
         {
@@ -389,7 +390,7 @@ class ActiveShiftsController extends Controller
                 $startFrame = date('Y-m-d H:i:s', strtotime($startDate.$frame->start_frame));
                 $endFrame = date('Y-m-d H:i:s', strtotime($startFrame." +8 hours"));
 
-                if ( strtotime($quantum) >= strtotime($endFrame))
+                if ( strtotime($quantum) >= strtotime($endFrame) )
                 {
                     $startFrame = date('Y-m-d H:i:s', strtotime($quantumDate.$frame->start_frame));
                     $endFrame = date('Y-m-d H:i:s', strtotime($startFrame." +8 hours"));
@@ -397,10 +398,15 @@ class ActiveShiftsController extends Controller
 
                 if ( (strtotime($quantum) >= strtotime($startFrame)) && (strtotime($quantum) < strtotime($endFrame)) )
                 {
-                    $dayFrameArray[] = [
-                        'datetime'  =>  $quantum,
-                        'frame'     =>  $frame->name
-                    ];
+                    if ( ($name != $frame->name) )
+                    {
+                        $dayFrameArray[] = [
+                            'datetime'  =>  $quantum,
+                            'frame'     =>  $frame->name,
+                            'duration'  =>  $duration
+                        ];
+                    }
+                    $name = $frame->name;
                 }
             }
             $quantum = date('Y-m-d H:i:s', strtotime($quantum." +10 minutes"));
@@ -410,22 +416,18 @@ class ActiveShiftsController extends Controller
 
     private function assignFactors($dayFrameArray)
     {
-        $temp = [
-            'start' =>  $dayFrameArray[0]['datetime'],
-            'frame' =>  $dayFrameArray[0]['frame'],
-        ];
-
-        foreach ($dayFrameArray as $item)
+        for ($i=0; $i<sizeof($dayFrameArray); $i++)
         {
-            if ( $item['frame'] == $temp['frame'] ) continue;
-
-            $temp[] = [
-                'start' =>  $item['datetime'],
-                'frame' =>  $item['frame'],
-            ];
+            echo $dayFrameArray[$i]['frame']."<br>";
         }
 
-        dd($temp);
+        exit;
+
+    }
+
+    private function isHoliday($date)
+    {
+
     }
 
 //    private function hoursAnalysis(ActiveShift $activeShift)
