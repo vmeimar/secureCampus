@@ -16,7 +16,7 @@
                                     <label for="guard{{$i}}" class="col-md-4 col-form-label text-md-right">Φύλακας {{$i}}</label>
                                     <div class="col-md-6">
                                         <select required name="guard{{$i}}" id="guard{{$i}}" class="form-control input-lg dynamic">
-                                            <option selected disabled>Επιλέξτε Φύλακα</option>
+                                            <option selected value="">Επιλέξτε Φύλακα</option>
                                             @foreach($guards as $guard)
                                                 <option value="{{ $guard->id }}">
                                                     {{ $guard->surname }} {{ $guard->name }}
@@ -30,7 +30,7 @@
                                     <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>
                                     <div class="col-md-6">
                                         <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">
-                                            <option selected disabled>Παρακαλώ επιλέξτε ημερομηνία</option>
+                                            <option selected value="">Παρακαλώ επιλέξτε ημερομηνία</option>
                                             @foreach($availableDates as $date)
                                                 <option value="{{ $date->date }}|{{ $date->is_holiday }}">
                                                     {{ $date->day }} {{ date('d-M-Y', strtotime($date->date)) }}

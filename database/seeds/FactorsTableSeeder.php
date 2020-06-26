@@ -19,6 +19,12 @@ class FactorsTableSeeder extends Seeder
         ]);
 
         Factor::create([
+            'name'  =>  'weekdays_evening_rate',
+            'rate'   => 1.00,
+            'name_greek'   => 'Καθημερινές Απόγευμα',
+        ]);
+
+        Factor::create([
             'name'  =>  'weekdays_night_rate',
             'rate'   => 1.25,
             'name_greek'   => 'Καθημερινές Βράδυ',
@@ -31,6 +37,12 @@ class FactorsTableSeeder extends Seeder
         ]);
 
         Factor::create([
+            'name'  =>  'saturday_evening_rate',
+            'rate'   => 1.25,
+            'name_greek'   => 'Σάββατο Απόγευμα',
+        ]);
+
+        Factor::create([
             'name'  =>  'saturday_night_rate',
             'rate'   => 1.75,
             'name_greek'   => 'Σάββατο Βράδυ',
@@ -40,6 +52,12 @@ class FactorsTableSeeder extends Seeder
             'name'  =>  'sunday_morning_rate',
             'rate'   => 1.75,
             'name_greek'   => 'Αργίες Πρωί',
+        ]);
+
+        Factor::create([
+            'name'  =>  'sunday_evening_rate',
+            'rate'   => 1.75,
+            'name_greek'   => 'Αργίες Απόγευμα',
         ]);
 
         Factor::create([

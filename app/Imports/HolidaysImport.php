@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Holiday;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class HolidaysImport implements ToModel
 {
@@ -17,7 +18,7 @@ class HolidaysImport implements ToModel
     {
         return new Holiday([
             'name'  =>  $row[0],
-            'date'  =>  $row[1],
+            'date'  =>  Date::excelToDateTimeObject($row['1']),
         ]);
     }
 }

@@ -53,11 +53,10 @@ class AppController extends Controller
     private function isHoliday($date)
     {
         $holiday = DB::table('holidays')
-            ->where('date', date('d/m/Y', strtotime($date)))
+            ->where('date', date('Y-m-d H:i:s', strtotime($date)))
             ->first();
 
         is_null($holiday) ? $isHoliday = 0 : $isHoliday = 1;
-
         return $isHoliday;
     }
 

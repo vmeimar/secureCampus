@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\ActiveShift;
-use App\Factor;
 use App\Guard;
 use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\DeclareDeclare;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -157,7 +155,6 @@ class ActiveShiftsController extends Controller
         $shiftFrom = $dayFrameArray[$first_key]['start_frame'];
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
-//        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
@@ -178,13 +175,6 @@ class ActiveShiftsController extends Controller
             report($e);
             return false;
         }
-
-//        $hourAnalysis = $this->hoursAnalysis($activeShift);
-//
-//        $activeShift->update([
-//            'duration'  =>  $hourAnalysis['duration'],
-//            'factor'    =>  $hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night'],
-//        ]);
 
         $request->session()->flash('success', 'Επιτυχής ανάθεση');
         return redirect(route('active-shift.index'));
@@ -223,10 +213,6 @@ class ActiveShiftsController extends Controller
         $shiftFrom = $dayFrameArray[$first_key]['start_frame'];
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
-
-        $duration = strtotime($activeShift->until) - strtotime($activeShift->from);
-//        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $activeShiftData[0], $activeShiftData[1]);
-//        $hourAnalysis = $this->hoursAnalysis($activeShift);
 
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
