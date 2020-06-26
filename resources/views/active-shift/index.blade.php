@@ -77,8 +77,8 @@
                                         @endforeach
                                     </td>
                                     <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>
-                                    <td>{{ $activeShift['from'] }}</td>
-                                    <td>{{ $activeShift['until'] }}</td>
+                                    <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['from'])) }}</td>
+                                    <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['until'])) }}</td>
                                     <td style="text-align: center"><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
                                     <td style="text-align: center">{{ $activeShift['factor'] }}</td>
                                     <td>

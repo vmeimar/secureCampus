@@ -9,6 +9,7 @@ use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\DeclareDeclare;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -125,6 +126,8 @@ class ActiveShiftsController extends Controller
 
     public function store(Request $request)
     {
+        $timeOffset = 10;
+
         foreach ($request->except(['_token', 'active-shift-date', 'shift-id']) as $item)
         {
             $assignedGuardIds[] = $item;
@@ -143,22 +146,28 @@ class ActiveShiftsController extends Controller
         }
 
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
+        $date = $activeShiftData[0];
+        $isHoliday = $activeShiftData[1];
+        $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $date, $timeOffset);
+        $shiftFactor = $this->assignFactors($dayFrameArray, $timeOffset);
 
-        $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0]);
-        $this->assignFactors($dayFrameArray, $activeShiftData[0]);
+        $first_key = array_key_first($dayFrameArray);
+        $last_key = array_key_last($dayFrameArray);
 
-
+        $shiftFrom = $dayFrameArray[$first_key]['start_frame'];
+        $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
+        $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 //        $calculations = $this->calculateFactor($staticShift->shift_from, $staticShift->shift_until, $activeShiftData[0], $activeShiftData[1]);   // IS_HOLIDAY
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'name'  =>  $staticShift->name,
-            'date'  =>  $activeShiftData[0],    // DATE
-            'from'  =>  $staticShift->shift_from,
-            'until' =>  $staticShift->shift_until,
-//            'duration'  =>  $calculations['duration'],
-//            'factor'    =>  ($calculations['morning'] + $calculations['evening'] + $calculations['night']),
-            'is_holiday' => $activeShiftData[1],
+            'date'  =>  $date,
+            'from'  =>  $shiftFrom,
+            'until' =>  $shiftUntil,
+            'duration'  =>  $shiftDuration / 3600,  // IN HOURS
+            'factor'    =>  $shiftFactor,
+            'is_holiday' => $isHoliday,
         ]);
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
@@ -170,12 +179,12 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        $hourAnalysis = $this->hoursAnalysis($activeShift);
-
-        $activeShift->update([
-            'duration'  =>  $hourAnalysis['duration'],
-            'factor'    =>  $hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night'],
-        ]);
+//        $hourAnalysis = $this->hoursAnalysis($activeShift);
+//
+//        $activeShift->update([
+//            'duration'  =>  $hourAnalysis['duration'],
+//            'factor'    =>  $hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night'],
+//        ]);
 
         $request->session()->flash('success', 'Επιτυχής ανάθεση');
         return redirect(route('active-shift.index'));
@@ -183,6 +192,8 @@ class ActiveShiftsController extends Controller
 
     public function update(ActiveShift $activeShift)
     {
+        $timeOffset = 10;
+
         foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
         {
             $assignedGuardIds[] = $item;
@@ -200,20 +211,32 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-
         $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
+        $date = $activeShiftData[0];
+        $isHoliday = $activeShiftData[1];
+        $dayFrameArray = $this->calculateFrames($activeShift->from, $activeShift->until, $date, $timeOffset);
+        $shiftFactor = $this->assignFactors($dayFrameArray, $timeOffset);
+
+        $first_key = array_key_first($dayFrameArray);
+        $last_key = array_key_last($dayFrameArray);
+
+        $shiftFrom = $dayFrameArray[$first_key]['start_frame'];
+        $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
+        $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
+
+        $duration = strtotime($activeShift->until) - strtotime($activeShift->from);
 //        $calculations = $this->calculateFactor($activeShift->from, $activeShift->until, $activeShiftData[0], $activeShiftData[1]);
-        $hourAnalysis = $this->hoursAnalysis($activeShift);
+//        $hourAnalysis = $this->hoursAnalysis($activeShift);
 
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
-            'date'  =>  $activeShiftData[0],
-            'from'  =>  $activeShift->from,
-            'until' =>  $activeShift->until,
+            'date'  =>  $date,
+            'from'  =>  $shiftFrom,
+            'until' =>  $shiftUntil,
             'comments'  =>  $data['active-shift-comments'],
-            'duration'  =>  $hourAnalysis['duration'],
-            'factor'    =>  ($hourAnalysis['morning'] + $hourAnalysis['evening'] + $hourAnalysis['night']),
-            'is_holiday' => $activeShiftData[1],
+            'duration'  =>  $shiftDuration / 3600,   // IN HOURS
+            'factor'    =>  $shiftFactor,
+            'is_holiday' => $isHoliday,
         ]))
         {
             request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
@@ -355,7 +378,7 @@ class ActiveShiftsController extends Controller
         return $overLap;
     }
 
-    private function calculateFrames($from, $until, $date)
+    private function calculateFrames($from, $until, $date, $offset)
     {
         $start = strtotime($from);
 
@@ -379,7 +402,6 @@ class ActiveShiftsController extends Controller
         $dayFrameArray = [];
 
         $frames = DB::table('day_frames')->get()->toArray();
-        $name = null;
 
         while ($quantum < $endDateTime)
         {
@@ -398,36 +420,186 @@ class ActiveShiftsController extends Controller
 
                 if ( (strtotime($quantum) >= strtotime($startFrame)) && (strtotime($quantum) < strtotime($endFrame)) )
                 {
-                    if ( ($name != $frame->name) )
-                    {
-                        $dayFrameArray[] = [
-                            'datetime'  =>  $quantum,
-                            'frame'     =>  $frame->name,
-                            'duration'  =>  $duration
-                        ];
-                    }
-                    $name = $frame->name;
+                    $dayFrameArray[] = [
+                        'start_frame'  =>  $quantum,
+                        'end_frame'  =>  date('Y-m-d H:i:s', strtotime($quantum." +".$offset." minutes")),
+                        'frame'     =>  $frame->name,
+                    ];
                 }
             }
-            $quantum = date('Y-m-d H:i:s', strtotime($quantum." +10 minutes"));
+            $quantum = date('Y-m-d H:i:s', strtotime($quantum." +".$offset." minutes"));
         }
         return $dayFrameArray;
     }
 
-    private function assignFactors($dayFrameArray)
+    private function assignFactors($dayFrameArray, $offset)
     {
-        for ($i=0; $i<sizeof($dayFrameArray); $i++)
+        $previousFrame = null;
+        $frameStart = null;
+        $frameEnd = null;
+        $frameFactor = null;
+
+        foreach ($dayFrameArray as $key => $value)
         {
-            echo $dayFrameArray[$i]['frame']."<br>";
+            $newarray[$value['frame']][$value['start_frame']] = $value['end_frame'];
         }
 
-        exit;
+        foreach ($newarray as $key => $value)
+        {
+            $frame  = $key;     //  FRAME NAME (morning, evening, night)
+//            $frameStart = array_key_first($newarray[$key]);
+            $tempFrame = $newarray[$key];
+            $previousDay = null;
 
-    }
+            foreach ($tempFrame as $tempKey => $tempValue)
+            {
+                $tempFrameStart = $tempKey;
+                $tempFrameEnd = $tempValue;
+                $tempFrameDuration = strtotime($tempFrameEnd) - strtotime($tempFrameStart);     // IN SECONDS
 
-    private function isHoliday($date)
-    {
+                $shiftDay = DB::table('days_of_year')
+                    ->where('date', date('Y-m-d', strtotime($tempFrameStart)))
+                    ->first();
 
+                switch ( lcfirst( date('l', strtotime($tempFrameStart))) )
+                {
+                    case 'saturday':
+                        $day = 'saturday';
+                        break;
+                    case 'sunday':
+                        $day = 'sunday';
+                        break;
+                    default:
+                        $day = 'weekdays';
+                }
+
+                if ($shiftDay->is_holiday)
+                {
+                    $factor = DB::table('factors')
+                        ->where('name', 'sunday_'.$frame.'_rate')
+                        ->value('rate');
+                }
+                else
+                {
+                    $factor = DB::table('factors')
+                        ->where('name', $day.'_'.$frame.'_rate')
+                        ->value('rate');
+                }
+
+                $tempFactor = $factor * $tempFrameDuration;     // FOR SECONDS
+
+//                print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday);
+//                echo "<br>";
+
+//                if ( ($frame == $previousFrame) and (lcfirst(date('l', strtotime($tempFrameStart))) == $previousDay) )
+//                {
+//                    $frameFactor += $tempFactor;
+//                    $frameEnd = $tempFrameEnd;
+//                    print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday);
+//                    echo "<br>";
+//                }
+//                else
+//                {
+//                    $frameStart = $tempFrameStart;
+//                    $frameFactor += $tempFactor;
+//                    print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday.' CHANGE');
+//                    echo "<br>";
+//                }
+
+                $frameFactor += $tempFactor;
+
+//                $previousFrame = $frame;
+//                $previousDay = lcfirst( date('l', strtotime($tempFrameStart)));
+            }
+
+//            $tempFrameEnd = $newarray[$tempFrameStart];
+
+
+
+//            $tempFrameFactor = $factor * ( strtotime($tempFrameEnd) - strtotime($frameStart) )
+//
+//            $last_key = array_key_last($newarray[$key]);
+//            $frameEnd = $newarray[$key][$last_key];
+//            $frameDuration = strtotime($frameEnd) - strtotime($frameStart);  //  IN SECONDS
+//
+//            $data[$frame] = [
+//                'factor'    =>  $factor * $frameDuration / 3600,
+//                'duration'  =>  $frameDuration / 3600
+//            ];
+
+        }
+
+        return ($frameFactor / 3600);
+
+//        $lastKey = key(array_slice($dayFrameArray, -1, 1, true));
+//
+//        for ($i=0; $i<=$lastKey; $i++)
+//        {
+//            $shiftDay = DB::table('days_of_year')
+//                ->where('date', date('Y-m-d', strtotime($dayFrameArray[$i]['datetime'])))
+//                ->first();
+//
+//            switch ( lcfirst(date('l', strtotime($shiftDay->date))) )
+//            {
+//                case 'saturday':
+//                    $day = 'saturday';
+//                    break;
+//                case 'sunday':
+//                    $day = 'sunday';
+//                    break;
+//                default:
+//                    $day = 'weekdays';
+//            }
+//
+//            $factor = DB::table('factors')
+//                ->where('name', $day.'_'.$dayFrameArray[$i]['frame'].'_rate')
+//                ->value('rate');
+//
+//            $duration = $dayFrameArray[$i]['duration'];        // IN MINUTES
+//
+//            if ( (sizeof($dayFrameArray) == 1) )
+//            {
+//                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i]['datetime']));
+//                $end = date('Y-m-d H:i', strtotime($start." +".$duration." minutes"));
+//
+//                $dateTimeFactor[] = [
+//                    'start'     =>  $start,
+//                    'end'       =>  $end,
+//                    'factor'    =>  $factor * $duration / 60,
+//                ];
+//
+//                return  $dateTimeFactor;
+//            }
+//
+//            if ( $i == 0 )
+//            {
+//                $frameDuration = $dayFrameArray[$i+1]['duration'] - $dayFrameArray[$i]['duration'];  //  IN MINUTES
+//                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i]['datetime']));
+//                $end = date('Y-m-d H:i', strtotime($start." +".$frameDuration." minutes"));
+//            }
+//            else
+//            {
+//                $frameDuration = strtotime($dayFrameArray[$i]['datetime']) - strtotime($dayFrameArray[$i-1]['datetime']);   // IN SECONDS
+//
+//
+//
+//                if ($i == $lastKey)
+//                {
+//                    $frameDuration = ($duration * 60) - $frameDuration;     // IN SECONDS
+//                }
+//
+//                echo ($frameDuration/3600)."<br>";
+//
+////                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i-1]['datetime']));
+////                $end = date('Y-m-d H:i', strtotime($start." +".$frameDuration." minutes"));
+//            }
+//
+//            $dateTimeFactor[] = [
+//                'start'     =>  $start,
+//                'end'       =>  $end,
+//                'factor'    =>  $factor * $frameDuration / 3600
+//            ];
+//        }
     }
 
 //    private function hoursAnalysis(ActiveShift $activeShift)

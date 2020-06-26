@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ route('shift.index') }}" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="{{ route('active-shift.index') }}" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

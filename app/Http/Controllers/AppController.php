@@ -36,7 +36,7 @@ class AppController extends Controller
 
             if (! DB::table('days_of_year')->insert([
                 'day'   =>  $loopingDate['weekday'],
-                'date'  =>  $date,
+                'date'  =>  date('Y-m-d', strtotime($date)),
                 'is_holiday'    =>  $this->isHoliday($date)
             ]))
             {
