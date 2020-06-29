@@ -83,30 +83,93 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Διδασκαλείου Πρωί',
+            'name'  =>  'Κτήριο Διδασκαλείου Καθημερινές Πρωί',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Weekdays',
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Διδασκαλείου Απόγευμα',
+            'name'  =>  'Κτήριο Διδασκαλείου Καθημερινές Απόγευμα',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '14:00',
             'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Weekdays',
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Διδασκαλείου Βράδυ',
+            'name'  =>  'Κτήριο Διδασκαλείου Καθημερινές Βράδυ',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
+            'shift_type'   =>  'Weekdays',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Σάββατο Πρωί',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Σάββατο Απόγευμα',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Σάββατο Βράδυ',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+            'shift_type'   =>  'Saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Κυριακή / Αργία Πρωί',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Sunday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Κυριακή / Αργία Απόγευμα',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Sunday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Κτήριο Διδασκαλείου Κυριακή / Αργία Βράδυ',
+            'location_id'   => 2,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+            'shift_type'   =>  'Sunday',
         ]);
 
         Shift::create([
@@ -116,6 +179,7 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Weekdays',
         ]);
 
         Shift::create([
@@ -125,33 +189,67 @@ class ShiftsTableSeeder extends Seeder
             'number_of_guards'  =>  1,
             'shift_from'    =>  '14:00',
             'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Weekdays',
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σ/Κ Πρωί',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σάββατο Πρωί',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '06:00',
             'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Saturday',
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σ/Κ Απόγευμα',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σάββατο Απόγευμα',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '14:00',
             'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Saturday',
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σ/Κ Βράδυ',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Σάββατο Βράδυ',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
             'shift_from'    =>  '22:00',
             'shift_until'   =>  '06:00',
+            'shift_type'   =>  'Saturday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή / Αργία Πρωί',
+            'location_id'   => 3,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '06:00',
+            'shift_until'   =>  '14:00',
+            'shift_type'   =>  'Sunday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή / Αργία Απόγευμα',
+            'location_id'   => 3,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '14:00',
+            'shift_until'   =>  '22:00',
+            'shift_type'   =>  'Sunday',
+        ]);
+
+        Shift::create([
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή / Αργία Βράδυ',
+            'location_id'   => 3,
+            'user_id'   =>  1,
+            'number_of_guards'  =>  1,
+            'shift_from'    =>  '22:00',
+            'shift_until'   =>  '06:00',
+            'shift_type'   =>  'Sunday',
         ]);
 
         Shift::create([

@@ -21,7 +21,7 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
     public static function beforeImport(BeforeImport $event)
     {
         $worksheet = $event->reader->getActiveSheet();
-        $highestRow = $worksheet->getHighestRow(); // e.g. 10
+        $highestRow = $worksheet->getHighestRow();
 
         if ($highestRow < 2) {
             $error = \Illuminate\Validation\ValidationException::withMessages([]);
@@ -44,8 +44,6 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
         if ( !is_null($row['onoma_fylaka']) and isset($row['onoma_fylaka']) and $row['onoma_fylaka'] !== 'ΣΥΝΟΛΟ' )
         {
             $fullName = explode(' ', $row['onoma_fylaka']);
-
-//            print_r($fullName);
 
             return new Guard([
                 'name'  =>  $fullName[1],
@@ -71,44 +69,4 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
 //            '*.onoma_fylaka' => 'string',
         ];
     }
-
-
-//    public function collection(Collection $rows)
-//    {
-//        for ($i=1; $i<sizeof($rows); $i++)
-//        {
-//            if ( !is_null($rows[$i][0]) and isset($rows[$i][0]) and ($rows[$i][0] !== 'ΣΥΝΟΛΟ') )
-//            {
-//                print_r($rows[$i][0]);
-//                echo "<br>";
-//
-//                $fullName = explode(' ', $rows[$i][0]);
-//
-//                return $fullName;
-//
-//                return new Guard([
-//                    'name'  =>  $fullName[1],
-//                    'surname'   =>  $fullName[0],
-//                    'company_id'    =>  1,
-//                ]);
-//            }
-//        }
-
-//        foreach ($rows as $row)
-//        {
-//            if ( !is_null($row['onoma_fylaka']) and isset($row['onoma_fylaka']) and ($row['onoma_fylaka'] !== 'ΣΥΝΟΛΟ') )
-//            {
-//                $fullName = explode(' ', $row['onoma_fylaka']);
-//
-//                return new Guard([
-//                    'name'  =>  $fullName[1],
-//                    'surname'   =>  $fullName[0],
-//                    'company_id'    =>  1,
-//                ]);
-//
-//                print_r($fullName[0].' '.$fullName[1]);
-//                echo "<br>";
-//            }
-//        }
-//    }
 }

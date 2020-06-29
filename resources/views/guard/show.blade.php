@@ -15,7 +15,7 @@
                                 <h6>
                                     <strong>
                                         Έχετε τη δυνατότητα να εμφανίσετε τις βάρδιες του φύλακα {{ $guard->name }} {{ $guard->surname }}
-                                        για συγκεκριμένο διάστημα ή να εξάγετε αρχείο τύπου excel για ένα μήνα ή συνολικά για όλες τις βάρδιες.
+                                        για συγκεκριμένο χρονικό διάστημα ή να εξάγετε αρχείο τύπου excel ανά μήνα ή συνολικά για όλες τις βάρδιες.
                                     </strong>
                                 </h6>
                             </div>
@@ -77,15 +77,10 @@
                                         <option value="12">Δεκέμβριος</option>
                                     </select>
                                     @error('month')
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Παρακαλώ επιλέξτε μήνα</strong>
                                     @enderror
                                 </div>
-                                <button type="submit" class="btn btn-success">Εξαγωγή Excel</button>
-                            </div>
-                            <div class="form-group row mb-0">
-{{--                                <div class="col-md-6 offset-md-4">--}}
-{{--                                    --}}
-{{--                                </div>--}}
+                                <button type="submit" class="btn btn-success" style="max-height: 35px">Εξαγωγή Excel</button>
                             </div>
                         </form>
 

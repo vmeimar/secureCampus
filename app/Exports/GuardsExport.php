@@ -29,10 +29,10 @@ class GuardsExport implements FromCollection, withHeadings
     public function headings(): array
     {
         return [
-            'Name',
-            'Surname',
-            'Hours',
-            'Credits',
+            'Όνομα',
+            'Επώνυμο',
+            'Ώρες Εργασίας',
+            'Ισοδύναμες Ώρες',
         ];
     }
 }

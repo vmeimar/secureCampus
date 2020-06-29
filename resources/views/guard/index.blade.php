@@ -6,14 +6,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header"><strong>{{ ucfirst($company->name) }} | Φύλακες</strong></div>
-
                     <div class="card-body">
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Όνομα</th>
                                 <th scope="col">Επώνυμο</th>
+                                <th scope="col">Όνομα</th>
                                 @can('manage-security')
                                     <th scope="col">Ενέργειες</th>
                                 @endcan
@@ -23,8 +22,8 @@
                             @foreach($guards as $guard)
                                 <tr>
                                     <th scope="row">{{ $guard->id }}</th>
+                                    <td scope="row">{{ $guard->surname }}</td>
                                     <td>{{ $guard->name }}</td>
-                                    <td>{{ $guard->surname }}</td>
                                     <td>
                                         @can('manage-security')
                                             <div class="d-flex">
@@ -56,7 +55,6 @@
                             @endforeach
                             </tbody>
                         </table>
-
                     </div>
                 </div>
                 <div class="row">

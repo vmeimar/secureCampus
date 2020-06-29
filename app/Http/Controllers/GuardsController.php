@@ -171,10 +171,10 @@ class GuardsController extends Controller
         }
 
         $exportData[] = [
-            'Name'  =>  $guard->name,
-            'Surname' => $guard->surname,
-            'Hours' => $totalHours,
-            'Credits' => $totalCredits,
+            'Όνομα'  =>  $guard->name,
+            'Επώνυμο' => $guard->surname,
+            'Ώρες Εργασίας' => $totalHours,
+            'Ισοδύναμες Ώρες' => $totalCredits,
         ];
 
         return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');
