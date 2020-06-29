@@ -182,14 +182,21 @@ class GuardsController extends Controller
 
     public function import(Request $request)
     {
-        if (Excel::import(new GuardsImport(), $request->file('import_file')))
-        {
-            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
+        try {
+            (new GuardsImport)->import($request->file('import_file'));
+        } catch (\Exception $e) {
+            $failures = $e->failures();
+            dd($failures[0]);
         }
-        else
-        {
-            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
-        }
+
+//        if (Excel::import(new GuardsImport(), $request->file('import_file')))
+//        {
+//            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
+//        }
+//        else
+//        {
+//            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
+//        }
 
         return redirect()->back();
     }
