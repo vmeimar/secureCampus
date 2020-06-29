@@ -8,7 +8,7 @@
                     <div class="card-header"><strong>{{ ucfirst($company->name) }} | Φύλακες</strong></div>
 
                     <div class="card-body">
-                        <table class="table">
+                        <table class="table table-striped table-hover">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -57,6 +57,11 @@
                             </tbody>
                         </table>
 
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center mt-2">
+                        {{ $guards->links() }}
                     </div>
                 </div>
                 @can('manage-security')

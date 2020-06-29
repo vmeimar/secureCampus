@@ -48,8 +48,8 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
 //            print_r($fullName);
 
             return new Guard([
-                'name'  =>  $fullName[0],
-                'surname'   =>  $fullName[1],
+                'name'  =>  $fullName[1],
+                'surname'   =>  $fullName[0],
                 'company_id'    =>  1,
             ]);
         }

@@ -18,7 +18,7 @@ class GuardsController extends Controller
 
     public function index(Company $company)
     {
-        $guards = Guard::where('company_id', $company->id)->get();
+        $guards = Guard::where('company_id', $company->id)->paginate(25);
         return view('guard.index', compact('company', 'guards'));
     }
 
@@ -189,20 +189,11 @@ class GuardsController extends Controller
             dd($failures[0]);
         }
 
-//        if (Excel::import(new GuardsImport(), $request->file('import_file')))
-//        {
-//            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
-//        }
-//        else
-//        {
-//            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
-//        }
-
         return redirect()->back();
     }
 
-    /*
-     *  CSV EXPORT - WORKING
+    /**
+     * CSV EXPORT - WORKING
      */
 //    public function exportCsv (Guard $guard)
 //    {
@@ -258,7 +249,4 @@ class GuardsController extends Controller
 //        fclose($output);
 //        return ob_get_clean();
 //    }
-    /*
-     *  END OF CSV EXPORT
-     */
 }

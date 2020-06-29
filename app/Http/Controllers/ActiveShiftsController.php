@@ -8,6 +8,7 @@ use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -74,6 +75,12 @@ class ActiveShiftsController extends Controller
 
     public function create(Shift $shift)
     {
+        if (!Schema::hasTable('days_of_year'))
+        {
+            \request()->session()->flash('warning', 'Ο πίνακας με τις ημέρες του έτους είναι άδειος.');
+            return redirect(route('shift.index'));
+        }
+
         switch ($shift->shift_type)
         {
             case 'Saturday':
@@ -93,7 +100,7 @@ class ActiveShiftsController extends Controller
                 break;
         }
 
-        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
+        $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.create', compact('shift', 'guards', 'availableDates'));
     }
 
@@ -277,14 +284,14 @@ class ActiveShiftsController extends Controller
         {
             $activeShift->confirmed_steward = 0;
             $activeShift->save();
-            request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
+            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
             return redirect( route('active-shift.index') );
         }
 
         $activeShift->confirmed_steward = 1;
         $activeShift->save();
 
-        request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+        request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
         return redirect( route('active-shift.index') );
     }
 
@@ -433,7 +440,6 @@ class ActiveShiftsController extends Controller
         foreach ($newarray as $key => $value)
         {
             $frame  = $key;     //  FRAME NAME (morning, evening, night)
-//            $frameStart = array_key_first($newarray[$key]);
             $tempFrame = $newarray[$key];
             $previousDay = null;
 
