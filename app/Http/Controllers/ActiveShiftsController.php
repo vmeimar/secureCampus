@@ -346,7 +346,12 @@ class ActiveShiftsController extends Controller
 
     private function checkShiftOverlap($assignedGuardIds, $data, $newShiftFrom)
     {
+
+        $dateHoliday = explode('|', $data['active-shift-date']);
+        $activeShiftDate = $dateHoliday[0];
         $overLap = 0;
+
+        echo "<pre>";
 
         foreach ($assignedGuardIds as $id)
         {
@@ -359,7 +364,7 @@ class ActiveShiftsController extends Controller
                     continue;
                 }
 
-                if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($data['active-shift-date'])) )
+                if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($activeShiftDate)) )
                 {
                     if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom) )
                     {

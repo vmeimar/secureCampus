@@ -33,7 +33,7 @@
                                             <option selected value="">Παρακαλώ επιλέξτε ημερομηνία</option>
                                             @foreach($availableDates as $date)
                                                 <option value="{{ $date->date }}|{{ $date->is_holiday }}">
-                                                    {{ $date->day }} {{ date('d-M-Y', strtotime($date->date)) }}
+                                                    {{ $date->day }} {{ date('d-m-Y', strtotime($date->date)) }}
                                                 </option>
                                             @endforeach
                                         </select>

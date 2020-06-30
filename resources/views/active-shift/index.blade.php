@@ -61,9 +61,9 @@
                                 <th scope="col">Μέχρι</th>
                                 <th scope="col">Επιβεβαιωμένη</th>
                                 <th scope="col">Ισοδύναμες Ώρες</th>
-                                @can('confirm-shifts')
+                                @canany(['confirm-shifts', 'confirm-shifts-steward'])
                                     <th scope="col">Ενέργειες</th>
-                                @endcan
+                                @endcanany
                             </tr>
                             </thead>
                             <tbody>

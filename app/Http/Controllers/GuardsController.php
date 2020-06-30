@@ -111,12 +111,18 @@ class GuardsController extends Controller
             'date-to' => 'required',
         ]);
 
-        $from = $this->formatDate($data['date-from']);
-        $to = $this->formatDate($data['date-to']);
+//        echo "<pre>";
+
+        $from = strtotime($data['date-from']);
+        $to = strtotime($data['date-to'].' +24 hours');
 
         foreach ( $guard->activeShifts()->get() as $item )
         {
-            if ( ($this->formatDate($item->date) >= $from) && ($this->formatDate($item->date) <= $to) )
+
+//            print_r($from <= strtotime($item->date));
+//            echo "<br>";
+
+            if ( ($from <= strtotime($item->date)) and ($to >= strtotime($item->date)) )
             {
                 $activeShifts[] = $item;
                 $duration += $item->duration;
@@ -125,6 +131,7 @@ class GuardsController extends Controller
         }
         $totalDuration = $this->decimal_to_time($duration * 60);
 
+//        exit;
         return view('guard.custom-range', compact('activeShifts', 'guard', 'totalCredits', 'totalDuration'));
     }
 
@@ -140,7 +147,7 @@ class GuardsController extends Controller
 
     private function formatDate($d)
     {
-        return date('d m y', strtotime($d));
+        return date('d/m/Y', strtotime($d));
     }
 
     public function export(Guard $guard)

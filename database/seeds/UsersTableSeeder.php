@@ -63,6 +63,7 @@ class UsersTableSeeder extends Seeder
         ]);
 
         $admin->locations()->attach(Location::all());
+        $epitropi->locations()->attach(Location::all());
 
         $admin->roles()->attach($adminRole);
         $doy->roles()->attach($doyRole);

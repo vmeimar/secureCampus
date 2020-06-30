@@ -15,7 +15,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Βάρδια</th>
                                 <th scope="col">Φύλακες</th>
-                                <th scope="col">Ημερομηνία</th>
+{{--                                <th scope="col">Ημερομηνία</th>--}}
                                 <th scope="col">Από</th>
                                 <th scope="col">Μέχρι</th>
                                 <th scope="col" style="text-align: center">Διάρκεια</th>
@@ -32,9 +32,9 @@
                                             {{ $shiftGuard['surname'] }} <br>
                                         @endforeach
                                     </td>
-                                    <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>
-                                    <td>{{ $activeShift['from'] }}</td>
-                                    <td>{{ $activeShift['until'] }}</td>
+{{--                                    <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>--}}
+                                    <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['from'])) }}</td>
+                                    <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['until'])) }}</td>
                                     <td style="text-align: center">{{ $activeShift['duration'] }}</td>
                                     <td style="text-align: center">{{ $activeShift['factor'] }}</td>
                                 </tr>
@@ -45,7 +45,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+{{--                                <td></td>--}}
                                 <td style="text-align: center"><strong>{{ $totalDuration }}</strong></td>
                                 <td style="text-align: center"><strong>{{ $totalCredits }}</strong></td>
                             </tr>
