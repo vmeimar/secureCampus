@@ -77,7 +77,7 @@ class ActiveShiftsController extends Controller
     {
         if (!Schema::hasTable('days_of_year'))
         {
-            \request()->session()->flash('warning', 'Ο πίνακας με τις ημέρες του έτους είναι άδειος.');
+            \request()->session()->flash('warning', 'Δεν έχουν οριστεί οι αργίες και οι εργάσιμες ημέρες του έτους.');
             return redirect(route('shift.index'));
         }
 
