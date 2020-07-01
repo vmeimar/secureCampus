@@ -18,7 +18,7 @@ class GuardsController extends Controller
 
     public function index(Company $company)
     {
-        $guards = Guard::where('company_id', $company->id)->paginate(25);
+        $guards = Guard::where('company_id', $company->id)->paginate(15);
         return view('guard.index', compact('company', 'guards'));
     }
 
@@ -111,17 +111,11 @@ class GuardsController extends Controller
             'date-to' => 'required',
         ]);
 
-//        echo "<pre>";
-
         $from = strtotime($data['date-from']);
         $to = strtotime($data['date-to'].' +24 hours');
 
         foreach ( $guard->activeShifts()->get() as $item )
         {
-
-//            print_r($from <= strtotime($item->date));
-//            echo "<br>";
-
             if ( ($from <= strtotime($item->date)) and ($to >= strtotime($item->date)) )
             {
                 $activeShifts[] = $item;
@@ -135,6 +129,32 @@ class GuardsController extends Controller
         return view('guard.custom-range', compact('activeShifts', 'guard', 'totalCredits', 'totalDuration'));
     }
 
+    public function showOvertime()
+    {
+        $guards = Guard::all();
+
+        foreach ($guards as $guard)
+        {
+            $guardShifts = $guard->activeShifts()->get()->sortBy('from');
+            $prevUntil = null;
+            $prevShift= null;
+            $prevDuration = 0;
+
+            foreach ($guardShifts as $guardShift)
+            {
+                if ( ($guardShift['from'] == $prevUntil) and ( ($guardShift['duration'] + $prevDuration) >= 11 ) )
+                {
+                    $overTimeShiftsPair[] = [$prevShift, $guardShift];
+                }
+
+                $prevUntil = $guardShift['until'];
+                $prevShift = $guardShift;
+                $prevDuration = $guardShift['duration'];
+            }
+        }
+        return view('guard.show-overtime', compact('overTimeShiftsPair'));
+    }
+
     private function decimal_to_time($decimal)
     {
         $hours = floor($decimal / 60);
@@ -143,11 +163,6 @@ class GuardsController extends Controller
         $seconds = round($seconds * 60);
 
         return str_pad($hours, 2, "0", STR_PAD_LEFT) . " Ώρες, " . str_pad($minutes, 2, "0", STR_PAD_LEFT) . " Λεπτά ";
-    }
-
-    private function formatDate($d)
-    {
-        return date('d/m/Y', strtotime($d));
     }
 
     public function export(Guard $guard)

@@ -351,8 +351,6 @@ class ActiveShiftsController extends Controller
         $activeShiftDate = $dateHoliday[0];
         $overLap = 0;
 
-        echo "<pre>";
-
         foreach ($assignedGuardIds as $id)
         {
             $guard = Guard::findOrFail($id);
@@ -366,7 +364,8 @@ class ActiveShiftsController extends Controller
 
                 if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($activeShiftDate)) )
                 {
-                    if ( ($existingShift->until > $newShiftFrom) || ($existingShift->from == $newShiftFrom) )
+//                    dd(date('H:i', strtotime($existingShift->until)));
+                    if ( (date('H:i', strtotime($existingShift->until)) > date('H:i', strtotime($newShiftFrom))) || ($existingShift->from == $newShiftFrom) )
                     {
                         $overLap = 1;
                     }
