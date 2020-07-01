@@ -133,11 +133,10 @@ class ActiveShiftsController extends Controller
     {
         $timeOffset = 10;
 
-        foreach ($request->except(['_token', 'active-shift-date', 'shift-id']) as $item)
+        foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
-
         $data = $this->fetchData( count($assignedGuardIds) );
 
         $staticShift = Shift::findOrFail($data['shift-id']);
@@ -346,7 +345,6 @@ class ActiveShiftsController extends Controller
 
     private function checkShiftOverlap($assignedGuardIds, $data, $newShiftFrom)
     {
-
         $dateHoliday = explode('|', $data['active-shift-date']);
         $activeShiftDate = $dateHoliday[0];
         $overLap = 0;
@@ -362,10 +360,10 @@ class ActiveShiftsController extends Controller
                     continue;
                 }
 
-                if ( date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($activeShiftDate)) )
+                if ( (date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($activeShiftDate)))
+                    or (date('d M y', strtotime($existingShift->until)) == date('d M y', strtotime($activeShiftDate))) )
                 {
-//                    dd(date('H:i', strtotime($existingShift->until)));
-                    if ( (date('H:i', strtotime($existingShift->until)) > date('H:i', strtotime($newShiftFrom))) || ($existingShift->from == $newShiftFrom) )
+                    if ( (date('H:i', strtotime($existingShift->until)) > date('H:i', strtotime($newShiftFrom))) or ($existingShift->from == $newShiftFrom) )
                     {
                         $overLap = 1;
                     }
@@ -483,365 +481,83 @@ class ActiveShiftsController extends Controller
                 }
 
                 $tempFactor = $factor * $tempFrameDuration;     // FOR SECONDS
-
-//                print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday);
-//                echo "<br>";
-
-//                if ( ($frame == $previousFrame) and (lcfirst(date('l', strtotime($tempFrameStart))) == $previousDay) )
-//                {
-//                    $frameFactor += $tempFactor;
-//                    $frameEnd = $tempFrameEnd;
-//                    print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday);
-//                    echo "<br>";
-//                }
-//                else
-//                {
-//                    $frameStart = $tempFrameStart;
-//                    $frameFactor += $tempFactor;
-//                    print_r($tempFrameStart.' -> '.$tempFrameEnd.' -> '.$tempFactor.' -> '.lcfirst( date('l', strtotime($tempFrameStart))).' '.$frame.' is holiday: '.$shiftDay->is_holiday.' CHANGE');
-//                    echo "<br>";
-//                }
-
                 $frameFactor += $tempFactor;
-
-//                $previousFrame = $frame;
-//                $previousDay = lcfirst( date('l', strtotime($tempFrameStart)));
             }
-
-//            $tempFrameEnd = $newarray[$tempFrameStart];
-
-
-
-//            $tempFrameFactor = $factor * ( strtotime($tempFrameEnd) - strtotime($frameStart) )
-//
-//            $last_key = array_key_last($newarray[$key]);
-//            $frameEnd = $newarray[$key][$last_key];
-//            $frameDuration = strtotime($frameEnd) - strtotime($frameStart);  //  IN SECONDS
-//
-//            $data[$frame] = [
-//                'factor'    =>  $factor * $frameDuration / 3600,
-//                'duration'  =>  $frameDuration / 3600
-//            ];
-
         }
 
         return ($frameFactor / 3600);
-
-//        $lastKey = key(array_slice($dayFrameArray, -1, 1, true));
-//
-//        for ($i=0; $i<=$lastKey; $i++)
-//        {
-//            $shiftDay = DB::table('days_of_year')
-//                ->where('date', date('Y-m-d', strtotime($dayFrameArray[$i]['datetime'])))
-//                ->first();
-//
-//            switch ( lcfirst(date('l', strtotime($shiftDay->date))) )
-//            {
-//                case 'saturday':
-//                    $day = 'saturday';
-//                    break;
-//                case 'sunday':
-//                    $day = 'sunday';
-//                    break;
-//                default:
-//                    $day = 'weekdays';
-//            }
-//
-//            $factor = DB::table('factors')
-//                ->where('name', $day.'_'.$dayFrameArray[$i]['frame'].'_rate')
-//                ->value('rate');
-//
-//            $duration = $dayFrameArray[$i]['duration'];        // IN MINUTES
-//
-//            if ( (sizeof($dayFrameArray) == 1) )
-//            {
-//                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i]['datetime']));
-//                $end = date('Y-m-d H:i', strtotime($start." +".$duration." minutes"));
-//
-//                $dateTimeFactor[] = [
-//                    'start'     =>  $start,
-//                    'end'       =>  $end,
-//                    'factor'    =>  $factor * $duration / 60,
-//                ];
-//
-//                return  $dateTimeFactor;
-//            }
-//
-//            if ( $i == 0 )
-//            {
-//                $frameDuration = $dayFrameArray[$i+1]['duration'] - $dayFrameArray[$i]['duration'];  //  IN MINUTES
-//                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i]['datetime']));
-//                $end = date('Y-m-d H:i', strtotime($start." +".$frameDuration." minutes"));
-//            }
-//            else
-//            {
-//                $frameDuration = strtotime($dayFrameArray[$i]['datetime']) - strtotime($dayFrameArray[$i-1]['datetime']);   // IN SECONDS
-//
-//
-//
-//                if ($i == $lastKey)
-//                {
-//                    $frameDuration = ($duration * 60) - $frameDuration;     // IN SECONDS
-//                }
-//
-//                echo ($frameDuration/3600)."<br>";
-//
-////                $start = date('Y-m-d H:i', strtotime($dayFrameArray[$i-1]['datetime']));
-////                $end = date('Y-m-d H:i', strtotime($start." +".$frameDuration." minutes"));
-//            }
-//
-//            $dateTimeFactor[] = [
-//                'start'     =>  $start,
-//                'end'       =>  $end,
-//                'factor'    =>  $factor * $frameDuration / 3600
-//            ];
-//        }
     }
-
-//    private function hoursAnalysis(ActiveShift $activeShift)
-//    {
-//        $morningStart = strtotime('06:00');
-//        $eveningStart = strtotime('14:00');
-//        $nightStart = strtotime('22:00');
-//        $nextMorning = $morningStart + 3600 * 24;
-//
-//        $morningHours = 0;
-//        $eveningHours = 0;
-//        $nightHours = 0;
-//
-//        $start = strtotime($activeShift->from);
-//        $end = strtotime($activeShift->until);
-//
-//        if ($start > $end)  // next day
-//        {
-//            $end += 24 * 3600;
-//
-//            if ($start < $nightStart)
-//            {
-//                $eveningHours = ($nightStart - $start) / 3600;
-//            }
-//
-//            $nightHours = (($nextMorning - $start) / 3600) - $eveningHours;
-//
-//            if ($end > $nextMorning)
-//            {
-//                $morningHours = ($end - $nextMorning) / 3600;
-//            }
-//
-//            $hoursAnalysis = [
-//                'morning'   =>  $morningHours,
-//                'evening'   =>  $eveningHours,
-//                'night'     =>  $nightHours,
-//            ];
-//        }
-//        else
-//        {
-//            if ($start >= $eveningStart)
-//            {
-//                if ($end > $nightStart)
-//                {
-//                    $nightHours = ($end - $nightStart) / 3600;
-//                }
-//
-//                if ($end > $eveningStart)
-//                {
-//                    $eveningHours = (($end - $eveningStart) / 3600) - $nightHours - (($start - $eveningStart) / 3600);
-//                }
-//
-//                $hoursAnalysis = [
-//                    'morning'   =>  $morningHours,
-//                    'evening'   =>  $eveningHours,
-//                    'night'     =>  $nightHours,
-//                ];
-//            }
-//            else
-//            {
-//                if ($end > $nightStart)
-//                {
-//                    $nightHours = ($end - $nightStart) / 3600;
-//                }
-//
-//                if ($end > $eveningStart)
-//                {
-//                    $eveningHours = (($end - $eveningStart) / 3600) - $nightHours;
-//                }
-//
-//                if ($start < $morningStart)
-//                {
-//                    $nightHours += ($morningStart - $start) / 3600;
-//                }
-//
-//                $morningHours = ($eveningStart - $start) / 3600;
-//
-//                $hoursAnalysis = [
-//                    'morning'   =>  $morningHours,
-//                    'evening'   =>  $eveningHours,
-//                    'night'     =>  $nightHours,
-//                ];
-//            }
-//        }
-//
-//        if (!$activeShift->is_holiday)
-//        {
-//            switch ( date('l', strtotime($activeShift->date)) )
-//            {
-//                case 'Saturday':
-//                    $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-//                    $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-//                    $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
-//                    break;
-//
-//                case 'Sunday':
-//                    $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//                    $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//                    $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-//                    break;
-//
-//                default:
-//                    $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-//                    $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-//                    $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
-//                    break;
-//            }
-//        }
-//        else
-//        {
-//            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-//        }
-//
-//        $duration = ($end - $start) / 3600; // activeShift's duration in hours
-//
-//        $data = [
-//            'morning'   =>  $hoursAnalysis['morning'] * $morningFactor,
-//            'evening'   =>  $hoursAnalysis['evening'] * $eveningFactor,
-//            'night'     =>  $hoursAnalysis['night'] * $nightFactor,
-//            'duration'  =>  $duration,
-//        ];
-//
-//        return $data;
-//    }
-
-//    private function calculateFactor($from, $until, $date, $isHoliday)
-//    {
-//        $start = strtotime($from);
-//
-//        $end = ( $until < $from )
-//            ? ( strtotime($until) + 3600 * 24 )
-//            : strtotime($until);
-//
-//        $duration = ($end - $start) / 3600; // shift's duration in hours
-//
-//        $morning_start = strtotime("06:00");
-//        $morning_end = strtotime("14:00");
-//        $afternoon_start = strtotime("14:00");
-//        $afternoon_end = strtotime("22:00");
-//        $night_start = strtotime("22:00");
-//        $night_end = strtotime("06:00") + 3600 * 24; // 06:00 of next day, add 3600*24 seconds
-//
-//        switch ( date('l', strtotime($date)) )
-//        {
-//            case 'Saturday':
-//                $morningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-//                $eveningFactor = Factor::where('name', 'saturday_morning_rate')->value('rate');
-//                $nightFactor = Factor::where('name', 'saturday_night_rate')->value('rate');
-//                break;
-//
-//            case 'Sunday':
-//                $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//                $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//                $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-//                break;
-//
-//            default:
-//                $morningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-//                $eveningFactor = Factor::where('name', 'weekdays_morning_rate')->value('rate');
-//                $nightFactor = Factor::where('name', 'weekdays_night_rate')->value('rate');
-//                break;
-//        }
-//
-//        if ($isHoliday)
-//        {
-//            $morningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//            $eveningFactor = Factor::where('name', 'sunday_morning_rate')->value('rate');
-//            $nightFactor = Factor::where('name', 'sunday_night_rate')->value('rate');
-//        }
-//
-//        $data = [
-//            'start'     =>  $from,
-//            'end'       =>  $until,
-//            'morning'   =>  ($this->intersection( $start, $end, $morning_start, $morning_end, 'm' ) / 3600) * $morningFactor,
-//            'evening'   =>  ($this->intersection( $start, $end, $afternoon_start, $afternoon_end, 'e' ) / 3600) * $eveningFactor,
-//            'night'     =>  ($this->intersection( $start, $end, $night_start, $night_end, 'n' ) / 3600) * $nightFactor,
-//            'duration'  =>  $duration,
-//            'start_day' =>  date('l', strtotime($date)),
-//        ];
-//
-//        return $data;
-//    }
-
-//    private function intersection($s1, $e1, $s2, $e2, $when)
-//    {
-//        $midnight = strtotime('24:00');
-//
-//        if ($e1 < $s2)
-//        {
-//            return 0;
-//        }
-//
-//        if (   ($e1 > $s2)       // morning shift, ends next day, only morning hours
-//            && ($e1 > $e2)
-//            && (($e1 - $s2 - 24 * 3600) > 0)
-//            && ((($midnight - $s1) / 3600 ) > 0)
-//            && ((($midnight - $s1) / 3600 ) < 12)
-//            && $when == 'm'
-//        )
-//        {
-//            $temp = ($e1 - $s2 - 24 * 3600);
-//            return $temp;
-//        }
-//        if ($s1 > $e2)
-//        {
-//            return 0;
-//        }
-//        if ($s1 < $s2)
-//        {
-//            $s1 = $s2;
-//        }
-//        if ($e1 > $e2)
-//        {
-//            $e1 = $e2;
-//        }
-//        return $e1 - $s1;
-//    }
 
     /**
      * AJAX for fetching active shifts
      */
-    //    function fetch(Request $request)
-//    {
-//        $select = $request->get('select');
-//        $value = $request->get('value');
-//        $dependent = $request->get('dependent');
-//
-//        $activeShifts = ActiveShift::all();
-//
-//        foreach ($activeShifts as $activeShift)
-//        {
-//            if ($activeShift->shift->location->id == $value)
-//            {
-//                $data[] = $activeShift;
-//            }
-//        }
-//
-//        $output = '<option value="">Select Shift</option>';
-//
-//        foreach ($data as $row)
-//        {
-//            $output .= '<option value="'.$row->id.'">'.$row->name.'</option>';
-//        }
-//
-//        echo $output;
-//    }
+        function fetch(Request $request)
+    {
+        $select = $request->get('select');
+        $value = $request->get('value');
+        $dependent = $request->get('dependent');
+        $shiftId = $request->get('shiftId');
+
+        $shift = Shift::find($shiftId);
+
+        switch ($shift->shift_type)
+        {
+            case 'Saturday':
+                $daysOfYear = DB::table('days_of_year')
+                    ->where('day', 'Saturday')
+                    ->get();
+                break;
+            case 'Sunday':
+                $daysOfYear = DB::table('days_of_year')
+                    ->where('day', 'Sunday')
+                    ->get();
+                break;
+            default:
+                $daysOfYear = DB::table('days_of_year')
+                    ->whereNotIn('day', ['Saturday', 'Sunday'])
+                    ->get();
+                break;
+        }
+
+        foreach ($daysOfYear as $item)
+        {
+            if ($value == date('m', strtotime($item->date)))
+            {
+                $data[] = $item;
+            }
+        }
+
+        $output = '<option value="" disabled>Επιλέξτε Ημέρα</option>';
+
+        foreach ($data as $row)
+        {
+            switch ($row->day)
+            {
+                case 'Monday':
+                    $greekDay = 'Δευτέρα';
+                    break;
+                case 'Tuesday':
+                    $greekDay = 'Τρίτη';
+                    break;
+                case 'Wednesday':
+                    $greekDay = 'Τετάρτη';
+                    break;
+                case 'Thursday':
+                    $greekDay = 'Πέμπτη';
+                    break;
+                case 'Friday':
+                    $greekDay = 'Παρασκευή';
+                    break;
+                case 'Saturday':
+                    $greekDay = 'Σάββατο';
+                    break;
+                case 'Sunday':
+                    $greekDay = 'Κυριακή';
+                    break;
+            }
+
+            $output .= '<option value="'.$row->date.'|'.$row->is_holiday.'">'.$greekDay.' '.date('d-m-Y', strtotime($row->date)).'</option>';
+        }
+        echo $output;
+    }
 }

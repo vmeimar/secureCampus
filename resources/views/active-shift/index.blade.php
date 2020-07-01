@@ -4,13 +4,11 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-
                 <div class="card mb-4">
                     <div class="card-header">
                         <strong>Εμφάνιση Φιλτραρισμένων Βαρδιών</strong>
                     </div>
                     <div class="card-body">
-
                         <div class="d-flex justify-content-center mb-4">
                             <div class="row col-md-8">
                                 <h6>
@@ -21,7 +19,6 @@
                                 </h6>
                             </div>
                         </div>
-
                         <form method="post" action="{{ route('active-shift.show-by-location') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
@@ -56,7 +53,6 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Βάρδια</th>
                                 <th scope="col">Φύλακες</th>
-{{--                                <th scope="col">Ημερομηνία</th>--}}
                                 <th scope="col">Από</th>
                                 <th scope="col">Μέχρι</th>
                                 <th scope="col">Επιβεβαιωμένη</th>
@@ -76,7 +72,6 @@
                                             {{ $guard['surname'] }}<br>
                                         @endforeach
                                     </td>
-{{--                                    <td>{{ date('d/m/yy', strtotime($activeShift['date'])) }}</td>--}}
                                     <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['from'])) }}</td>
                                     <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['until'])) }}</td>
                                     <td style="text-align: center"><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
@@ -93,7 +88,6 @@
                                                 </form>
                                             </div>
                                         @endcan
-
                                         @can('confirm-shifts-steward')
                                             <div class="row mb-1">
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm-steward" method="POST" class="float-left">
@@ -105,13 +99,11 @@
                                                 </form>
                                             </div>
                                         @endcan
-
-                                            @can('edit-shifts')
-                                            <div class="row mb-1">
-                                                <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
-                                            </div>
-                                            @endcan
-
+                                        @can('edit-shifts')
+                                        <div class="row mb-1">
+                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
+                                        </div>
+                                        @endcan
                                         @can('admin')
                                             <div class="row">
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
@@ -141,57 +133,4 @@
             </div>
         </div>
     </div>
-
-{{--AJAX START--}}
-{{--                <div class="form-group row">--}}
-{{--                    <label for="location" class="col-md-4 col-form-label text-md-right">Σημείο φύλαξης</label>--}}
-{{--                    <div class="col-md-6">--}}
-{{--                        <select required name="location" id="location" class="form-control input-lg dynamic" data-dependent="active-shifts">--}}
-{{--                            <option selected disabled>Επιλέξτε Τοποθεσία</option>--}}
-{{--                            @foreach($user->locations()->get() as $location)--}}
-{{--                                <option value="{{ $location->id }}">--}}
-{{--                                    {{ $location->name }}--}}
-{{--                                </option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--                <br />--}}
-{{--                <div class="form-group">--}}
-{{--                    <select name="active-shifts" id="active-shifts" class="form-control input-lg dynamic">--}}
-{{--                        <option value="">test</option>--}}
-{{--                    </select>--}}
-{{--                </div>--}}
-{{--                <a href="#" class="btn btn-primary">Submit</a>--}}
-{{--                {{ csrf_field() }}--}}
-{{--    <script type="application/javascript">--}}
-{{--        $(document).ready(function(){--}}
-
-{{--            $('.dynamic').change(function(){--}}
-{{--                if($(this).val() != '')--}}
-{{--                {--}}
-{{--                    var select = $(this).attr("id");--}}
-{{--                    var value = $(this).val();--}}
-{{--                    var dependent = $(this).data('dependent');--}}
-{{--                    var _token = $('input[name="_token"]').val();--}}
-
-{{--                    $.ajax({--}}
-{{--                        url:"{{ route('active-shift.fetch') }}",--}}
-{{--                        method:"POST",--}}
-{{--                        data:{select:select, value:value, _token:_token, dependent:dependent},--}}
-{{--                        success:function(result)--}}
-{{--                        {--}}
-{{--                            $('#'+dependent).html(result);--}}
-{{--                        }--}}
-{{--                    })--}}
-{{--                }--}}
-{{--            });--}}
-
-{{--            $('#location').change(function(){--}}
-{{--                $('#active-shifts').val('');--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
-{{--    AJAX END--}}
-
 @endsection
