@@ -25,4 +25,9 @@ class ActiveShift extends Model
     {
         return $this->belongsToMany(Guard::class);
     }
+
+    public function location()
+    {
+        return $this->hasOne(Location::class);
+    }
 }

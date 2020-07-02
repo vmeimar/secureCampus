@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\ActiveShift;
+use App\Exports\ActiveShiftsExport;
+use App\Exports\GuardsExport;
 use App\Guard;
+use App\Location;
 use App\Shift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -70,7 +74,7 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        return view('active-shift.custom-index', compact('activeShifts'));
+        return view('active-shift.custom-index', compact('activeShifts', 'locationId'));
     }
 
     public function create(Shift $shift)
@@ -164,6 +168,7 @@ class ActiveShiftsController extends Controller
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
+            'location_id'  =>  $staticShift->location_id,
             'name'  =>  $staticShift->name,
             'date'  =>  $date,
             'from'  =>  $shiftFrom,
@@ -196,9 +201,7 @@ class ActiveShiftsController extends Controller
         }
 
         $data = request()->all();
-
         $data['active-shift-id'] = $activeShift->id;
-
         $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
         if ($overLap)
@@ -495,9 +498,64 @@ class ActiveShiftsController extends Controller
         return ($frameFactor / 3600);
     }
 
+    public function exportByLocation(Location $location)
+    {
+        $activeShifts = $location->activeShifts()->get();
+
+//        echo "<pre>";
+//        foreach ($activeShifts as $activeShift)
+//        {
+//            print_r($activeShift->guards()->value('name'));
+//        }
+//        exit;
+
+        if ( is_null($activeShifts) )
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για το σημέιο φύλαξης.');
+            return redirect()->back();
+        }
+
+        return Excel::download(new ActiveShiftsExport(collect($activeShifts)), 'Κτήριο '.$location->name.'.xlsx');
+
+//        $exportData = [
+//
+//        ];
+//        $requestData = \request()->validate([
+//            'month' =>  'required'
+//        ]);
+//
+//        if ($requestData['month'] == '')
+//        {
+
+//        }
+//
+//        $guardShifts = $guard->activeShifts()->get();
+//        $totalHours = 0;
+//        $totalCredits = 0;
+//
+//        foreach ($guardShifts as $activeShift)
+//        {
+//            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
+//            {
+//                continue;
+//            }
+//
+//            $totalHours += $activeShift->duration;
+//            $totalCredits += $activeShift->factor;
+//        }
+//
+//        $exportData[] = [
+//            'Όνομα'  =>  $guard->name,
+//            'Επώνυμο' => $guard->surname,
+//            'Ώρες Εργασίας' => $totalHours,
+//            'Ισοδύναμες Ώρες' => $totalCredits,
+//        ];
+//
+//        return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');
+    }
+
     /**
      * AJAX for fetching active shifts
-     * @param Request $request
      */
         function fetch(Request $request)
     {

@@ -13,6 +13,11 @@ class Location extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function activeShifts()
+    {
+        return $this->hasMany(ActiveShift::class);
+    }
+
     public function shifts()
     {
         return $this->hasMany(Shift::class);

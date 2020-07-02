@@ -81,7 +81,7 @@
                     </div>
                     <form method="post" action="{{ route('guard.show-overtime', $company->id) }}" enctype="multipart/form-data">
                         @csrf
-                        <button type="submit" class="btn btn-primary" style="max-height: 35px">Προβολή Υπερεργασίας</button>
+                        <button type="submit" class="btn btn-dark" style="max-height: 35px">Προβολή Υπερεργασίας</button>
                     </form>
                 @endcan
             </div>

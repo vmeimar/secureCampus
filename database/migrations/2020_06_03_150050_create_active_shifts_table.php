@@ -16,6 +16,7 @@ class CreateActiveShiftsTable extends Migration
         Schema::create('active_shifts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('shift_id');
+            $table->unsignedBigInteger('location_id');
             $table->string('name');
             $table->dateTime('date');
             $table->string('from');
