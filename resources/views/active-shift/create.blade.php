@@ -27,6 +27,7 @@
                                 </div>
                             @endfor
 
+                            {{--AJAX START--}}
                             <div class="form-group row">
                                 <label for="month" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας (Μήνας)</label>
                                 <div class="col-md-6">
@@ -55,39 +56,10 @@
                                 <div class="col-md-6">
                                     <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">
                                         <option selected value="">Επιλέξτε Πρώτα Μήνα</option>
-{{--                                        @foreach($availableDates as $date)--}}
-{{--                                            <option value="{{ $date->date }}|{{ $date->is_holiday }}">--}}
-{{--                                                {{ $date->day }} {{ date('d-m-Y', strtotime($date->date)) }}--}}
-{{--                                            </option>--}}
-{{--                                        @endforeach--}}
                                     </select>
                                 </div>
                             </div>
-
-                        {{--AJAX START--}}
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="location" class="col-md-4 col-form-label text-md-right">Σημείο φύλαξης</label>--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <select required name="location" id="location" class="form-control input-lg dynamic" data-dependent="active-shifts">--}}
-{{--                                        <option selected disabled>Επιλέξτε Τοποθεσία</option>--}}
-{{--                                        @foreach($user->locations()->get() as $location)--}}
-{{--                                            <option value="{{ $location->id }}">--}}
-{{--                                                {{ $location->name }}--}}
-{{--                                            </option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <br />--}}
-{{--                            <div class="form-group">--}}
-{{--                                <select name="active-shifts" id="active-shifts" class="form-control input-lg dynamic">--}}
-{{--                                    <option value="">test</option>--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                            <a href="#" class="btn btn-primary">Submit</a>--}}
-{{--                            {{ csrf_field() }}--}}
-{{--                            AJAX END--}}
-
+                            {{--AJAX-END--}}
 
                             <!-- Get shift's id on hidden element -->
                             <input type="hidden" id="shift-id" name="shift-id" value="{{ $shift->id }}">

@@ -125,7 +125,7 @@ class ActiveShiftsController extends Controller
                 break;
         }
 
-        $guards = Guard::where('active', 1)->orderBy('name', 'asc')->get();
+        $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.edit', compact('activeShift', 'guards', 'availableDates'));
     }
 
@@ -141,7 +141,7 @@ class ActiveShiftsController extends Controller
 
         $staticShift = Shift::findOrFail($data['shift-id']);
 
-        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $staticShift->shift_from);
+        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
         if ($overLap)
         {
@@ -153,7 +153,7 @@ class ActiveShiftsController extends Controller
         $date = $activeShiftData[0];
         $isHoliday = $activeShiftData[1];
         $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $date, $timeOffset);
-        $shiftFactor = $this->assignFactors($dayFrameArray, $timeOffset);
+        $shiftFactor = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
         $last_key = array_key_last($dayFrameArray);
@@ -190,7 +190,7 @@ class ActiveShiftsController extends Controller
     {
         $timeOffset = 10;
 
-        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments']) as $item)
+        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
@@ -199,7 +199,7 @@ class ActiveShiftsController extends Controller
 
         $data['active-shift-id'] = $activeShift->id;
 
-        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data, $activeShift->from);
+        $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
         if ($overLap)
         {
@@ -211,7 +211,7 @@ class ActiveShiftsController extends Controller
         $date = $activeShiftData[0];
         $isHoliday = $activeShiftData[1];
         $dayFrameArray = $this->calculateFrames($activeShift->from, $activeShift->until, $date, $timeOffset);
-        $shiftFactor = $this->assignFactors($dayFrameArray, $timeOffset);
+        $shiftFactor = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
         $last_key = array_key_last($dayFrameArray);
@@ -343,30 +343,37 @@ class ActiveShiftsController extends Controller
         return $data;
     }
 
-    private function checkShiftOverlap($assignedGuardIds, $data, $newShiftFrom)
+    private function checkShiftOverlap($assignedGuardIds, $data)
     {
-        $dateHoliday = explode('|', $data['active-shift-date']);
-        $activeShiftDate = $dateHoliday[0];
         $overLap = 0;
 
-        foreach ($assignedGuardIds as $id)
+        if ( isset($data['active-shift-id']) )
         {
-            $guard = Guard::findOrFail($id);
+            $activeShift = ActiveShift::find($data['active-shift-id']);
+        }
 
-            foreach ( $guard->activeShifts()->get() as $existingShift )
+        foreach ($assignedGuardIds as $guardId)
+        {
+            $guard = Guard::findOrFail($guardId);
+
+            foreach ( $guard->activeShifts()->get() as $guardShift )
             {
-                if ( isset($data['active-shift-id']) && ($existingShift->id == $data['active-shift-id']) )
-                {
-                    continue;
-                }
+                $guardShiftFrom = date('d-m-Y H:i:s', strtotime($guardShift->from));
+                $guardShiftUntil = date('d-m-Y H:i:s', strtotime($guardShift->until));
 
-                if ( (date('d M y', strtotime($existingShift->date)) == date('d M y', strtotime($activeShiftDate)))
-                    or (date('d M y', strtotime($existingShift->until)) == date('d M y', strtotime($activeShiftDate))) )
+                if ( isset($activeShift) and ($guardShift->id == $activeShift->id) ) continue;
+
+                $dateHoliday = explode('|', $data['active-shift-date']);
+                $staticDate = $dateHoliday[0];
+
+                $staticShift = Shift::find($data['shift-id']);
+                $checkFrom = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_from));
+                $checkUntil = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_until));
+
+                if ( ( ($checkFrom >= $guardShiftFrom) and ($checkFrom <= $guardShiftUntil) )
+                    or ( ($checkUntil >= $guardShiftFrom) and ($checkUntil <= $guardShiftUntil) ) )
                 {
-                    if ( (date('H:i', strtotime($existingShift->until)) > date('H:i', strtotime($newShiftFrom))) or ($existingShift->from == $newShiftFrom) )
-                    {
-                        $overLap = 1;
-                    }
+                    $overLap = 1;
                 }
             }
         }
@@ -427,7 +434,7 @@ class ActiveShiftsController extends Controller
         return $dayFrameArray;
     }
 
-    private function assignFactors($dayFrameArray, $offset)
+    private function assignFactors($dayFrameArray)
     {
         $previousFrame = null;
         $frameStart = null;
@@ -490,6 +497,7 @@ class ActiveShiftsController extends Controller
 
     /**
      * AJAX for fetching active shifts
+     * @param Request $request
      */
         function fetch(Request $request)
     {
