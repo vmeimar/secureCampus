@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -24,14 +23,6 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
         return $this->data;
     }
 
-    //    /**
-//    * @return \Illuminate\Support\Collection
-//    */
-//    public function collection()
-//    {
-//        return ActiveShift::all();
-//    }
-
     public function headings(): array
     {
         return [
@@ -40,6 +31,7 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
             'Φύλακες',
             'Έναρξη',
             'Λήξη',
+            'Διάρκεια',
             'Ισοδύναμες Ώρες'
         ];
     }
@@ -55,8 +47,9 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
             $activeShift->id,
             $activeShift->name,
             implode(', ', $fullNames),
-            $activeShift->from,
-            $activeShift->until,
+            date('d/m/Y H:i:s', strtotime($activeShift->from)),
+            date('d/m/Y H:i:s', strtotime($activeShift->until)),
+            $activeShift->duration,
             $activeShift->factor
         ];
     }

@@ -502,13 +502,6 @@ class ActiveShiftsController extends Controller
     {
         $activeShifts = $location->activeShifts()->get();
 
-//        echo "<pre>";
-//        foreach ($activeShifts as $activeShift)
-//        {
-//            print_r($activeShift->guards()->value('name'));
-//        }
-//        exit;
-
         if ( is_null($activeShifts) )
         {
             \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για το σημέιο φύλαξης.');
@@ -516,42 +509,6 @@ class ActiveShiftsController extends Controller
         }
 
         return Excel::download(new ActiveShiftsExport(collect($activeShifts)), 'Κτήριο '.$location->name.'.xlsx');
-
-//        $exportData = [
-//
-//        ];
-//        $requestData = \request()->validate([
-//            'month' =>  'required'
-//        ]);
-//
-//        if ($requestData['month'] == '')
-//        {
-
-//        }
-//
-//        $guardShifts = $guard->activeShifts()->get();
-//        $totalHours = 0;
-//        $totalCredits = 0;
-//
-//        foreach ($guardShifts as $activeShift)
-//        {
-//            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
-//            {
-//                continue;
-//            }
-//
-//            $totalHours += $activeShift->duration;
-//            $totalCredits += $activeShift->factor;
-//        }
-//
-//        $exportData[] = [
-//            'Όνομα'  =>  $guard->name,
-//            'Επώνυμο' => $guard->surname,
-//            'Ώρες Εργασίας' => $totalHours,
-//            'Ισοδύναμες Ώρες' => $totalCredits,
-//        ];
-//
-//        return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');
     }
 
     /**
