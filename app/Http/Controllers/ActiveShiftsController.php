@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ActiveShift;
 use App\Exports\ActiveShiftsExport;
-use App\Exports\GuardsExport;
 use App\Guard;
 use App\Location;
 use App\Shift;
@@ -502,7 +501,7 @@ class ActiveShiftsController extends Controller
     {
         $activeShifts = $location->activeShifts()->get();
 
-        if ( is_null($activeShifts) )
+        if ( is_null($activeShifts) or !isset($activeShifts) )
         {
             \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για το σημέιο φύλαξης.');
             return redirect()->back();

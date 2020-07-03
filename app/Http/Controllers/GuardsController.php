@@ -152,7 +152,16 @@ class GuardsController extends Controller
                 $prevDuration = $guardShift['duration'];
             }
         }
-        return view('guard.show-overtime', compact('overTimeShiftsPair'));
+
+        if (isset($overTimeShiftsPair) and !is_null($overTimeShiftsPair))
+        {
+            return view('guard.show-overtime', compact('overTimeShiftsPair'));
+        }
+        else
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχει φύλακας με υπερεργασία');
+            return redirect()->back();
+        }
     }
 
     private function decimal_to_time($decimal)

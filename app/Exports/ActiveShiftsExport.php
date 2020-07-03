@@ -31,6 +31,7 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
             'Φύλακες',
             'Έναρξη',
             'Λήξη',
+            'Σχόλια',
             'Διάρκεια',
             'Ισοδύναμες Ώρες'
         ];
@@ -49,6 +50,7 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
             implode(', ', $fullNames),
             date('d/m/Y H:i:s', strtotime($activeShift->from)),
             date('d/m/Y H:i:s', strtotime($activeShift->until)),
+            $activeShift->comments,
             $activeShift->duration,
             $activeShift->factor
         ];
