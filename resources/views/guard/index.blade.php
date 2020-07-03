@@ -80,22 +80,19 @@
                         </form>
                     </div>
                     <div class="d-flex">
-                        <div class="row">
-                            <form method="post" action="{{ route('guard.show-overtime', $company->id) }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.show-overtime', $company->id) }}" enctype="multipart/form-data">
+                            <div class="row">
                                 @csrf
-                                <button type="submit" class="btn btn-dark" style="max-height: 35px">Προβολή Υπερεργασίας</button>
-                            </form>
-                        </div>
-                        <div class="row">
-                            <form action="{{ route('guard.export-all-guards', $company->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <button type="submit" class="btn btn-success m-4" style="max-height: 35px">Εξαγωγή Όλων</button>
-                                </div>
-                            </form>
-                        </div>
+                                <button type="submit" class="btn btn-dark ml-4" style="max-height: 35px">Προβολή Υπερεργασίας</button>
+                            </div>
+                        </form>
+                        <form action="{{ route('guard.export-all-guards', $company->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="row">
+                                <button type="submit" class="btn btn-success ml-5" style="max-height: 35px">Εξαγωγή Όλων</button>
+                            </div>
+                        </form>
                     </div>
-
                 @endcan
             </div>
         </div>
