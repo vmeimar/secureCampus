@@ -216,6 +216,12 @@ class GuardsController extends Controller
     {
         $guards = $company->guards()->get();
 
+        if (!isset($guards) or is_null($guards))
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν φύλακες για εξαγωγή');
+            return redirect()->back();
+        }
+
         foreach ($guards as $guard)
         {
             $guardShifts = $guard->activeShifts()->get();
