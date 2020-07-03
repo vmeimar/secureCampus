@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Exports\AllGuardsExport;
 use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
@@ -209,6 +210,34 @@ class GuardsController extends Controller
         ];
 
         return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');
+    }
+
+    public function exportAllGuards(Company $company)
+    {
+        $guards = $company->guards()->get();
+
+        foreach ($guards as $guard)
+        {
+            $guardShifts = $guard->activeShifts()->get();
+            $totalHours = 0;
+            $totalCredits = 0;
+
+            foreach ($guardShifts as $activeShift)
+            {
+                $totalHours += $activeShift->duration;
+                $totalCredits += $activeShift->factor;
+            }
+
+            $exportData[] = [
+                'id'    =>  $guard->id,
+                'name'  =>  $guard->name,
+                'surname'   =>  $guard->surname,
+                'total_hours'   =>  $totalHours,
+                'total_credits' =>  $totalCredits
+            ];
+        }
+
+        return Excel::download(new AllGuardsExport(collect($exportData)), $company->name.'.xlsx');
     }
 
     public function import(Request $request)
