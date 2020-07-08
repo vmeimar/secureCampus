@@ -126,7 +126,6 @@ class GuardsController extends Controller
         }
         $totalDuration = $this->decimal_to_time($duration * 60);
 
-//        exit;
         return view('guard.custom-range', compact('activeShifts', 'guard', 'totalCredits', 'totalDuration'));
     }
 
@@ -193,7 +192,7 @@ class GuardsController extends Controller
 
         foreach ($guardShifts as $activeShift)
         {
-            if ( $requestData['month'] != 'all' && $requestData['month'] != date('m', strtotime($activeShift->date)) )
+            if ( ($requestData['month'] != 'all') and ($requestData['month'] != date('m', strtotime($activeShift->date))) )
             {
                 continue;
             }
@@ -214,6 +213,10 @@ class GuardsController extends Controller
 
     public function exportAllGuards(Company $company)
     {
+        $data = \request()->validate([
+            'month' =>  'required',
+        ]);
+
         $guards = $company->guards()->get();
 
         if (!isset($guards) or is_null($guards))
@@ -230,6 +233,11 @@ class GuardsController extends Controller
 
             foreach ($guardShifts as $activeShift)
             {
+                if ( ($data['month'] != 'all') and (date('m', strtotime($activeShift->date)) != $data['month']) )
+                {
+                    continue;
+                }
+
                 $totalHours += $activeShift->duration;
                 $totalCredits += $activeShift->factor;
             }
@@ -256,6 +264,11 @@ class GuardsController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function exportByMonth(Company $company)
+    {
+        return view('guard.export-by-month', compact('company'));
     }
 
     /**

@@ -13,7 +13,7 @@
                             <div class="row col-md-8">
                                 <h6>
                                     <strong>
-                                        Έχετε τη δυνατότητα να εμφανίσετε τις βάρδιες του ανά σημείο φύλαξης, ή να δείτε
+                                        Έχετε τη δυνατότητα να εμφανίσετε τις <u>επιβεβαιωμένες</u> βάρδιες ανά σημείο φύλαξης και ανά μήνα, ή να δείτε
                                         το σύνολο όλων παρακάτω.
                                     </strong>
                                 </h6>
@@ -22,9 +22,9 @@
                         <form method="post" action="{{ route('active-shift.show-by-location') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="location" class="col-md-4 col-form-label text-md-right">Επιλέξτε σημείο φύλαξης</label>
-                                <div class="col-md-6">
-                                    <select name="location" id="location" class="form-control input-lg dynamic">
+                                <label for="location" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε σημείο φύλαξης</strong></label>
+                                <div class="col-md-4">
+                                    <select required name="location" id="location" class="form-control input-lg dynamic">
                                         <option disabled selected value="">Κτήριο</option>
                                         @foreach($user->locations()->get() as $location)
                                             <option value="{{ $location->id }}">
@@ -36,8 +36,32 @@
                                     <strong>Παρακαλώ εισάγετε τοποθεσία</strong>
                                     @enderror
                                 </div>
-                                <button type="submit" class="btn btn-primary" style="max-height: 35px">Εμφάνιση</button>
                             </div>
+                                <div class="form-group row">
+                                    <label for="month" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε μήνα για εξαγωγή</strong></label>
+                                    <div class="col-md-4">
+                                        <select required name="month" id="month" class="form-control input-lg dynamic">
+                                            <option disabled selected value="">Επιλέξτε Μήνα</option>
+                                            <option value="all">Όλοι οι μήνες</option>
+                                            <option value="01">Ιανουάριος</option>
+                                            <option value="02">Φεβρουάριος</option>
+                                            <option value="03">Μάρτιος</option>
+                                            <option value="04">Απρίλιος</option>
+                                            <option value="05">Μάιος</option>
+                                            <option value="06">Ιούνιος</option>
+                                            <option value="07">Ιούλιος</option>
+                                            <option value="08">Αύγουστος</option>
+                                            <option value="09">Σεπτέμβριος</option>
+                                            <option value="10">Οκτώβριος</option>
+                                            <option value="11">Νοέμβριος</option>
+                                            <option value="12">Δεκέμβριος</option>
+                                        </select>
+                                        @error('month')
+                                        <strong>Παρακαλώ επιλέξτε μήνα</strong>
+                                        @enderror
+                                    </div>
+                                    <button type="submit" class="btn btn-primary ml-5" style="max-height: 35px">Εμφάνιση</button>
+                                </div>
                         </form>
                     </div>
                 </div>
@@ -94,7 +118,7 @@
                                                     @csrf
                                                     @method('patch')
                                                     <button type="submit" class="btn btn-info btn-sm ml-2 mr-2">
-                                                        {{ $activeShift->confirmed_steward == 0 ? 'Επιβαβαίωση' : 'Αλλαγή κατάστασης'}}
+                                                        {{ $activeShift->confirmed_steward == 0 ? 'Επιβαβαίωση' : 'Κατάργηγη επιβεβαίωσης'}}
                                                     </button>
                                                 </form>
                                             </div>

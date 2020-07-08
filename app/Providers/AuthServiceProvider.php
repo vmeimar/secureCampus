@@ -29,6 +29,13 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasRole('admin');
         });
 
+        Gate::define('supervisor', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'supervisor',
+            ]);
+        });
+
         Gate::define('create-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
@@ -90,7 +97,6 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAnyRoles([
                 'admin',
                 'doy',
-                'epoptis',
             ]);
         });
 

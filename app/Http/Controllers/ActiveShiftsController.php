@@ -7,6 +7,7 @@ use App\Exports\ActiveShiftsExport;
 use App\Guard;
 use App\Location;
 use App\Shift;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,6 +55,7 @@ class ActiveShiftsController extends Controller
 
         $data = $request->validate([
             'location'  =>  'required',
+            'month'     =>  'required',
         ]);
 
         $locationId = $data['location'];
@@ -61,12 +63,13 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $row)
         {
-            if ( $row->shift->location->id == $locationId)
+            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_steward == 1) )
             {
+                if ( ($data['month'] != date('m', strtotime($row->from))) and ($data['month'] != 'all') ) continue;
+
                 $activeShifts[] = $row;
             }
         }
-
         if ($activeShifts == [])
         {
             $request->session()->flash('warning', 'Δεν υπάρχουν ενεργές βάρδιες για αυτό το σημείο φύλαξης.');
@@ -275,6 +278,33 @@ class ActiveShiftsController extends Controller
 
         request()->session()->flash('success', 'Επιτυχής υποβολή');
         return redirect( route('active-shift.index') );
+    }
+
+    public function confirmAllSupervisor(Location $location)
+    {
+        $activeShifts = $location->activeShifts()->get();
+
+        if ( !isset($activeShifts) or is_null($activeShifts) )
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες προς υποβολή.');
+            return redirect()->back();
+        }
+
+        foreach ($activeShifts as $activeShift)
+        {
+            if ($activeShift->confirmed_steward == 1)
+            {
+                if ($activeShift->confirmed_supervisor == 0)
+                {
+                    $activeShift->update(
+                        ['confirmed_supervisor' => 1]
+                    );
+                }
+            }
+        }
+
+        \request()->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
+        return redirect(route('active-shift.index'));
     }
 
     public function confirmActiveShiftSteward($id)
@@ -508,6 +538,32 @@ class ActiveShiftsController extends Controller
         }
 
         return Excel::download(new ActiveShiftsExport(collect($activeShifts)), 'Κτήριο '.$location->name.'.xlsx');
+    }
+
+    public function exportPdf(Location $location)
+    {
+        $user = Auth::user();
+        $activeShifts = $location->activeShifts()->get();
+
+        if ( !isset($activeShifts) or is_null($activeShifts) )
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για εξαγωγή.');
+            return redirect()->back();
+        }
+
+        foreach ($activeShifts as $activeShift)
+        {
+            foreach ($activeShift->guards()->get() as $guard)
+            {
+                $guards[] = $guard;
+            }
+        }
+
+        $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'guards', 'activeShifts', 'user'));
+        return $pdf->download('test.pdf');
+
+
+//        return view('active-shift.export-pdf', compact('location', 'guards', 'activeShifts', 'user'));
     }
 
     /**

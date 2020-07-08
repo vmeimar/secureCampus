@@ -86,12 +86,7 @@
                                 <button type="submit" class="btn btn-dark ml-4" style="max-height: 35px">Προβολή Υπερεργασίας</button>
                             </div>
                         </form>
-                        <form action="{{ route('guard.export-all-guards', $company->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="row">
-                                <button type="submit" class="btn btn-success ml-5" style="max-height: 35px">Εξαγωγή Όλων</button>
-                            </div>
-                        </form>
+                        <a href="{{ route('guard.export-by-month', $company->id) }}" class="btn btn-primary ml-4">Εξαγωγή Ανά Μήνα</a>
                     </div>
                 @endcan
             </div>
