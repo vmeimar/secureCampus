@@ -265,7 +265,7 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $activeShift)
         {
-            if ( ($activeShift->confirmed_steward == 1) and (date('m', strtotime($activeShift->from)) == $month ) )
+            if ( (($activeShift->confirmed_steward == 1) and (date('m', strtotime($activeShift->from)) == $month) ) or ($month == 'all') )
             {
                 $activeShifts[] = $activeShift;
 
@@ -378,8 +378,8 @@ class ActiveShiftsController extends Controller
                 $checkFrom = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_from));
                 $checkUntil = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_until));
 
-                if ( ( ($checkFrom >= $guardShiftFrom) and ($checkFrom <= $guardShiftUntil) )
-                    or ( ($checkUntil >= $guardShiftFrom) and ($checkUntil <= $guardShiftUntil) ) )
+                if ( ( (strtotime($checkFrom) >= strtotime($guardShiftFrom)) and (strtotime($checkFrom) <= strtotime($guardShiftUntil)) )
+                    or ( (strtotime($checkUntil) >= strtotime($guardShiftFrom)) and (strtotime($checkUntil) <= strtotime($guardShiftUntil)) ) )
                 {
                     $overLap = 1;
                 }
@@ -592,11 +592,11 @@ class ActiveShiftsController extends Controller
             }
         }
 
-        $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'guards', 'user', 'from', 'to', 'activeShifts'));
+        $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'user', 'from', 'to', 'activeShifts'));
         return $pdf->download('Κτήριο '.$location->name.'.pdf');
 
 
-//        return view('active-shift.export-pdf', compact('location', 'guards', 'activeShifts', 'user'));
+//        return view('active-shift.export-pdf', compact('location', 'user', 'from', 'to', 'activeShifts'));
     }
 
     /**

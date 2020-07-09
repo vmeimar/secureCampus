@@ -20,54 +20,71 @@
 <style>
     body, .row { font-family: DejaVu Sans, sans-serif; font-size: small }
     .ekpa-logo {max-height: 110px;}
+    .keimeno {line-height: 90%; text-align: center;}
+    .signature {text-align: right; font-size: smaller}
+    .pagination {text-align: center; font-size: smaller}
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 90px;
+        right: 30px;
+        width: 100%;
+        text-align: right;
+    }
+    .sxima { margin-left: 50px; font-size: smaller}
+    /*ol. {list-style-type: lower-greek;}*/
 </style>
 <body>
-<div class="container py-3 mt-3">
+<header>
     <div class="row">
         <div class="col-md-8">
             <div class="col-md-4">
-                <img class="ekpa-logo" src="https://i2.wp.com/www.endo.gr/wp-content/uploads/2019/07/logo-ekpa.jpg?ssl=1" alt="">
+                <img class="ekpa-logo" src="https://lh3.googleusercontent.com/proxy/ach80ioRg0vApN23Ynzft-eerpMG143W3I-nvF8eIKH6EdOBy-1cJ3nM0REe7u0hmNekBh38tI2528f5sxaJ3RAjS4wy1qzeGSM2vqW8vzCBA0Vp2uR_yltfhio" alt="">
             </div>
+            <div class="col-md-4 sxima">
+                <span class="float-left">ΣΧΗΜΑ ΕΠΟΠΤΕΙΑΣ Ε.Κ.Π.Α</span>
+            </div>
+            <br>
             <div class="col-md-4">
                 <span class="float-right">Αθήνα, {{ date('d/m/Y') }}</span>
             </div>
         </div>
     </div>
-    <div class="row col-md-4"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
-    <div class="row col-md-8" style="margin-left: 200px"><p><u><strong>Βεβαίωση</strong></u></p></div>
+</header>
+<div class="container py-3 mt-4">
+    <div class="row col-md-4 float-left" style="left: 0"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
+    <div class="row col-md-8" style="margin-left: 200px"><p><u><strong>ΒΕΒΑΙΩΣΗ</strong></u></p></div>
     <div class="row">
-        <p>Ο υπογράφων Επόπτης {{ $user->name }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης του κτιρίου {{ $location->name }} Ε.Κ.Π.Α.,
-            για το χρονικό διάστημα από {{ $from }} έως {{ $to }}, πραγματοποιήθηκαν σύμφωνα με τους όρους της σύμβασης:</p>
+        <p class="keimeno">Ο υπογράφων Επόπτης {{ $user->name }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης στη θέση {{ $location->name }} Ε.Κ.Π.Α,
+            πραγματοποιήθηκαν σύμφωνα με τους όρους της σύμβασης, για το χρονικό διάστημα από {{ $from }} έως {{ $to }}, ως εξής:</p>
     </div>
     <div class="row">
         <ol>
-{{--            @foreach($guards as $guard)--}}
-{{--                <li style="font-size: 12px"><strong>{{ $guard->name }} {{ $guard->surname }}</strong></li>--}}
-{{--                <ol>--}}
-{{--                    @foreach($guard->activeShifts()->get() as $activeShift)--}}
-{{--                        @if($activeShift->confirmed_supervisor == 1)--}}
-{{--                            <li style="font-size: 10px">{{ $activeShift->name }}: {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }}</li>--}}
-{{--                        @endif--}}
-{{--                    @endforeach--}}
-{{--                </ol>--}}
-{{--            @endforeach--}}
             @foreach($activeShifts as $key => $value)
-                <li style="font-size: 12px"><strong>{{ $key }}</strong></li>
+                <li style="font-size: 10px"><strong>{{ $key }}</strong></li>
                 <ol>
                     @foreach($value as $activeShift)
-                        {{--                        @if($activeShift->confirmed_supervisor == 1)--}}
-                        <li style="font-size: 10px">{{ $activeShift->name }}: {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }}</li>
-                        {{--                        @endif--}}
+                        <li style="font-size: 9px">
+                            {{ $activeShift->name }}:
+                            {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }} &nbsp;
+                            <strong>{{ (strtotime($activeShift->until) - strtotime($activeShift->from)) / 3600}} ώρες</strong>
+                        </li>
                     @endforeach
                 </ol>
             @endforeach
         </ol>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <span class="float-right">Ο Επόπτης</span>
-        </div>
-    </div>
+{{--    <div class="row">--}}
+{{--        <div class="col-md-4">--}}
+{{--            <span class="float-right">Ο Επόπτης</span>--}}
+{{--        </div>--}}
+{{--    </div>--}}
+</div>
+<div class="footer">
+    <p class="signature mr-2 justify-content-center">Ο Επόπτης<br><br><br>
+        {{ $user->name }}
+    </p>
+{{--    <p class="pagination">Σελίδα 1 από 2 ΤΕΣΤ</p>--}}
 </div>
 </body>
 </html>
