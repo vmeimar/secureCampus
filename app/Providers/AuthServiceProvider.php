@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('supervisor', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'supervisor',
+                'epoptis',
             ]);
         });
 
@@ -66,6 +66,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAnyRoles([
                 'admin',
                 'epistatis',
+                'epoptis',
             ]);
         });
 

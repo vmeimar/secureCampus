@@ -49,36 +49,6 @@ class ActiveShiftsController extends Controller
         return view('active-shift.index', compact('activeShifts', 'user'));
     }
 
-    public function showByLocation(Request $request)
-    {
-        $activeShifts = [];
-
-        $data = $request->validate([
-            'location'  =>  'required',
-            'month'     =>  'required',
-        ]);
-
-        $locationId = $data['location'];
-        $allActiveShifts = ActiveShift::all();
-
-        foreach ($allActiveShifts as $row)
-        {
-            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_steward == 1) )
-            {
-                if ( ($data['month'] != date('m', strtotime($row->from))) and ($data['month'] != 'all') ) continue;
-
-                $activeShifts[] = $row;
-            }
-        }
-        if ($activeShifts == [])
-        {
-            $request->session()->flash('warning', 'Δεν υπάρχουν ενεργές βάρδιες για αυτό το σημείο φύλαξης.');
-            return redirect(route('active-shift.index'));
-        }
-
-        return view('active-shift.custom-index', compact('activeShifts', 'locationId'));
-    }
-
     public function create(Shift $shift)
     {
         if (!Schema::hasTable('days_of_year'))
@@ -280,20 +250,25 @@ class ActiveShiftsController extends Controller
         return redirect( route('active-shift.index') );
     }
 
-    public function confirmAllSupervisor(Location $location)
+    public function confirmAllSupervisor(Location $location, Request $request)
     {
-        $activeShifts = $location->activeShifts()->get();
+        $data = $request->all();
+        $locationId = $location->id;
+        $month = $data['month'];
+        $allActiveShifts = $location->activeShifts()->get();
 
-        if ( !isset($activeShifts) or is_null($activeShifts) )
+        if ( !isset($allActiveShifts) or is_null($allActiveShifts) )
         {
             \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες προς υποβολή.');
             return redirect()->back();
         }
 
-        foreach ($activeShifts as $activeShift)
+        foreach ($allActiveShifts as $activeShift)
         {
-            if ($activeShift->confirmed_steward == 1)
+            if ( ($activeShift->confirmed_steward == 1) and (date('m', strtotime($activeShift->from)) == $month ) )
             {
+                $activeShifts[] = $activeShift;
+
                 if ($activeShift->confirmed_supervisor == 0)
                 {
                     $activeShift->update(
@@ -304,7 +279,8 @@ class ActiveShiftsController extends Controller
         }
 
         \request()->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
-        return redirect(route('active-shift.index'));
+        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month'));
+//        return redirect(route('active-shift.index'));
     }
 
     public function confirmActiveShiftSteward($id)
@@ -540,27 +516,84 @@ class ActiveShiftsController extends Controller
         return Excel::download(new ActiveShiftsExport(collect($activeShifts)), 'Κτήριο '.$location->name.'.xlsx');
     }
 
-    public function exportPdf(Location $location)
+    public function showByLocation(Request $request)
+    {
+        $activeShifts = [];
+
+        $data = $request->validate([
+            'location'  =>  'required',
+            'month'     =>  'required',
+        ]);
+
+        $locationId = $data['location'];
+        $allActiveShifts = ActiveShift::all();
+        $month = $data['month'];
+
+        foreach ($allActiveShifts as $row)
+        {
+            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_steward == 1) )
+            {
+                if ( ($month != date('m', strtotime($row->from))) and ($month != 'all') ) continue;
+
+                $activeShifts[] = $row;
+            }
+        }
+        if ($activeShifts == [])
+        {
+            $request->session()->flash('warning', 'Δεν υπάρχουν ενεργές βάρδιες για αυτό το σημείο φύλαξης.');
+            return redirect(route('active-shift.index'));
+        }
+
+        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month'));
+    }
+
+    public function exportPdf(Location $location, Request $request)
     {
         $user = Auth::user();
-        $activeShifts = $location->activeShifts()->get();
+        $data = $request->all();
+        $month = $data['month'];
+        $allActiveShifts = $location->activeShifts()->get();
 
-        if ( !isset($activeShifts) or is_null($activeShifts) )
+        if ( !isset($allActiveShifts) or is_null($allActiveShifts) )
         {
             \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για εξαγωγή.');
             return redirect()->back();
         }
 
-        foreach ($activeShifts as $activeShift)
+
+        if ($month == 'all')
         {
-            foreach ($activeShift->guards()->get() as $guard)
+            $from = date('d/m/Y', strtotime('Jan 1'));
+            $to = date('d/m/Y', strtotime('Dec 31'));
+        }
+        else
+        {
+            // Use mktime() and date() function to
+            // convert number to month name
+            $month_name = date("F", mktime(0, 0, 0, $month, 10));
+
+            $from = date('01/m/Y', strtotime($month_name));
+            $to = date('t/m/Y', strtotime($month_name));
+        }
+
+        $guards = Guard::all();
+
+        foreach ($guards as $guard)
+        {
+            foreach ($guard->activeShifts()->get() as $activeShift)
             {
-                $guards[] = $guard;
+                if ( (($month == date('m', strtotime($activeShift->from))) or ($month == 'all') ) and
+                    ( $activeShift->location_id == $location->id ) and
+                    ( $activeShift->confirmed_supervisor == 1 ) and
+                    ( $activeShift->confirmed_steward == 1 ) )
+                {
+                    $activeShifts[$guard->surname.' '.$guard->name][] = $activeShift;
+                }
             }
         }
 
-        $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'guards', 'activeShifts', 'user'));
-        return $pdf->download('test.pdf');
+        $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'guards', 'user', 'from', 'to', 'activeShifts'));
+        return $pdf->download('Κτήριο '.$location->name.'.pdf');
 
 
 //        return view('active-shift.export-pdf', compact('location', 'guards', 'activeShifts', 'user'));

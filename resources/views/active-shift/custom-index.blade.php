@@ -60,6 +60,7 @@
                         @csrf
                         <div class="row">
                             <button type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
+                            <input name="month" id="month" type="hidden" value="{{$month}}">
                         </div>
                     </form>
                     <form method="post" action="/active-shift/{{$locationId}}/confirm-all-supervisor" enctype="multipart/form-data">
@@ -67,6 +68,7 @@
                         @method('patch')
                         <div class="row">
                             <button type="submit" class="btn btn-primary m-4" style="max-height: 35px">Υποβολή Όλων</button>
+                            <input name="month" id="month" type="hidden" value="{{$month}}">
                         </div>
                     </form>
                 </div>

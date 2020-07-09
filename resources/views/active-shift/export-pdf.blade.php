@@ -19,7 +19,7 @@
 </head>
 <style>
     body, .row { font-family: DejaVu Sans, sans-serif; font-size: small }
-    .ekpa-logo {max-height: 90px;}
+    .ekpa-logo {max-height: 110px;}
 </style>
 <body>
 <div class="container py-3 mt-3">
@@ -34,20 +34,30 @@
         </div>
     </div>
     <div class="row col-md-4"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
-    <div class="row col-md-8 align-self-center"><p><u><strong>Βεβαίωση</strong></u></p></div>
+    <div class="row col-md-8" style="margin-left: 200px"><p><u><strong>Βεβαίωση</strong></u></p></div>
     <div class="row">
         <p>Ο υπογράφων Επόπτης {{ $user->name }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης του κτιρίου {{ $location->name }} Ε.Κ.Π.Α.,
-            για το χρονικό διάστημα από month_start έως month_end, πραγματοποιήθηκαν σύμφωνα με τους όρους της σύμβασης:</p>
+            για το χρονικό διάστημα από {{ $from }} έως {{ $to }}, πραγματοποιήθηκαν σύμφωνα με τους όρους της σύμβασης:</p>
     </div>
     <div class="row">
         <ol>
-            @foreach($guards as $guard)
-                <li style="font-size: 12px"><strong>{{ $guard->name }} {{ $guard->surname }}</strong></li>
-                <ol>
-                    @foreach($guard->activeShifts()->get() as $activeShift)
+{{--            @foreach($guards as $guard)--}}
+{{--                <li style="font-size: 12px"><strong>{{ $guard->name }} {{ $guard->surname }}</strong></li>--}}
+{{--                <ol>--}}
+{{--                    @foreach($guard->activeShifts()->get() as $activeShift)--}}
 {{--                        @if($activeShift->confirmed_supervisor == 1)--}}
-                            <li style="font-size: 10px">{{ $activeShift->name }}: {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }}</li>
+{{--                            <li style="font-size: 10px">{{ $activeShift->name }}: {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }}</li>--}}
 {{--                        @endif--}}
+{{--                    @endforeach--}}
+{{--                </ol>--}}
+{{--            @endforeach--}}
+            @foreach($activeShifts as $key => $value)
+                <li style="font-size: 12px"><strong>{{ $key }}</strong></li>
+                <ol>
+                    @foreach($value as $activeShift)
+                        {{--                        @if($activeShift->confirmed_supervisor == 1)--}}
+                        <li style="font-size: 10px">{{ $activeShift->name }}: {{ date('d/m/Y H:i', strtotime($activeShift->from)) }} - {{ date('d-m-Y H:i', strtotime($activeShift->until)) }}</li>
+                        {{--                        @endif--}}
                     @endforeach
                 </ol>
             @endforeach
