@@ -7,6 +7,7 @@ use App\Exports\AllGuardsExport;
 use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -252,6 +253,50 @@ class GuardsController extends Controller
         }
 
         return Excel::download(new AllGuardsExport(collect($exportData)), $company->name.'.xlsx');
+    }
+
+    public function exportAllGuardsPdf(Company $company)
+    {
+        $data = \request()->validate([
+            'month' =>  'required',
+        ]);
+
+        $guards = $company->guards()->get();
+
+        if (!isset($guards) or is_null($guards))
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν φύλακες για εξαγωγή');
+            return redirect()->back();
+        }
+
+        foreach ($guards as $guard)
+        {
+            $guardShifts = $guard->activeShifts()->get();
+            $totalHours = 0;
+            $totalCredits = 0;
+
+            foreach ($guardShifts as $activeShift)
+            {
+                if ( ($data['month'] != 'all') and (date('m', strtotime($activeShift->date)) != $data['month']) )
+                {
+                    continue;
+                }
+
+                $totalHours += $activeShift->duration;
+                $totalCredits += $activeShift->factor;
+            }
+
+            $exportData[] = [
+                'id'    =>  $guard->id,
+                'name'  =>  $guard->name,
+                'surname'   =>  $guard->surname,
+                'total_hours'   =>  $totalHours,
+                'total_credits' =>  $totalCredits
+            ];
+        }
+
+        $pdf = PDF::loadView('/guard/export-all-guards-pdf', compact('exportData'));
+        return $pdf->download($company->name.'.pdf');
     }
 
     public function import(Request $request)

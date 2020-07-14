@@ -592,11 +592,15 @@ class ActiveShiftsController extends Controller
             }
         }
 
+        if ( !isset($activeShifts) or is_null($activeShifts) )
+        {
+            $request->session()->flash('warning', 'Δεν υπάρχουν επιβεβαιωμένες βάρδιες που έχουν υποβληθεί για εξαγωγή.');
+            return redirect(route('active-shift.index'));
+        }
+
         $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'user', 'from', 'to', 'activeShifts'));
         return $pdf->download('Κτήριο '.$location->name.'.pdf');
 
-
-//        return view('active-shift.export-pdf', compact('location', 'user', 'from', 'to', 'activeShifts'));
     }
 
     /**

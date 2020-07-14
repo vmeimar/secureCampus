@@ -14,14 +14,14 @@
                             <div class="row col-md-8">
                                 <h6>
                                     <strong>
-                                        Έχετε τη δυνατότητα να εξάγετε αρχείο τύπου excel για τις βάρδιες όλων των φυλάκων
+                                        Έχετε τη δυνατότητα να εξάγετε αρχείο τύπου Pdf για τις βάρδιες όλων των φυλάκων
                                         ανά μήνα με τις ώρες εργασίας και τις ισοδύναμες μονάδες βάρδιας.
                                     </strong>
                                 </h6>
                             </div>
                         </div>
 
-                        <form method="post" action="{{ route('guard.export-all-guards', $company->id) }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.export-all-guards-pdf', $company->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή</label>
@@ -46,10 +46,13 @@
                                     <strong>Παρακαλώ επιλέξτε μήνα</strong>
                                     @enderror
                                 </div>
-                                <button type="submit" class="btn btn-success" style="max-height: 35px">Εξαγωγή Excel</button>
+                                <button type="submit" class="btn btn-danger" style="max-height: 35px">Εξαγωγή PDF</button>
                             </div>
                         </form>
 
+                        <form action="#">
+                            Βεβαίωση επιτροπής
+                        </form>
                     </div>
                 </div>
                 <div class="row">
