@@ -57,6 +57,8 @@ class UsersController extends Controller
         $user->locations()->sync($request->locations);
 
         $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->tier = $request->tier;
         $user->email = $request->email;
 
         if ($user->save())

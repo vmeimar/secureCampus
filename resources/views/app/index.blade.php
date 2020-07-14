@@ -11,10 +11,10 @@
                     <div class="card-body">
 
                         <div class="d-flex justify-content-center mb-5">
-                            <div class="row col-md-5">
+                            <div class="row col-md-8">
                                 <h6>
                                     <strong>
-                                        Έχετε τη δυνατότητα να κάνετε διάφορα.
+                                        Χρησιμοποιείστε τις παρακάτω λειτουργίες για να ορίσετε ποιες μέρες είναι αργίες και να προσδιορίσετε τους συντελεστές της κάθε βάρδιας.
                                     </strong>
                                 </h6>
                             </div>
@@ -45,6 +45,20 @@
                                     <div class="row">
                                         <input type="file" name="import_file" class="mt-4 ml-4"/>
                                         <input type="submit" value="Εισαγωγή Αργιών Έτους" class="btn btn-success mt-4 ml-2"/>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-5">
+                            <div class="row">
+                                <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τα E-mail των χρηστών που έχουν δικαίωμα να χρησιμοποιούν την εφαρμογή.</strong></p>
+                            </div>
+                            <div class="row">
+                                <form action="{{ route('user-emails.import') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="row">
+                                        <input type="file" name="import_file" class="mt-4 ml-4"/>
+                                        <input type="submit" value="Εισαγωγή E-mail" class="btn btn-success mt-4 ml-2"/>
                                     </div>
                                 </form>
                             </div>

@@ -10,19 +10,47 @@
                     </div>
                     <div class="card-body">
                        <form action="{{ route('admin.users.update', $user) }}" method="POST">
+
                            <div class="form-group row">
                                <label for="name" class="col-md-3 col-form-label text-md-right"><strong>Όνομα</strong></label>
-
                                <div class="col-md-6">
                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required>
 
                                    @error('name')
                                    <span class="invalid-feedback" role="alert">
-                                        <strong>Εισάγετε όνομα</strong>
+                                        <strong>Εισάγετε Όνομα</strong>
                                     </span>
                                    @enderror
                                </div>
                            </div>
+
+                           <div class="form-group row">
+                               <label for="surname" class="col-md-3 col-form-label text-md-right"><strong>Επώνυμο</strong></label>
+                               <div class="col-md-6">
+                                   <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ $user->surname }}" required>
+
+                                   @error('surname')
+                                   <span class="invalid-feedback" role="alert">
+                                        <strong>Εισάγετε Επώνυμο</strong>
+                                    </span>
+                                   @enderror
+                               </div>
+                           </div>
+
+                           <div class="form-group row">
+                               <label for="tier" class="col-md-3 col-form-label text-md-right"><strong>Βαθμίδα</strong></label>
+                               <div class="col-md-6">
+                                   <select name="tier" id="tier" class="form-control input-lg dynamic">
+                                       <option selected value="{{ $user->tier }}">{{ $user->tier }}</option>
+                                       <option value="Καθηγήτρια">Καθηγήτρια</option>
+                                       <option value="Καθηγητής">Καθηγητής</option>
+                                   </select>
+                                   @error('tier')
+                                   <strong>Παρακαλώ επιλέξτε βαθμίδα</strong>
+                                   @enderror
+                               </div>
+                           </div>
+
                            <div class="form-group row">
                                <label for="email" class="col-md-3 col-form-label text-md-right"><strong>Email</strong></label>
 

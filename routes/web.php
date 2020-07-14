@@ -19,7 +19,7 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile/{user}', 'ProfilesController@index')->middleware('can:use-application')->name('profile');
 
@@ -68,6 +68,7 @@ Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:adm
 Route::get('/app/index', 'AppController@index')->middleware('can:admin')->name('app.index');
 Route::get('/app/populate-days-table', 'AppController@populateDaysTable')->name('app.populate-days');
 Route::post('/app/holidays/import', 'AppController@import')->name('holidays.import');
+Route::post('/app/user-emails/import', 'AppController@userEmailsImport')->name('user-emails.import');
 
 Route::get('/factor/index', 'FactorsController@index')->name('factor.index');
 Route::get('/factor/edit/{factor}', 'FactorsController@edit')->name('factor.edit');

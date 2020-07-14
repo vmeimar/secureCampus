@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\HolidaysImport;
+use App\Imports\UserEmailImport;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -81,6 +82,19 @@ class AppController extends Controller
         DB::table('holidays')->truncate();
 
         if ( Excel::import(new HolidaysImport(), $request->file('import_file')) ) {
+            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
+        } else {
+            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
+        }
+
+        return redirect()->back();
+    }
+
+    public function userEmailsImport(Request $request)
+    {
+        DB::table('user_emails')->truncate();
+
+        if ( Excel::import(new UserEmailImport(), $request->file('import_file')) ) {
             $request->session()->flash('success', 'Επιτυχής εισαγωγή');
         } else {
             $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');

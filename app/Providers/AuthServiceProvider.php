@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,11 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        Validator::extend('allowed_email', function($attribute, $value, $parameters, $validator) {
+            $allowedEmails = DB::table('user_emails')->pluck('email')->toArray();
+            return in_array($value, $allowedEmails);
+        }, 'Το E-mail δεν είναι έγκυρο για εγγραφή στην πλατφόρμα.');
 
         Gate::define('admin', function ($user) {
             return $user->hasRole('admin');
