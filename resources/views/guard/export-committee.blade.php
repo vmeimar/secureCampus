@@ -19,19 +19,19 @@
 </head>
 <style>
     body, .row { font-family: DejaVu Sans, sans-serif; font-size: small }
+    li, p, span { font-size: 13px }
     .ekpa-logo {max-height: 110px;}
     .keimeno {line-height: 90%; text-align: center;}
     .signature {text-align: right; font-size: smaller}
-    .pagination {text-align: center; font-size: smaller}
-    .footer {
-        /*position: fixed;*/
-        left: 0;
-        bottom: 90px;
-        right: 30px;
-        width: 100%;
-        text-align: right;
-    }
-    li, p { font-size: 13px }
+    /*.pagination {text-align: center; font-size: smaller}*/
+    /*.footer {*/
+    /*    !*position: fixed;*!*/
+    /*    left: 0;*/
+    /*    bottom: 90px;*/
+    /*    right: 30px;*/
+    /*    width: 100%;*/
+    /*    text-align: right;*/
+    /*}*/
     /*.sxima { margin-left: 50px; font-size: smaller}*/
     /*ol. {list-style-type: lower-greek;}*/
 </style>
@@ -96,8 +96,8 @@
     </div>
     <div class="row">
         <div class="col-md-8" style="margin-left: 125px">
-            <span class="mr-5">Ε. Δ. Βαλάκος</span>
-            <span class="mr-5">Σ. Νοτάρης</span>
+            <span>Ε. Δ. Βαλάκος</span>
+            <span>Σ. Νοτάρης</span>
             <span>Κ. Μπάσιος</span>
         </div>
     </div>
