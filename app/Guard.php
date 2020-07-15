@@ -22,6 +22,6 @@ class Guard extends Model
 
     public function activeShifts()
     {
-        return $this->belongsToMany(ActiveShift::class);
+        return $this->belongsToMany(ActiveShift::class)->withTimestamps();
     }
 }

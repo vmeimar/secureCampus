@@ -7,9 +7,9 @@ use App\Exports\AllGuardsExport;
 use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class GuardsController extends Controller
 {
@@ -53,11 +53,11 @@ class GuardsController extends Controller
 
         ]) )
         {
-            \request()->session()->flash('success', 'Επιτυχής δημιουργία');
+            \request()->session()->flash('success', 'Επιτυχής δημιουργία.');
         }
         else
         {
-            \request()->session()->flash('error', 'Αποτυχία δημιουργίας');
+            \request()->session()->flash('error', 'Αποτυχία δημιουργίας.');
         }
 
         return redirect()->route('guard.index', $company_id);
@@ -82,8 +82,8 @@ class GuardsController extends Controller
             'name'  =>  $data['name'],
             'surname'  =>  $data['surname'],
             'company_id'  =>  $company_id,
-        ])  ? request()->session()->flash('success', 'Επιτυχής αποθήκευση')
-            : request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
+        ])  ? request()->session()->flash('success', 'Επιτυχής αποθήκευση.')
+            : request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση.');
 
         return redirect()->route('guard.index', $company_id);
     }
@@ -92,11 +92,11 @@ class GuardsController extends Controller
     {
         if ($guard->delete())
         {
-            \request()->session()->flash('success', 'Επιτυχής διαγραφή φύλακα');
+            \request()->session()->flash('success', 'Επιτυχής διαγραφή φύλακα.');
         }
         else
         {
-            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
+            \request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή.');
         }
 
         return redirect()->route('guard.index', $guard->company()->value('id'));
@@ -160,7 +160,7 @@ class GuardsController extends Controller
         }
         else
         {
-            \request()->session()->flash('warning', 'Δεν υπάρχει φύλακας με υπερεργασία');
+            \request()->session()->flash('warning', 'Δεν υπάρχει φύλακας με υπερεργασία.');
             return redirect()->back();
         }
     }
@@ -169,8 +169,8 @@ class GuardsController extends Controller
     {
         $hours = floor($decimal / 60);
         $minutes = floor($decimal % 60);
-        $seconds = $decimal - (int)$decimal;
-        $seconds = round($seconds * 60);
+//        $seconds = $decimal - (int)$decimal;
+//        $seconds = round($seconds * 60);
 
         return str_pad($hours, 2, "0", STR_PAD_LEFT) . " Ώρες, " . str_pad($minutes, 2, "0", STR_PAD_LEFT) . " Λεπτά ";
     }
@@ -222,7 +222,7 @@ class GuardsController extends Controller
 
         if (!isset($guards) or is_null($guards))
         {
-            \request()->session()->flash('warning', 'Δεν υπάρχουν φύλακες για εξαγωγή');
+            \request()->session()->flash('warning', 'Δεν υπάρχουν φύλακες για εξαγωγή.');
             return redirect()->back();
         }
 
@@ -275,6 +275,13 @@ class GuardsController extends Controller
             $totalHours = 0;
             $totalCredits = 0;
 
+            $weekday_morning = 0;
+            $weekday_evening = 0;
+            $weekday_night = 0;
+            $holiday_morning = 0;
+            $holiday_evening = 0;
+            $holiday_night = 0;
+
             foreach ($guardShifts as $activeShift)
             {
                 if ( ($data['month'] != 'all') and (date('m', strtotime($activeShift->date)) != $data['month']) )
@@ -283,6 +290,12 @@ class GuardsController extends Controller
                 }
 
                 $totalHours += $activeShift->duration;
+                $weekday_morning += $activeShift->weekday_morning;
+                $weekday_evening += $activeShift->weekday_evening;
+                $weekday_night += $activeShift->weekday_night;
+                $holiday_morning += $activeShift->holiday_morning;
+                $holiday_evening += $activeShift->holiday_evening;
+                $holiday_night += $activeShift->holiday_night;
                 $totalCredits += $activeShift->factor;
             }
 
@@ -290,13 +303,26 @@ class GuardsController extends Controller
                 'id'    =>  $guard->id,
                 'name'  =>  $guard->name,
                 'surname'   =>  $guard->surname,
+                'weekday_morning'   =>  $weekday_morning,
+                'weekday_evening'   =>  $weekday_evening,
+                'weekday_night'   =>  $weekday_night,
+                'holiday_morning'   =>  $holiday_morning,
+                'holiday_evening'   =>  $holiday_evening,
+                'holiday_night'   =>  $holiday_night,
                 'total_hours'   =>  $totalHours,
                 'total_credits' =>  $totalCredits
             ];
         }
 
-        $pdf = PDF::loadView('/guard/export-all-guards-pdf', compact('exportData'));
+        $pdf = PDF::loadView('/guard/export-all-guards-pdf', compact('exportData'))->setPaper('a4');
         return $pdf->download($company->name.'.pdf');
+//        return view('guard.export-all-guards-pdf', compact('exportData'));
+    }
+
+    public function exportCommittee()
+    {
+        $pdf = PDF::loadView('/guard/export-committee')->setPaper('a4');
+        return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 
     public function import(Request $request)

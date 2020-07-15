@@ -43,6 +43,13 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('epitropi', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epitropi',
+            ]);
+        });
+
         Gate::define('create-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',

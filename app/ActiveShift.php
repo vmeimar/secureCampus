@@ -23,7 +23,7 @@ class ActiveShift extends Model
 
     public function guards()
     {
-        return $this->belongsToMany(Guard::class);
+        return $this->belongsToMany(Guard::class)->withTimestamps();
     }
 
     public function location()

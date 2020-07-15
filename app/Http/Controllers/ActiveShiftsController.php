@@ -7,12 +7,12 @@ use App\Exports\ActiveShiftsExport;
 use App\Guard;
 use App\Location;
 use App\Shift;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade as PDF;
 use Throwable;
 
 class ActiveShiftsController extends Controller
@@ -165,7 +165,7 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        $request->session()->flash('success', 'Επιτυχής ανάθεση');
+        $request->session()->flash('success', 'Επιτυχής ανάθεση.');
         return redirect(route('active-shift.index'));
     }
 
@@ -218,7 +218,7 @@ class ActiveShiftsController extends Controller
             'is_holiday' => $isHoliday,
         ]))
         {
-            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση');
+            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση.');
             return redirect(route('active-shift.index'));
         }
 
@@ -231,7 +231,7 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        request()->session()->flash('success', 'Επιτυχής αποθήκευση');
+        request()->session()->flash('success', 'Επιτυχής αποθήκευση.');
         return redirect(route('active-shift.index'));
     }
 
@@ -606,7 +606,7 @@ class ActiveShiftsController extends Controller
         }
         if ($activeShifts == [])
         {
-            $request->session()->flash('warning', 'Δεν υπάρχουν ενεργές βάρδιες για αυτό το σημείο φύλαξης.');
+            $request->session()->flash('warning', 'Δεν υπάρχουν επιβεβαιωμένες βάρδιες για αυτό το σημείο φύλαξης.');
             return redirect(route('active-shift.index'));
         }
 

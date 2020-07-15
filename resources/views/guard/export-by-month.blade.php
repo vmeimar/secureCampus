@@ -50,8 +50,9 @@
                             </div>
                         </form>
 
-                        <form action="#">
-                            Βεβαίωση επιτροπής
+                        <form method="post" action="{{ route('guard.export-committee') }}" enctype="multipart/form-data">
+                            @csrf
+                            <button type="submit" class="btn btn-primary" style="max-height: 35px; margin-left: 430px">Εξαγωγή Βεβαίωσης Επιτροπής</button>
                         </form>
                     </div>
                 </div>
