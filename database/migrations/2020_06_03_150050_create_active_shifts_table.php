@@ -24,8 +24,14 @@ class CreateActiveShiftsTable extends Migration
             $table->tinyInteger('confirmed_steward');
             $table->tinyInteger('confirmed_supervisor');
             $table->text('comments')->nullable();
-            $table->float('duration')->nullable();
-            $table->float('factor')->nullable();
+            $table->float('duration');
+            $table->float('weekday_morning');
+            $table->float('weekday_evening');
+            $table->float('weekday_night');
+            $table->float('holiday_morning');
+            $table->float('holiday_evening');
+            $table->float('holiday_night');
+            $table->float('factor');
             $table->tinyInteger('is_holiday');
             $table->timestamps();
 

@@ -129,7 +129,7 @@ class ActiveShiftsController extends Controller
         $date = $activeShiftData[0];
         $isHoliday = $activeShiftData[1];
         $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $date, $timeOffset);
-        $shiftFactor = $this->assignFactors($dayFrameArray);
+        $factorData = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
         $last_key = array_key_last($dayFrameArray);
@@ -146,7 +146,13 @@ class ActiveShiftsController extends Controller
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'duration'  =>  $shiftDuration / 3600,  // IN HOURS
-            'factor'    =>  $shiftFactor,
+            'weekday_morning'   =>  $factorData['weekday_morning'],
+            'weekday_evening'   =>  $factorData['weekday_evening'],
+            'weekday_night'   =>  $factorData['weekday_night'],
+            'holiday_morning'   =>  $factorData['holiday_morning'],
+            'holiday_evening'   =>  $factorData['holiday_evening'],
+            'holiday_night'   =>  $factorData['holiday_night'],
+            'factor'    =>  $factorData['frame_factor'],
             'is_holiday' => $isHoliday,
         ]);
 
@@ -186,7 +192,7 @@ class ActiveShiftsController extends Controller
         $date = $activeShiftData[0];
         $isHoliday = $activeShiftData[1];
         $dayFrameArray = $this->calculateFrames($activeShift->from, $activeShift->until, $date, $timeOffset);
-        $shiftFactor = $this->assignFactors($dayFrameArray);
+        $factorData = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
         $last_key = array_key_last($dayFrameArray);
@@ -202,7 +208,13 @@ class ActiveShiftsController extends Controller
             'until' =>  $shiftUntil,
             'comments'  =>  $data['active-shift-comments'],
             'duration'  =>  $shiftDuration / 3600,   // IN HOURS
-            'factor'    =>  $shiftFactor,
+            'weekday_morning'   =>  $factorData['weekday_morning'],
+            'weekday_evening'   =>  $factorData['weekday_evening'],
+            'weekday_night'   =>  $factorData['weekday_night'],
+            'holiday_morning'   =>  $factorData['holiday_morning'],
+            'holiday_evening'   =>  $factorData['holiday_evening'],
+            'holiday_night'   =>  $factorData['holiday_night'],
+            'factor'    =>  $factorData['frame_factor'],
             'is_holiday' => $isHoliday,
         ]))
         {
@@ -444,6 +456,13 @@ class ActiveShiftsController extends Controller
 
     private function assignFactors($dayFrameArray)
     {
+        $weekdayMorningDimes = 0;
+        $weekdayEveningDimes = 0;
+        $weekdayNightDimes = 0;
+        $holidayMorningDimes = 0;
+        $holidayEveningDimes = 0;
+        $holidayNightDimes = 0;
+
         $previousFrame = null;
         $frameStart = null;
         $frameEnd = null;
@@ -451,6 +470,7 @@ class ActiveShiftsController extends Controller
 
         foreach ($dayFrameArray as $key => $value)
         {
+
             $newarray[$value['frame']][$value['start_frame']] = $value['end_frame'];
         }
 
@@ -487,12 +507,41 @@ class ActiveShiftsController extends Controller
                     $factor = DB::table('factors')
                         ->where('name', 'sunday_'.$frame.'_rate')
                         ->value('rate');
+
+                    $dimeName = 'sunday_'.$frame.'_rate';
                 }
                 else
                 {
                     $factor = DB::table('factors')
                         ->where('name', $day.'_'.$frame.'_rate')
                         ->value('rate');
+
+                    $dimeName = $day.'_'.$frame.'_rate';
+                }
+
+                switch ($dimeName)
+                {
+                    case 'saturday_morning_rate':
+                    case 'weekdays_morning_rate':
+                        $weekdayMorningDimes++;
+                        break;
+                    case 'saturday_evening_rate':
+                    case 'weekdays_evening_rate':
+                        $weekdayEveningDimes++;
+                        break;
+                    case 'saturday_night_rate':
+                    case 'weekdays_night_rate':
+                        $weekdayNightDimes++;
+                        break;
+                    case 'sunday_morning_rate':
+                        $holidayMorningDimes++;
+                        break;
+                    case 'sunday_evening_rate':
+                        $holidayEveningDimes++;
+                        break;
+                    case 'sunday_night_rate':
+                        $holidayNightDimes++;
+                        break;
                 }
 
                 $tempFactor = $factor * $tempFrameDuration;     // FOR SECONDS
@@ -500,7 +549,24 @@ class ActiveShiftsController extends Controller
             }
         }
 
-        return ($frameFactor / 3600);
+//        print_r(    'Normal Morning: '.($weekdayMorningDimes / 6).
+//                            '<br>Normal Evening: '.($weekdayEveningDimes / 6).
+//                            '<br>Normal Night: '.($weekdayNightDimes / 6).
+//                            '<br>Holiday Morning: '.($holidayMorningDimes / 6).
+//                            '<br>Holiday Evening: '.($holidayEveningDimes / 6).
+//                            '<br>Holiday Night: '.($holidayNightDimes / 6) );
+
+        $factorData = [
+            'frame_factor'   =>  ($frameFactor / 3600),
+            'weekday_morning'    =>  ($weekdayMorningDimes / 6),
+            'weekday_evening'   =>  ($weekdayEveningDimes / 6),
+            'weekday_night'     =>  ($weekdayNightDimes / 6),
+            'holiday_morning'   =>  ($holidayMorningDimes / 6),
+            'holiday_evening'   =>  ($holidayEveningDimes / 6),
+            'holiday_night'   =>  ($holidayNightDimes / 6),
+        ];
+
+        return $factorData;
     }
 
     public function exportByLocation(Location $location)
@@ -509,7 +575,7 @@ class ActiveShiftsController extends Controller
 
         if ( is_null($activeShifts) or !isset($activeShifts) )
         {
-            \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για το σημέιο φύλαξης.');
+            request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες για το σημέιο φύλαξης.');
             return redirect()->back();
         }
 
