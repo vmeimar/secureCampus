@@ -277,7 +277,12 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $activeShift)
         {
-            if ( (($activeShift->confirmed_steward == 1) and (date('m', strtotime($activeShift->from)) == $month) ) or ($month == 'all') )
+            if ($activeShift->confirmed_steward == 0)
+            {
+                continue;
+            }
+
+            if ( (date('m', strtotime($activeShift->from)) == $month) or ($month == 'all') )
             {
                 $activeShifts[] = $activeShift;
 

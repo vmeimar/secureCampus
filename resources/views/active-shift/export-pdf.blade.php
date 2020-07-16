@@ -23,13 +23,12 @@
     .keimeno {line-height: 90%; text-align: center;}
     .signature {text-align: right; font-size: smaller}
     .pagination {text-align: center; font-size: smaller}
-    .footer {
+    footer {
         position: fixed;
-        left: 0;
-        bottom: 90px;
-        right: 30px;
-        width: 100%;
-        text-align: right;
+        bottom: -60px;
+        left: 0px;
+        right: 0px;
+        height: 50px;
     }
     .sxima { margin-left: 50px; font-size: smaller}
     /*ol. {list-style-type: lower-greek;}*/
@@ -75,10 +74,19 @@
         </ol>
     </div>
 </div>
-<div class="footer">
-    <p class="signature mr-2 justify-content-center">Ο Επόπτης<br><br><br>
-        {{ $user->name }}
-    </p>
-</div>
+{{--<div class="footer">--}}
+{{--    <div class="row">--}}
+{{--        <p class="signature mr-2 justify-content-center">Ο Επόπτης<br><br><br></p>--}}
+{{--    </div>--}}
+{{--    <div class="row">--}}
+{{--        <p class="signature mr-2 justify-content-center">{{ $user->name }} {{ $user->surname }}</p>--}}
+{{--    </div>--}}
+{{--    <div class="row">--}}
+{{--        <p class="signature mr-2 justify-content-center">{{ $user->tier }}</p>--}}
+{{--    </div>--}}
+{{--</div>--}}
+<footer>
+    Copyright &copy; <?php echo date("Y");?>
+</footer>
 </body>
 </html>
