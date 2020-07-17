@@ -108,8 +108,9 @@ class ActiveShiftsController extends Controller
     public function store(Request $request)
     {
         $timeOffset = 10;
+        $absent = null;
 
-        foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month']) as $item)
+        foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month', 'hours', 'checkbox']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
@@ -138,6 +139,13 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
+        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0 ) )
+        {
+            $absent = $request['hours'];
+        }
+
+//        dd('there');
+
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'location_id'  =>  $staticShift->location_id,
@@ -146,6 +154,7 @@ class ActiveShiftsController extends Controller
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'duration'  =>  $shiftDuration / 3600,  // IN HOURS
+            'absent'  =>  $absent,
             'weekday_morning'   =>  $factorData['weekday_morning'],
             'weekday_evening'   =>  $factorData['weekday_evening'],
             'weekday_night'   =>  $factorData['weekday_night'],

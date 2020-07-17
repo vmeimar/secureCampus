@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{--    <meta charset="UTF-8">--}}
     <title>Βεβαίωση Επιτροπής</title>
-
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
 </head>
 <style>
     body, .row { font-family: DejaVu Sans, sans-serif; font-size: small }
@@ -44,17 +38,17 @@
     </div>
 </header>
 <div class="container">
-    <div class="row col-md-10" style="margin-left: 200px"><p><u><strong>Παράρτημα Β</strong></u></p></div>
+    <div class="row" style="margin-left: 200px"><p><u><strong>Παράρτημα Β</strong></u></p></div>
     <div class="row">
         <table class="table table-striped table-bordered">
             <thead class="thead-light">
             <tr>
-                <th scope="col">Φύλακας</th>
-                <th scope="col">Εργάσιμες Πρωί/Απόγευμα</th>
-                <th scope="col">Εργάσιμες Βράδυ</th>
-                <th scope="col">Κυρ./Αργίες Πρωί/Απόγευμα</th>
-                <th scope="col">Κυρ./Αργίες Βράδυ</th>
-                <th scope="col">Ισοδύναμα</th>
+                <th scope="col" style="width: 150px">Φύλακας</th>
+                <th scope="col" style="width: 150px">Εργάσιμες Πρωί/Απόγευμα</th>
+                <th scope="col" style="width: 150px">Εργάσιμες Βράδυ</th>
+                <th scope="col" style="width: 150px">Κυρ./Αργίες Πρωί/Απόγευμα</th>
+                <th scope="col" style="width: 150px">Κυρ./Αργίες Βράδυ</th>
+                <th scope="col" style="width: 150px">Ισοδύναμα</th>
             </tr>
             </thead>
             <tbody>

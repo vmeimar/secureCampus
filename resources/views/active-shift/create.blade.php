@@ -61,6 +61,21 @@
                             </div>
                             {{--AJAX-END--}}
 
+                            <div class="form-group row">
+                                <label for="absent" class="col-md-3 col-form-label text-md-right">Φύλακας Απών</label>
+                                <div class="col-md-6 d-flex">
+                                    <div class="col-md-2">
+                                        <input name="checkbox" type="checkbox" class="form-control" id="absent">
+                                    </div>
+                                </div>
+                                <div class="form-group-row">
+                                    <div class="col-md-4">
+{{--                                        <label for="hours" class="col-md-2 col-form-label">Ώρες</label>--}}
+                                        <input id="hours" name="hours" size="5" type="text" />
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Get shift's id on hidden element -->
                             <input type="hidden" id="shift-id" name="shift-id" value="{{ $shift->id }}">
 
@@ -105,6 +120,19 @@
 
             $('#month').change(function(){
                 $('#active-shift-date').val('');
+            });
+        });
+
+        $(function () {
+            $('input[name="hours"]').hide();
+
+            //show it when the checkbox is clicked
+            $('input[name="checkbox"]').on('click', function () {
+                if ($(this).prop('checked')) {
+                    $('input[name="hours"]').fadeIn();
+                } else {
+                    $('input[name="hours"]').hide();
+                }
             });
         });
     </script>

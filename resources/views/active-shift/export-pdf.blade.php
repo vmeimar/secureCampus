@@ -18,18 +18,19 @@
 
 </head>
 <style>
-    body, .row { font-family: DejaVu Sans, sans-serif; font-size: small }
+    body, .row { font-family: DejaVu Sans, sans-serif; font-size: small; }
     .ekpa-logo {max-height: 110px;}
     .keimeno {line-height: 90%; text-align: center;}
     .signature {text-align: right; font-size: smaller}
     .pagination {text-align: center; font-size: smaller}
-    footer {
-        position: fixed;
-        bottom: -60px;
-        left: 0px;
-        right: 0px;
-        height: 50px;
-    }
+    .container-fluid {text-align: center;}
+    /*footer {*/
+    /*    position: fixed;*/
+    /*    bottom: -60px;*/
+    /*    left: 0px;*/
+    /*    right: 0px;*/
+    /*    height: 50px;*/
+    /*}*/
     .sxima { margin-left: 50px; font-size: smaller}
     /*ol. {list-style-type: lower-greek;}*/
 </style>
@@ -51,7 +52,7 @@
     </div>
 </header>
 <div class="container py-3 mt-4">
-    <div class="row col-md-4 float-left" style="left: 0"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
+    <div class="row col-md-4 text-left" style="left: -30px"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
     <div class="row col-md-8" style="margin-left: 200px"><p><u><strong>ΒΕΒΑΙΩΣΗ</strong></u></p></div>
     <div class="row">
         <p class="keimeno">Ο υπογράφων Επόπτης {{ $user->name }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης στη θέση {{ $location->name }} Ε.Κ.Π.Α,
@@ -85,8 +86,18 @@
 {{--        <p class="signature mr-2 justify-content-center">{{ $user->tier }}</p>--}}
 {{--    </div>--}}
 {{--</div>--}}
-<footer>
-    Copyright &copy; <?php echo date("Y");?>
+<footer class="page-footer justify-content-center">
+    <div class="container-fluid text-right">
+        <div class="row">
+            <p style="font-size: 12px">Ο Επόπτης</p>
+        </div>
+        <div class="row">
+            <p style="font-size: 12px">{{ $user->name }} {{ $user->surname }}</p>
+        </div>
+        <div class="row">
+            <p style="font-size: 12px">{{ $user->tier }}</p>
+        </div>
+    </div>
 </footer>
 </body>
 </html>

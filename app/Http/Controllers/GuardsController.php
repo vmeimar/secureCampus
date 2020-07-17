@@ -314,7 +314,7 @@ class GuardsController extends Controller
             ];
         }
 
-        $pdf = PDF::loadView('/guard/export-all-guards-pdf', compact('exportData'))->setPaper('a4');
+        $pdf = PDF::loadView('/guard/export-all-guards-pdf', compact('exportData'))->setPaper('A4');
         return $pdf->download($company->name.'.pdf');
 //        return view('guard.export-all-guards-pdf', compact('exportData'));
     }

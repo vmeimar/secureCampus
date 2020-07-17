@@ -80,8 +80,15 @@
                             <div class="col-md-6">
                                 <select name="tier" id="tier" class="form-control input-lg dynamic">
                                     <option disabled selected value="">Επιλέξτε Βαθμίδα</option>
-                                    <option value="Καθηγήτρια">Καθηγήτρια</option>
                                     <option value="Καθηγητής">Καθηγητής</option>
+                                    <option value="Καθηγήτρια">Καθηγήτρια</option>
+                                    <option value="Καθηγήτρια">Αναπλ. Καθηγητής</option>
+                                    <option value="Καθηγήτρια">Αναπλ. Καθηγήτρια</option>
+                                    <option value="Καθηγήτρια">Λέκτορας</option>
+                                    <option value="Καθηγήτρια">Ε.ΔΙ.Π.</option>
+                                    <option value="Καθηγήτρια">Ε.Ε.Π.</option>
+                                    <option value="Καθηγήτρια">Ε.ΤΕ.Π.</option>
+                                    <option value="Καθηγήτρια">Διοικητικός Υπάλληλος</option>
                                 </select>
                                 @error('tier')
                                 <strong>Παρακαλώ επιλέξτε βαθμίδα</strong>

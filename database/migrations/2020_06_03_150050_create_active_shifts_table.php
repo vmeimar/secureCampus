@@ -25,6 +25,7 @@ class CreateActiveShiftsTable extends Migration
             $table->tinyInteger('confirmed_supervisor');
             $table->text('comments')->nullable();
             $table->float('duration');
+            $table->float('absent')->nullable();
             $table->float('weekday_morning');
             $table->float('weekday_evening');
             $table->float('weekday_night');
