@@ -150,6 +150,38 @@
                     </div>
                 </div>
                 <div class="d-flex">
+                    <form method="post" action="{{ route('active-shift.export-committee-pdf') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row ml-3">
+                            <span class="pt-2"><strong>Εξαγωγή όλων των βαρδιών για κάθε σημείο φύλαξης ανά μήνα</strong></span>
+                            <button type="submit" class="btn btn-danger ml-2" style="max-height: 35px">Εξαγωγή PDF</button>
+                            <div class="form-group row">
+                                <label for="month" class="col-md-6 col-form-label text-md-right"><strong>Επιλέξτε μήνα</strong></label>
+                                <div class="col-md-6">
+                                    <select required name="month" id="month" class="form-control input-lg dynamic">
+                                        <option disabled selected value="">Μήνας</option>
+                                        <option value="01">Ιανουάριος</option>
+                                        <option value="02">Φεβρουάριος</option>
+                                        <option value="03">Μάρτιος</option>
+                                        <option value="04">Απρίλιος</option>
+                                        <option value="05">Μάιος</option>
+                                        <option value="06">Ιούνιος</option>
+                                        <option value="07">Ιούλιος</option>
+                                        <option value="08">Αύγουστος</option>
+                                        <option value="09">Σεπτέμβριος</option>
+                                        <option value="10">Οκτώβριος</option>
+                                        <option value="11">Νοέμβριος</option>
+                                        <option value="12">Δεκέμβριος</option>
+                                    </select>
+                                    @error('month')
+                                    <strong>Παρακαλώ επιλέξτε μήνα</strong>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex">
                     <div class="row">
                         <a href="/shift/index" class="btn btn-secondary m-4">Πίσω</a>
                     </div>

@@ -34,6 +34,7 @@ Route::get('/active-shift/index', 'ActiveShiftsController@index')->middleware('c
 Route::get('/active-shift/create/{shift}', 'ActiveShiftsController@create')->middleware('can:assign-shifts')->name('active-shift.create');
 Route::get('/active-shift/edit/{activeShift}', 'ActiveShiftsController@edit')->middleware('can:edit-shifts')->name('active-shift.edit');
 Route::post('/active-shift/{location}/export-pdf', 'ActiveShiftsController@exportPdf')->name('active-shift.export-pdf');
+Route::post('/active-shift/export-committee-pdf', 'ActiveShiftsController@exportCommitteePdf')->name('active-shift.export-committee-pdf');
 Route::post('/active-shift/show-by-location', 'ActiveShiftsController@showByLocation')->middleware('can:view-shifts')->name('active-shift.show-by-location');
 Route::post('active-shift/index/fetch', 'ActiveShiftsController@fetch')->name('active-shift.fetch');       //   AJAX
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:assign-shifts');

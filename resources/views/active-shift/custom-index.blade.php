@@ -59,7 +59,7 @@
                     <form method="post" action="{{ route('active-shift.export-pdf', $locationId) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <button type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
+                            <button name="test" type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
                             <input name="month" id="month" type="hidden" value="{{$month}}">
                         </div>
                     </form>

@@ -683,6 +683,35 @@ class ActiveShiftsController extends Controller
 
     }
 
+    public function exportCommitteePdf(Request $request)
+    {
+        $data = $request->all();
+        $locations = Location::all();
+
+        foreach ($locations as $location)
+        {
+            $locShifts[$location->name][] = $location->activeShifts()->get()->toArray();
+        }
+
+//        dd($locShifts);
+
+        foreach ($locShifts as $key => $value)
+        {
+            foreach ($value[0] as $activeShift)
+            {
+                if ( date('m', strtotime($activeShift['date'])) == $data['month'])
+                {
+
+                }
+            }
+        }
+
+//        return view('active-shift.export-committee-pdf', compact('activeShifts'));
+
+//        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts'));
+//        return $pdf->download('Σύνολο Βαρδιών.pdf');
+    }
+
     /**
      * AJAX for fetching active shifts
      */

@@ -6,13 +6,13 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Εξαγωγή Στοιχείων</strong>
+                        <strong>Εξαγωγή</strong>
                     </div>
                     <div class="card-body">
 
                         <div class="d-flex justify-content-center mb-4">
                             <div class="row col-md-8">
-                                <h6>
+                                <h6 class="text-center">
                                     <strong>
                                         Έχετε τη δυνατότητα να εξάγετε αρχείο τύπου Pdf για τις βάρδιες όλων των φυλάκων
                                         ανά μήνα με τις ώρες εργασίας και τις ισοδύναμες μονάδες βάρδιας.
