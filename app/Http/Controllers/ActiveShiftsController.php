@@ -140,7 +140,7 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
-        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0 ) )
+        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0) )
         {
             $absent = $request['hours'];
             $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
@@ -213,7 +213,7 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
-        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0 ) )
+        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0) )
         {
             $absent = $data['hours'];
         }
@@ -493,7 +493,6 @@ class ActiveShiftsController extends Controller
 
         foreach ($dayFrameArray as $key => $value)
         {
-
             $newarray[$value['frame']][$value['start_frame']] = $value['end_frame'];
         }
 
@@ -703,8 +702,6 @@ class ActiveShiftsController extends Controller
             $locShifts[$location->name][] = $location->activeShifts()->get()->toArray();
         }
 
-//        dd($locShifts);
-
         foreach ($locShifts as $key => $value)
         {
             foreach ($value[0] as $activeShift)
@@ -716,12 +713,12 @@ class ActiveShiftsController extends Controller
             }
         }
 
-        dd($activeShifts);
+//        dd($activeShifts);
 
 //        return view('active-shift.export-committee-pdf', compact('activeShifts'));
 
-//        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts'));
-//        return $pdf->download('Σύνολο Βαρδιών.pdf');
+        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts'));
+        return $pdf->download('Σύνολο Βαρδιών.pdf');
     }
 
     /**
