@@ -24,8 +24,8 @@
                         <form method="post" action="{{ route('guard.export-all-guards-pdf', $company->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή</label>
-                                <div class="col-md-4">
+                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή PDF με τις βάρδιες</label>
+                                <div class="col-md-3">
                                     <select name="month" id="month" class="form-control input-lg dynamic">
                                         <option disabled selected value="">Επιλέξτε Μήνα</option>
                                         <option value="all">Όλοι οι μήνες</option>
@@ -52,7 +52,31 @@
 
                         <form method="post" action="{{ route('guard.export-committee') }}" enctype="multipart/form-data">
                             @csrf
-                            <button type="submit" class="btn btn-primary" style="max-height: 35px; margin-left: 430px">Εξαγωγή Βεβαίωσης Επιτροπής</button>
+                            <div class="form-group row">
+                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή βεβαίωσης Επιτροπής</label>
+                                <div class="col-md-3">
+                                    <select name="month" id="month" class="form-control input-lg dynamic">
+                                        <option disabled selected value="">Επιλέξτε Μήνα</option>
+                                        <option value="all">Όλοι οι μήνες</option>
+                                        <option value="01">Ιανουάριος</option>
+                                        <option value="02">Φεβρουάριος</option>
+                                        <option value="03">Μάρτιος</option>
+                                        <option value="04">Απρίλιος</option>
+                                        <option value="05">Μάιος</option>
+                                        <option value="06">Ιούνιος</option>
+                                        <option value="07">Ιούλιος</option>
+                                        <option value="08">Αύγουστος</option>
+                                        <option value="09">Σεπτέμβριος</option>
+                                        <option value="10">Οκτώβριος</option>
+                                        <option value="11">Νοέμβριος</option>
+                                        <option value="12">Δεκέμβριος</option>
+                                    </select>
+                                    @error('month')
+                                    <strong>Παρακαλώ επιλέξτε μήνα</strong>
+                                    @enderror
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="max-height: 35px;">Εξαγωγή Βεβαίωσης Επιτροπής</button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -319,9 +319,30 @@ class GuardsController extends Controller
 //        return view('guard.export-all-guards-pdf', compact('exportData'));
     }
 
-    public function exportCommittee()
+    public function exportCommittee(Request $request)
     {
-        $pdf = PDF::loadView('/guard/export-committee')->setPaper('a4');
+//        dd($request->all());
+
+        $data = $request->all();
+        $month = $data['month'];
+
+        if ($month == 'all')
+        {
+            $from = date('d/m/Y', strtotime('Jan 1'));
+            $to = date('d/m/Y', strtotime('Dec 31'));
+        }
+        else
+        {
+            // Use mktime() and date() function to
+            // convert number to month name
+            $month_name = date("F", mktime(0, 0, 0, $month, 10));
+
+            $from = date('01/m/Y', strtotime($month_name));
+            $to = date('t/m/Y', strtotime($month_name));
+        }
+
+
+        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to'))->setPaper('a4');
         return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 

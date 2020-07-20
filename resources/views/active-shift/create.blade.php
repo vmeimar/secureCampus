@@ -61,20 +61,46 @@
                             </div>
                             {{--AJAX-END--}}
 
+
                             <div class="form-group row">
-                                <label for="absent" class="col-md-3 col-form-label text-md-right">Φύλακας Απών</label>
+                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>
                                 <div class="col-md-6 d-flex">
-                                    <div class="col-md-2">
-                                        <input name="checkbox" type="checkbox" class="form-control" id="absent">
+                                    <div class="col-md-3">
+                                        <input id="checkbox"
+                                               type="checkbox"
+                                               class="form-control"
+                                               style="max-height: 20px; margin-top: 10px"
+                                               name="checkbox"
+                                               value="{{ old('checkbox') }}"
+                                               autocomplete="checkbox"
+                                               autofocus>
                                     </div>
-                                </div>
-                                <div class="form-group-row">
-                                    <div class="col-md-4">
-{{--                                        <label for="hours" class="col-md-2 col-form-label">Ώρες</label>--}}
-                                        <input id="hours" name="hours" size="5" type="text" />
+                                    <div class="col-md-6">
+                                        <input id="hours"
+                                               type="text"
+                                               class="form-control"
+                                               name="hours"
+                                               placeholder="Ώρες Απουσίας"
+                                               value="{{ old('hours') }}"
+                                               autocomplete="hours"
+                                               autofocus>
                                     </div>
                                 </div>
                             </div>
+
+
+{{--                            <div class="form-group row">--}}
+{{--                                    <label for="absent" class="col-md-6 col-form-label text-md-right">Φύλακας Απών</label>--}}
+{{--                                    <div class="col-md-6 offset-1">--}}
+{{--                                        <input name="checkbox" type="checkbox" class="form-control" id="absent">--}}
+{{--                                    </div>--}}
+{{--                                    <div class="form-group-row">--}}
+{{--                                        <div class="col-md-4">--}}
+{{--                                            <label for="hours" class="col-md-2 col-form-label">Ώρες</label>--}}
+{{--                                            <input id="hours" name="hours" size="5" type="text" />--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                            </div>--}}
 
                             <!-- Get shift's id on hidden element -->
                             <input type="hidden" id="shift-id" name="shift-id" value="{{ $shift->id }}">

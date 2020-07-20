@@ -109,6 +109,7 @@ class ActiveShiftsController extends Controller
     {
         $timeOffset = 10;
         $absent = null;
+        $comments = null;
 
         foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month', 'hours', 'checkbox']) as $item)
         {
@@ -142,9 +143,8 @@ class ActiveShiftsController extends Controller
         if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0 ) )
         {
             $absent = $request['hours'];
+            $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
         }
-
-//        dd('there');
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
@@ -155,6 +155,7 @@ class ActiveShiftsController extends Controller
             'until' =>  $shiftUntil,
             'duration'  =>  $shiftDuration / 3600,  // IN HOURS
             'absent'  =>  $absent,
+            'comments'  =>  $comments,
             'weekday_morning'   =>  $factorData['weekday_morning'],
             'weekday_evening'   =>  $factorData['weekday_evening'],
             'weekday_night'   =>  $factorData['weekday_night'],
@@ -181,13 +182,15 @@ class ActiveShiftsController extends Controller
     public function update(ActiveShift $activeShift)
     {
         $timeOffset = 10;
+        $absent = null;
 
-        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month']) as $item)
+        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month', 'hours', 'checkbox']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
 
         $data = request()->all();
+
         $data['active-shift-id'] = $activeShift->id;
         $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
@@ -210,6 +213,11 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
+        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0 ) )
+        {
+            $absent = $data['hours'];
+        }
+
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
             'date'  =>  $date,
@@ -217,6 +225,7 @@ class ActiveShiftsController extends Controller
             'until' =>  $shiftUntil,
             'comments'  =>  $data['active-shift-comments'],
             'duration'  =>  $shiftDuration / 3600,   // IN HOURS
+            'absent'  =>  $absent,
             'weekday_morning'   =>  $factorData['weekday_morning'],
             'weekday_evening'   =>  $factorData['weekday_evening'],
             'weekday_night'   =>  $factorData['weekday_night'],
@@ -686,6 +695,7 @@ class ActiveShiftsController extends Controller
     public function exportCommitteePdf(Request $request)
     {
         $data = $request->all();
+
         $locations = Location::all();
 
         foreach ($locations as $location)
@@ -701,10 +711,12 @@ class ActiveShiftsController extends Controller
             {
                 if ( date('m', strtotime($activeShift['date'])) == $data['month'])
                 {
-
+                    $activeShifts[$key][] = $activeShift;
                 }
             }
         }
+
+        dd($activeShifts);
 
 //        return view('active-shift.export-committee-pdf', compact('activeShifts'));
 

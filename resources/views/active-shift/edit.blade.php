@@ -89,6 +89,33 @@
                                           id="active-shift-comments"
                                           class="col-md-6 form-control input-lg dynamic">{{ $activeShift->comments }}</textarea>
                             </div>
+
+                            <div class="form-group row">
+                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>
+                                <div class="col-md-6 d-flex">
+                                    <div class="col-md-3">
+                                        <input id="checkbox"
+                                               type="checkbox"
+                                               class="form-control"
+                                               style="max-height: 20px; margin-top: 10px"
+                                               name="checkbox"
+                                               value="{{ old('checkbox') }}"
+                                               autocomplete="checkbox"
+                                               autofocus>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input id="hours"
+                                               type="text"
+                                               class="form-control"
+                                               name="hours"
+                                               placeholder="Ώρες Απουσίας"
+                                               value="{{ old('hours') }}"
+                                               autocomplete="hours"
+                                               autofocus>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">Αποθήκευση</button>
@@ -130,6 +157,19 @@
 
             $('#month').change(function(){
                 $('#active-shift-date').val('');
+            });
+        });
+
+        $(function () {
+            $('input[name="hours"]').hide();
+
+            //show it when the checkbox is clicked
+            $('input[name="checkbox"]').on('click', function () {
+                if ($(this).prop('checked')) {
+                    $('input[name="hours"]').fadeIn();
+                } else {
+                    $('input[name="hours"]').hide();
+                }
             });
         });
     </script>
