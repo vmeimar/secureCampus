@@ -20,7 +20,7 @@
 <style>
     body, .row, p { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
     .ekpa-logo {max-height: 110px;}
-    .keimeno, p {line-height: 90%; text-align: center;}
+    .keimeno, p {line-height: 90%; text-align: justify; text-justify: inter-word}
     .signature {text-align: right; font-size: smaller}
     .pagination {text-align: center; font-size: smaller}
     .container-fluid {text-align: center;}

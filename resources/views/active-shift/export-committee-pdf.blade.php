@@ -110,7 +110,7 @@
 <style>
     body {
         font-family: DejaVu Sans, sans-serif;
-        font-size: 11px;
+        font-size: 10px;
     }
     #table{
         max-width: 2480px;
@@ -129,60 +129,62 @@
 </header>
 <div class="container">
     <div>
-        <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΜΗΝΑ $month</strong></p>
+        <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΔΙΑΣΤΗΜΑ ΑΠΟ {{ $from }} ΜΕΧΡΙ {{ $to }}</strong></p>
     </div>
     <div>
-        <p><strong>$location</strong></p>
-        <div class="table-responsive table-bordered">
-            <table class="table table-striped table-bordered" id="table">
-                <thead>
-                <tr>
-                    <th>Όνομα Βάρδιας</th>
-                    <th>Ώρες Εργάσιμες Πρωί/Απόγευμα</th>
-                    <th>Ώρες Εργάσιμες Βράδυ</th>
-                    <th>Ώρες Κυριακή/Αργία Πρωί/Απόγευμα</th>
-                    <th><br><strong>Ώρες Κυριακή/Αργία Βράδυ</strong><br></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Cell 1</td>
-                    <td>Cell 2</td>
-                    <td>Cell 3</td>
-                    <td>Cell 4</td>
-                    <td>Cell 5</td>
-                </tr>
-                <tr>
-                    <th>Σύνολο ωρών φύλαξης</th>
-                    <td>Cell 4</td>
-                    <td>Cell 3</td>
-                    <td>Cell 4</td>
-                    <td>Cell 5</td>
-                </tr>
-                <tr>
-                    <th>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα</th>
-                    <td>Cell 2</td>
-                    <td>Cell 3</td>
-                    <td>Cell 4</td>
-                    <td>Cell 5</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        @foreach($activeShifts as $key => $value)
+            <p class="mt-4"><strong>{{ $key }}</strong></p>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="table">
+                    <thead>
+                    <tr>
+                        <th style="width: 30%">Όνομα Βάρδιας</th>
+                        <th style="width: 17.5%">Ώρες Εργάσιμες Πρωί/Απόγευμα</th>
+                        <th style="width: 17.5%">Ώρες Εργάσιμες Βράδυ</th>
+                        <th style="width: 17.5%">Ώρες Κυριακή/Αργία Πρωί/Απόγευμα</th>
+                        <th style="width: 17.5%">Ώρες Κυριακή/Αργία Βράδυ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($value as $activeShift)
+                        <tr>
+                            <td>{{ $activeShift['name'] }}</td>
+                            <td>{{ $activeShift['weekday_morning'] + $activeShift['weekday_evening'] }}</td>
+                            <td>{{ $activeShift['weekday_night'] }}</td>
+                            <td>{{ $activeShift['holiday_morning'] + $activeShift['holiday_evening'] }}</td>
+                            <td>{{ $activeShift['holiday_night'] }}</td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <th>Σύνολο ωρών φύλαξης</th>
+                        <td>{{ $totalHours[$key]['totalHoursWeekdaysRegular'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursWeekdaysNight'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursHolidaysRegular'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursHolidaysNight'] }}</td>
+                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα</th>--}}
+{{--                        <td>{{ $totalHours[$key]['totalHoursAbsentByLocation'] }}</td>--}}
+{{--                    </tr>--}}
+                    </tbody>
+                </table>
+                <p><strong>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα: {{ $totalHours[$key]['totalHoursAbsentByLocation'] }}</strong></p>
+            </div>
+        @endforeach
     </div>
     <div>
-        <div class="table-responsive table-bordered">
+        <div class="table-responsive mt-4">
             <table class="table table-striped table-bordered" id="table">
                 <thead>
                 <tr>
                     <th>Γενικό Σύνολο Διαφοράς</th>
-                    <td>Column 2</td>
+                    <td>{{ $totalHoursAbsent }}</td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th>Διαφορά σε Ισοδύναμες Ώρες</th>
-                    <td>Cell 2</td>
+                    <td>{{ $totalFactorAbsent }}</td>
                 </tr>
                 <tr></tr>
                 </tbody>
@@ -190,8 +192,8 @@
         </div>
     </div>
 </div>
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+{{--<script src="assets/js/jquery.min.js"></script>--}}
+{{--<script src="assets/bootstrap/js/bootstrap.min.js"></script>--}}
 </body>
 
 </html>

@@ -694,8 +694,14 @@ class ActiveShiftsController extends Controller
     public function exportCommitteePdf(Request $request)
     {
         $data = $request->all();
-
         $locations = Location::all();
+
+        $month_name = date("F", mktime(0, 0, 0, $data['month'], 10));
+        $from = date('01/m/Y', strtotime($month_name));
+        $to = date('t/m/Y', strtotime($month_name));
+
+        $totalHoursAbsent = 0;
+        $totalFactorAbsent = 0;
 
         foreach ($locations as $location)
         {
@@ -704,20 +710,55 @@ class ActiveShiftsController extends Controller
 
         foreach ($locShifts as $key => $value)
         {
+            $totalHoursWeekdaysRegular = 0;
+            $totalHoursWeekdaysNight = 0;
+            $totalHoursHolidaysRegular = 0;
+            $totalHoursHolidaysNight = 0;
+            $totalHoursAbsentByLocation = 0;
+
             foreach ($value[0] as $activeShift)
             {
                 if ( date('m', strtotime($activeShift['date'])) == $data['month'])
                 {
                     $activeShifts[$key][] = $activeShift;
+
+                    $totalHoursWeekdaysRegular += ($activeShift['weekday_morning'] + $activeShift['weekday_evening']);
+                    $totalHoursWeekdaysNight += $activeShift['weekday_night'];
+                    $totalHoursHolidaysRegular += ($activeShift['holiday_morning'] + $activeShift['holiday_evening']);
+                    $totalHoursHolidaysNight += $activeShift['holiday_night'];
+                    $totalHoursAbsentByLocation += $activeShift['absent'];
+
+                    $totalHours[$key]['totalHoursWeekdaysRegular'] = $totalHoursWeekdaysRegular;
+                    $totalHours[$key]['totalHoursWeekdaysNight'] = $totalHoursWeekdaysNight;
+                    $totalHours[$key]['totalHoursHolidaysRegular'] = $totalHoursHolidaysRegular;
+                    $totalHours[$key]['totalHoursHolidaysNight'] = $totalHoursHolidaysNight;
+                    $totalHours[$key]['totalHoursAbsentByLocation'] = $totalHoursAbsentByLocation;
+
+                    $totalHoursAbsent += $activeShift['absent'];
+                    $totalFactorAbsent += ($activeShift['absent'] *  ($activeShift['factor'] / $activeShift['duration']) );
                 }
             }
         }
+//        dd($totalHours);
 
-//        dd($activeShifts);
+//        echo "<pre>";
+//
+//        foreach ($activeShifts as $key => $value)
+//        {
+//            print_r($key.'<br>');
+//            foreach ($value as $activeShift)
+//            {
+//                print_r($activeShift);
+//                echo '<br>';
+//            }
+//        }
+//
+//        exit;
 
-//        return view('active-shift.export-committee-pdf', compact('activeShifts'));
+//        return view('active-shift.export-committee-pdf',
+//            compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent'));
 
-        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts'));
+        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
     }
 
