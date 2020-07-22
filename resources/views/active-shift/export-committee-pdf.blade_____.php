@@ -38,13 +38,13 @@
         <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΔΙΑΣΤΗΜΑ ΑΠΟ {{ $from }} ΜΕΧΡΙ {{ $to }}</strong></p>
     </div>
     <div>
-        @foreach($exportData as $locationName => $value)
-            <p class="mt-4"><strong>{{ $locationName }}</strong></p>
+        @foreach($activeShifts as $key => $value)
+            <p class="mt-4"><strong>{{ $key }}</strong></p>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="table">
                     <thead>
                     <tr>
-                        <th style="width: 30%">Όνομα Φύλακα</th>
+                        <th style="width: 30%">Όνομα Βάρδιας</th>
                         <th style="width: 17.5%">Ώρες Εργάσιμες Πρωί/Απόγευμα</th>
                         <th style="width: 17.5%">Ώρες Εργάσιμες Βράδυ</th>
                         <th style="width: 17.5%">Ώρες Κυριακή/Αργία Πρωί/Απόγευμα</th>
@@ -52,26 +52,29 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($value[0] as $guardName => $guard)
+                    @foreach($value as $activeShift)
                         <tr>
-{{--                            {{ dd($guard) }}--}}
-                            <td>{{ $guardName }}</td>
-                            <td>{{ $guard['weekday_regular'] }}</td>
-                            <td>{{ $guard['weekday_night'] }}</td>
-                            <td>{{ $guard['holiday_regular'] }}</td>
-                            <td>{{ $guard['holiday_night'] }}</td>
+                            <td>{{ $activeShift['name'] }}</td>
+                            <td>{{ $activeShift['weekday_morning'] + $activeShift['weekday_evening'] }}</td>
+                            <td>{{ $activeShift['weekday_night'] }}</td>
+                            <td>{{ $activeShift['holiday_morning'] + $activeShift['holiday_evening'] }}</td>
+                            <td>{{ $activeShift['holiday_night'] }}</td>
                         </tr>
                     @endforeach
                     <tr>
                         <th>Σύνολο ωρών φύλαξης</th>
-                        <td>{{ $totalHours[$locationName]['totalHoursWeekdaysRegular'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursWeekdaysNight'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursHolidaysRegular'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursHolidaysNight'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursWeekdaysRegular'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursWeekdaysNight'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursHolidaysRegular'] }}</td>
+                        <td>{{ $totalHours[$key]['totalHoursHolidaysNight'] }}</td>
                     </tr>
+{{--                    <tr>--}}
+{{--                        <th>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα</th>--}}
+{{--                        <td>{{ $totalHours[$key]['totalHoursAbsentByLocation'] }}</td>--}}
+{{--                    </tr>--}}
                     </tbody>
                 </table>
-                <p><strong>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα: {{ $totalHours[$locationName]['totalHoursAbsentByLocation'] }}</strong></p>
+                <p><strong>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα: {{ $totalHours[$key]['totalHoursAbsentByLocation'] }}</strong></p>
             </div>
         @endforeach
     </div>
@@ -95,5 +98,8 @@
         </div>
     </div>
 </div>
+{{--<script src="assets/js/jquery.min.js"></script>--}}
+{{--<script src="assets/bootstrap/js/bootstrap.min.js"></script>--}}
 </body>
+
 </html>

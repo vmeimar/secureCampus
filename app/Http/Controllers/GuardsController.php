@@ -321,7 +321,6 @@ class GuardsController extends Controller
 
     public function exportCommittee(Request $request)
     {
-//        dd($request->all());
 
         $data = $request->all();
         $month = $data['month'];

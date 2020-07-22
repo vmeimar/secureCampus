@@ -17,6 +17,7 @@
                                     <div class="col-md-6">
                                         <select required name="guard{{$i}}" id="guard{{$i}}" class="form-control input-lg">
                                             <option selected value="">Επιλέξτε Φύλακα</option>
+                                            <option value="absent">--ΑΠΟΥΣΙΑ ΦΥΛΑΚΑ--</option>
                                             @foreach($guards as $guard)
                                                 <option value="{{ $guard->id }}">
                                                     {{ $guard->surname }} {{ $guard->name }}
@@ -62,44 +63,30 @@
                             {{--AJAX-END--}}
 
 
-                            <div class="form-group row">
-                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>
-                                <div class="col-md-6 d-flex">
-                                    <div class="col-md-3">
-                                        <input id="checkbox"
-                                               type="checkbox"
-                                               class="form-control"
-                                               style="max-height: 20px; margin-top: 10px"
-                                               name="checkbox"
-                                               value="{{ old('checkbox') }}"
-                                               autocomplete="checkbox"
-                                               autofocus>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input id="hours"
-                                               type="text"
-                                               class="form-control"
-                                               name="hours"
-                                               placeholder="Ώρες Απουσίας"
-                                               value="{{ old('hours') }}"
-                                               autocomplete="hours"
-                                               autofocus>
-                                    </div>
-                                </div>
-                            </div>
-
-
 {{--                            <div class="form-group row">--}}
-{{--                                    <label for="absent" class="col-md-6 col-form-label text-md-right">Φύλακας Απών</label>--}}
-{{--                                    <div class="col-md-6 offset-1">--}}
-{{--                                        <input name="checkbox" type="checkbox" class="form-control" id="absent">--}}
+{{--                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>--}}
+{{--                                <div class="col-md-6 d-flex">--}}
+{{--                                    <div class="col-md-3">--}}
+{{--                                        <input id="checkbox"--}}
+{{--                                               type="checkbox"--}}
+{{--                                               class="form-control"--}}
+{{--                                               style="max-height: 20px; margin-top: 10px"--}}
+{{--                                               name="checkbox"--}}
+{{--                                               value="{{ old('checkbox') }}"--}}
+{{--                                               autocomplete="checkbox"--}}
+{{--                                               autofocus>--}}
 {{--                                    </div>--}}
-{{--                                    <div class="form-group-row">--}}
-{{--                                        <div class="col-md-4">--}}
-{{--                                            <label for="hours" class="col-md-2 col-form-label">Ώρες</label>--}}
-{{--                                            <input id="hours" name="hours" size="5" type="text" />--}}
-{{--                                        </div>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="hours"--}}
+{{--                                               type="text"--}}
+{{--                                               class="form-control"--}}
+{{--                                               name="hours"--}}
+{{--                                               placeholder="Ώρες Απουσίας"--}}
+{{--                                               value="{{ old('hours') }}"--}}
+{{--                                               autocomplete="hours"--}}
+{{--                                               autofocus>--}}
 {{--                                    </div>--}}
+{{--                                </div>--}}
 {{--                            </div>--}}
 
                             <!-- Get shift's id on hidden element -->
@@ -107,7 +94,7 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">Ανάθεση</button>
+                                    <button type="submit" class="btn btn-primary">Αποθήκευση</button>
                                 </div>
                             </div>
                         </form>
@@ -149,17 +136,17 @@
             });
         });
 
-        $(function () {
-            $('input[name="hours"]').hide();
-
-            //show it when the checkbox is clicked
-            $('input[name="checkbox"]').on('click', function () {
-                if ($(this).prop('checked')) {
-                    $('input[name="hours"]').fadeIn();
-                } else {
-                    $('input[name="hours"]').hide();
-                }
-            });
-        });
+        // $(function () {
+        //     $('input[name="hours"]').hide();
+        //
+        //     //show it when the checkbox is clicked
+        //     $('input[name="checkbox"]').on('click', function () {
+        //         if ($(this).prop('checked')) {
+        //             $('input[name="hours"]').fadeIn();
+        //         } else {
+        //             $('input[name="hours"]').hide();
+        //         }
+        //     });
+        // });
     </script>
 @endsection

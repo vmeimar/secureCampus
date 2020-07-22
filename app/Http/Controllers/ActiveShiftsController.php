@@ -108,13 +108,14 @@ class ActiveShiftsController extends Controller
     public function store(Request $request)
     {
         $timeOffset = 10;
-        $absent = null;
+        $absent = 0;
         $comments = null;
 
-        foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month', 'hours', 'checkbox']) as $item)
+        foreach ($request->except(['_token', 'active-shift-date', 'shift-id', 'month']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
+
         $data = $this->fetchData( count($assignedGuardIds) );
 
         $staticShift = Shift::findOrFail($data['shift-id']);
@@ -140,11 +141,21 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
-        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0) )
+        foreach ($assignedGuardIds as $assignedGuardId)
         {
-            $absent = $request['hours'];
-            $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
+            if ($assignedGuardId == 'absent')
+            {
+                $absent += $shiftDuration / 3600;
+                $comments = 'Απουσία φύλακα στη βάρδια';
+            }
         }
+
+//        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0) )
+//        {
+//            $absent = $request['hours'];
+//            $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
+//        }
+
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
@@ -184,7 +195,7 @@ class ActiveShiftsController extends Controller
         $timeOffset = 10;
         $absent = null;
 
-        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month', 'hours', 'checkbox']) as $item)
+        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
@@ -213,9 +224,17 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
-        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0) )
+//        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0) )
+//        {
+//            $absent = $data['hours'];
+//        }
+
+        foreach ($assignedGuardIds as $assignedGuardId)
         {
-            $absent = $data['hours'];
+            if ($assignedGuardId == 'absent')
+            {
+                $absent += $shiftDuration / 3600;
+            }
         }
 
         if (! $activeShift->update([
@@ -397,6 +416,8 @@ class ActiveShiftsController extends Controller
 
         foreach ($assignedGuardIds as $guardId)
         {
+            if ($guardId == 'absent') continue;
+
             $guard = Guard::findOrFail($guardId);
 
             foreach ( $guard->activeShifts()->get() as $guardShift )
@@ -705,7 +726,7 @@ class ActiveShiftsController extends Controller
 
         foreach ($locations as $location)
         {
-            $locShifts[$location->name][] = $location->activeShifts()->get()->toArray();
+            $locShifts[$location->name][] = $location->activeShifts()->get();
         }
 
         foreach ($locShifts as $key => $value)
@@ -718,6 +739,21 @@ class ActiveShiftsController extends Controller
 
             foreach ($value[0] as $activeShift)
             {
+                foreach ($activeShift->guards()->get() as $guard)
+                {
+                    if ( date('m', strtotime($activeShift['date'])) == $data['month'])
+                    {
+                        $locationGuardArray[$key][] = [
+                            'guard_id'  =>  $guard->id,
+                            'surname'   =>  $guard->surname,
+                            'weekday_regular'   =>  ($activeShift->weekday_morning + $activeShift->weekday_evening),
+                            'weekday_night'     =>  $activeShift->weekday_night,
+                            'holiday_regular'   =>  ($activeShift->holiday_morning + $activeShift->holiday_evening),
+                            'holiday_night'     =>  $activeShift->holiday_night
+                        ];
+                    }
+                }
+
                 if ( date('m', strtotime($activeShift['date'])) == $data['month'])
                 {
                     $activeShifts[$key][] = $activeShift;
@@ -739,26 +775,40 @@ class ActiveShiftsController extends Controller
                 }
             }
         }
-//        dd($totalHours);
 
-//        echo "<pre>";
-//
-//        foreach ($activeShifts as $key => $value)
-//        {
-//            print_r($key.'<br>');
-//            foreach ($value as $activeShift)
-//            {
-//                print_r($activeShift);
-//                echo '<br>';
-//            }
-//        }
-//
-//        exit;
+        foreach ($locationGuardArray as $locationName => $value)
+        {
+            $groups = [];
+
+            foreach ($value as $item)
+            {
+                $key = $item['surname'];
+
+                if (!array_key_exists($key, $groups))
+                {
+                    $groups[$key] = [
+                        'weekday_regular'   =>  $item['weekday_regular'],
+                        'weekday_night'     =>  $item['weekday_night'],
+                        'holiday_regular'   =>  $item['holiday_regular'],
+                        'holiday_night'     =>  $item['holiday_night'],
+                    ];
+                }
+                else
+                {
+                    $groups[$key]['weekday_regular'] += $item['weekday_regular'];
+                    $groups[$key]['weekday_night'] += $item['weekday_night'];
+                    $groups[$key]['holiday_regular'] += $item['holiday_regular'];
+                    $groups[$key]['holiday_night'] += $item['holiday_night'];
+                }
+            }
+
+            $exportData[$locationName][] = $groups;
+        }
 
 //        return view('active-shift.export-committee-pdf',
-//            compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent'));
+//            compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
 
-        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent'));
+        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
     }
 

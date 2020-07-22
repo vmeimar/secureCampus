@@ -20,6 +20,7 @@
                                             <option selected value="{{ $activeShift->guards()->get()->toArray()[$i-1]['id'] }}">
                                                 {{ $activeShift->guards()->get()->toArray()[$i-1]['surname'] }} {{ $activeShift->guards()->get()->toArray()[$i-1]['name'] }}
                                             </option>
+                                            <option value="absent">--ΑΠΟΥΣΙΑ ΦΥΛΑΚΑ--</option>
                                             @foreach($guards as $guard)
                                                 <option value="{{ $guard->id }}">
                                                     {{ $guard->surname }} {{ $guard->name }}
@@ -29,7 +30,6 @@
                                     </div>
                                 </div>
                             @endfor
-
 
                             {{--AJAX START--}}
                             <div class="form-group row">
@@ -67,21 +67,6 @@
                             <!-- Get shift's id on hidden element -->
                             <input type="hidden" id="shift-id" name="shift-id" value="{{ $activeShift->shift_id }}">
 
-{{--                            <div class="form-group row">--}}
-{{--                                <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας</label>--}}
-{{--                                <div class="col-md-6">--}}
-{{--                                    <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">--}}
-{{--                                        <option value="{{ $activeShift->date }}|{{ $activeShift->is_holiday }}" selected>{{ date('l', strtotime($activeShift->date)) }} {{ date('d-M-Y', strtotime($activeShift->date)) }}</option>--}}
-{{--                                        @foreach($availableDates as $date)--}}
-{{--                                            <option value="{{ $date->date }}|{{ $date->is_holiday }}">--}}
-{{--                                                {{ $date->day }} {{ date('d-M-Y', strtotime($date->date)) }}--}}
-{{--                                            </option>--}}
-{{--                                        @endforeach--}}
-{{--                                    </select>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-
                             <div class="form-group row">
                                 <label for="active-shift-comments" class="col-md-4 col-form-label text-md-right">Σχόλια</label>
                                 <textarea name="active-shift-comments"
@@ -90,31 +75,31 @@
                                           class="col-md-6 form-control input-lg dynamic">{{ $activeShift->comments }}</textarea>
                             </div>
 
-                            <div class="form-group row">
-                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>
-                                <div class="col-md-6 d-flex">
-                                    <div class="col-md-3">
-                                        <input id="checkbox"
-                                               type="checkbox"
-                                               class="form-control"
-                                               style="max-height: 20px; margin-top: 10px"
-                                               name="checkbox"
-                                               value="{{ old('checkbox') }}"
-                                               autocomplete="checkbox"
-                                               autofocus>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input id="hours"
-                                               type="text"
-                                               class="form-control"
-                                               name="hours"
-                                               placeholder="Ώρες Απουσίας"
-                                               value="{{ old('hours') }}"
-                                               autocomplete="hours"
-                                               autofocus>
-                                    </div>
-                                </div>
-                            </div>
+{{--                            <div class="form-group row">--}}
+{{--                                <label for="absent" class="col-md-4 col-form-label text-md-right">Μερική ή ολική απουσία φύλακα</label>--}}
+{{--                                <div class="col-md-6 d-flex">--}}
+{{--                                    <div class="col-md-3">--}}
+{{--                                        <input id="checkbox"--}}
+{{--                                               type="checkbox"--}}
+{{--                                               class="form-control"--}}
+{{--                                               style="max-height: 20px; margin-top: 10px"--}}
+{{--                                               name="checkbox"--}}
+{{--                                               value="{{ old('checkbox') }}"--}}
+{{--                                               autocomplete="checkbox"--}}
+{{--                                               autofocus>--}}
+{{--                                    </div>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <input id="hours"--}}
+{{--                                               type="text"--}}
+{{--                                               class="form-control"--}}
+{{--                                               name="hours"--}}
+{{--                                               placeholder="Ώρες Απουσίας"--}}
+{{--                                               value="{{ old('hours') }}"--}}
+{{--                                               autocomplete="hours"--}}
+{{--                                               autofocus>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
@@ -160,17 +145,17 @@
             });
         });
 
-        $(function () {
-            $('input[name="hours"]').hide();
-
-            //show it when the checkbox is clicked
-            $('input[name="checkbox"]').on('click', function () {
-                if ($(this).prop('checked')) {
-                    $('input[name="hours"]').fadeIn();
-                } else {
-                    $('input[name="hours"]').hide();
-                }
-            });
-        });
+        // $(function () {
+        //     $('input[name="hours"]').hide();
+        //
+        //     //show it when the checkbox is clicked
+        //     $('input[name="checkbox"]').on('click', function () {
+        //         if ($(this).prop('checked')) {
+        //             $('input[name="hours"]').fadeIn();
+        //         } else {
+        //             $('input[name="hours"]').hide();
+        //         }
+        //     });
+        // });
     </script>
 @endsection
