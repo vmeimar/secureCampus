@@ -51,19 +51,19 @@ class FactorsTableSeeder extends Seeder
         Factor::create([
             'name'  =>  'sunday_morning_rate',
             'rate'   => 1.75,
-            'name_greek'   => 'Αργίες Πρωί',
+            'name_greek'   => 'Κυριακή / Αργίες Πρωί',
         ]);
 
         Factor::create([
             'name'  =>  'sunday_evening_rate',
             'rate'   => 1.75,
-            'name_greek'   => 'Αργίες Απόγευμα',
+            'name_greek'   => 'Κυριακή / Αργίες Απόγευμα',
         ]);
 
         Factor::create([
             'name'  =>  'sunday_night_rate',
             'rate'   => 2.00,
-            'name_greek'   => 'Αργίες Βράδυ',
+            'name_greek'   => 'Κυριακή / Αργίες Βράδυ',
         ]);
     }
 }

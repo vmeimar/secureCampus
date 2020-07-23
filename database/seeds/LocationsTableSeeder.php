@@ -13,11 +13,11 @@ class LocationsTableSeeder extends Seeder
     public function run()
     {
         Location::create([
-            'name' =>  'Φιλοσοφικής',   //1
+            'name' =>  'Φιλοσοφική',   //1
         ]);
 
         Location::create([
-            'name' =>  'Διδασκαλείου Νέας Ελληνικής', //2
+            'name' =>  'Διδασκαλείο Νέας Ελληνικής', //2
         ]);
 
         Location::create([
@@ -25,39 +25,39 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Θεολογικής',    //4
+            'name' =>  'Θεολογική',    //4
         ]);
 
         Location::create([
-            'name' =>  'Πληροφορικής και Τηλεπικοινωνιών',  //5
+            'name' =>  'Πληροφορική και Τηλεπικοινωνίες',  //5
         ]);
 
         Location::create([
-            'name' =>  'Φυσικής',   //6
+            'name' =>  'Φυσική',   //6
         ]);
 
         Location::create([
-            'name' =>  'Χημείας',   //7
+            'name' =>  'Χημεία',   //7
         ]);
 
         Location::create([
-            'name' =>  'Βιολογίας', //8
+            'name' =>  'Βιολογία', //8
         ]);
 
         Location::create([
-            'name' =>  'Γεωλογίας και Γεωπεριβάλλοντος',    //9
+            'name' =>  'Γεωλογία και Γεωπεριβάλλον',    //9
         ]);
 
         Location::create([
-            'name' =>  'Νέου Μαθηματικού',  //10
+            'name' =>  'Νέο Μαθηματικό',  //10
         ]);
 
         Location::create([
-            'name' =>  'Παλαιού Μαθηματικού',   //11
+            'name' =>  'Παλαιό Μαθηματικό',   //11
         ]);
 
         Location::create([
-            'name' =>  'Φαρμακευτικού', //12
+            'name' =>  'Φαρμακευτική', //12
         ]);
 
         Location::create([
@@ -69,7 +69,7 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Βιβλιοθήκης ΣΘΕ',   //15
+            'name' =>  'Βιβλιοθήκη ΣΘΕ',   //15
         ]);
 
         Location::create([
@@ -81,35 +81,35 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Παιδικού Σταθμού 2 (Ούλοφ Πάλμε)',  //18
+            'name' =>  'Παιδικός Σταθμός 2 (Ούλοφ Πάλμε)',  //18
         ]);
 
         Location::create([
-            'name' =>  'Οδοντιατρικής', //19
+            'name' =>  'Οδοντιατρική', //19
         ]);
 
         Location::create([
-            'name' =>  'Ιατρικής Μικράς Ασίας', //20
+            'name' =>  'Ιατρική Μικράς Ασίας', //20
         ]);
 
         Location::create([
-            'name' =>  'Ιατρικής Τετραπόλεως',  //21
+            'name' =>  'Ιατρική Τετραπόλεως',  //21
         ]);
 
         Location::create([
-            'name' =>  'Ιατρικής Αττικό',   //22
+            'name' =>  'Ιατρική Αττικό',   //22
         ]);
 
         Location::create([
-            'name' =>  'Μονάδων Ιατρικής Παπαδιαμαντοπούλου',   //23
+            'name' =>  'Μονάδες Ιατρικής Παπαδιαμαντοπούλου',   //23
         ]);
 
         Location::create([
-            'name' =>  'Βιβλιοθήκης Επιστημών Υγείας',  //24
+            'name' =>  'Βιβλιοθήκη Επιστημών Υγείας',  //24
         ]);
 
         Location::create([
-            'name' =>  'Νοσηλευτικής',  //25
+            'name' =>  'Νοσηλευτική',  //25
         ]);
 
         Location::create([
@@ -117,11 +117,11 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Πανεπιστημιακής Λέσχης',    //27
+            'name' =>  'Πανεπιστημιακή Λέσχη',    //27
         ]);
 
         Location::create([
-            'name' =>  'Νέου Χημείου',  //28
+            'name' =>  'Νέο Χημείο',  //28
         ]);
 
         Location::create([
@@ -129,7 +129,7 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Τουρκικών και Ασιατικών Σπουδών',   //30
+            'name' =>  'Τμήμα Τουρκικών και Ασιατικών Σπουδών',   //30
         ]);
 
         Location::create([
@@ -149,7 +149,7 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Παλαιού Χημείου',   //35
+            'name' =>  'Παλαιό Χημείο',   //35
         ]);
 
         Location::create([
@@ -161,11 +161,11 @@ class LocationsTableSeeder extends Seeder
         ]);
 
         Location::create([
-            'name' =>  'Εποπτείας Πανεπιστημιούπολης 1',    //38
+            'name' =>  'Εποπτεία Πανεπιστημιούπολης 1',    //38
         ]);
 
         Location::create([
-            'name' =>  'Εποπτείας Πανεπιστημιούπολης 2',   //39
+            'name' =>  'Εποπτεία Πανεπιστημιούπολης 2',   //39
         ]);
     }
 }

@@ -12,7 +12,7 @@
             </div>
 
             <div class="pt-2">
-                <div>Είστε συνδεδεμένος/η ως <strong>{{ $user->name }}</strong></div>
+                <div>Είστε συνδεδεμένος/η ως <strong>{{ $user->name }} {{ $user->surname }}</strong></div>
                 @can('admin')
                 <div><strong>Ρόλος:</strong> {{ implode(", ", $userRoles) }}</div>
                 @endcan
@@ -28,7 +28,7 @@
                     @can('manage-security')
                     <div class="card mr-2">
                         <div class="card-header">
-                            Φύλακες / Εταιρίες
+                            <strong>Φύλακες / Εταιρίες</strong>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Διαχειριστείτε τους Φύλακες και τις Εταιρίες Φύλαξης</h5>
@@ -41,7 +41,7 @@
                     @can('view-shifts')
                     <div class="card mr-2">
                         <div class="card-header">
-                            Βάρδιες / Σημεία Φύλαξης
+                            <strong>Βάρδιες / Σημεία Φύλαξης</strong>
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Διαχειριστείτε τις Βάρδιες και τα Σημεία Φύλαξης</h5>
@@ -53,22 +53,22 @@
                 </div>
             </div>
 
+            @can('doy')
             <div class="row">
                 <div class="col-8">
-                    @can('admin')
-                        <div class="card mr-2">
-                            <div class="card-header">
-                                Διαχείριση Συστήματος
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Διαχειριστείτε τις Λειτουργίες της Εφαρμογής</h5>
-                                <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
-                                <a href="{{ route('app.index') }}" class="btn btn-primary">Διαχείριση</a>
-                            </div>
+                    <div class="card mr-2">
+                        <div class="card-header">
+                            <strong>Διαχείριση Συστήματος</strong>
                         </div>
-                    @endcan
+                        <div class="card-body">
+                            <h5 class="card-title">Διαχειριστείτε τις Λειτουργίες της Εφαρμογής</h5>
+                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                            <a href="{{ route('app.index') }}" class="btn btn-primary">Διαχείριση</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+            @endcan
 
         </div>
     </div>

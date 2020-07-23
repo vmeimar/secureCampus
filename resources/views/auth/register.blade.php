@@ -78,17 +78,17 @@
                         <div class="form-group row">
                             <label for="tier" class="col-md-4 col-form-label text-md-right">Βαθμίδα</label>
                             <div class="col-md-6">
-                                <select name="tier" id="tier" class="form-control input-lg dynamic">
+                                <select name="tier" id="tier" class="form-control input-lg dynamic" required>
                                     <option disabled selected value="">Επιλέξτε Βαθμίδα</option>
                                     <option value="Καθηγητής">Καθηγητής</option>
                                     <option value="Καθηγήτρια">Καθηγήτρια</option>
-                                    <option value="Καθηγήτρια">Αναπλ. Καθηγητής</option>
-                                    <option value="Καθηγήτρια">Αναπλ. Καθηγήτρια</option>
-                                    <option value="Καθηγήτρια">Λέκτορας</option>
-                                    <option value="Καθηγήτρια">Ε.ΔΙ.Π.</option>
-                                    <option value="Καθηγήτρια">Ε.Ε.Π.</option>
-                                    <option value="Καθηγήτρια">Ε.ΤΕ.Π.</option>
-                                    <option value="Καθηγήτρια">Διοικητικός Υπάλληλος</option>
+                                    <option value="Αναπλ. Καθηγητής">Αναπλ. Καθηγητής</option>
+                                    <option value="Αναπλ. Καθηγήτρια">Αναπλ. Καθηγήτρια</option>
+                                    <option value="Λέκτορας">Λέκτορας</option>
+                                    <option value="Ε.ΔΙ.Π.">Ε.ΔΙ.Π.</option>
+                                    <option value="Ε.Ε.Π.">Ε.Ε.Π.</option>
+                                    <option value="Ε.ΤΕ.Π.">Ε.ΤΕ.Π.</option>
+                                    <option value="Διοικητικός Υπάλληλος">Διοικητικός Υπάλληλος</option>
                                 </select>
                                 @error('tier')
                                 <strong>Παρακαλώ επιλέξτε βαθμίδα</strong>

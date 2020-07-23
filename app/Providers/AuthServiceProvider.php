@@ -43,6 +43,13 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('doy', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'doy',
+            ]);
+        });
+
         Gate::define('epitropi', function ($user) {
             return $user->hasAnyRoles([
                 'admin',

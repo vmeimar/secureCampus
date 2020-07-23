@@ -13,7 +13,7 @@
                             <div class="form-group row">
                                 <label for="location" class="col-md-4 col-form-label text-md-right">Σημείο Φύλαξης</label>
                                 <div class="col-md-6">
-                                    <select name="location" id="location" class="form-control input-lg dynamic">
+                                    <select name="location" id="location" class="form-control input-lg dynamic" required>
                                         <option selected disabled>Επιλέξτε Σημείο Φύλαξης</option>
                                             @foreach($locations as $location)
                                                         <option value="{{ $location->id }}">
@@ -30,7 +30,7 @@
                             <div class="form-group row">
                                 <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Αριθμός Φυλάκων</label>
                                 <div class="col-md-6">
-                                    <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic">
+                                    <select name="number-of-guards" id="number-of-guards" class="form-control input-lg dynamic" required>
                                         <option selected disabled>Επιλέξτε Αριθμό Φυλάκων</option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -77,9 +77,14 @@
 
                             <div class="form-group row">
                                 <label for="shift-name" class="col-md-4 col-form-label text-md-right">Όνομα Βάρδιας</label>
-
                                 <div class="col-md-6">
-                                    <input id="shift-name" type="text" class="form-control" name="shift-name" value="{{ old('shift-name') }}" autocomplete="shift-name" autofocus>
+                                    <input id="shift-name"
+                                           type="text" class="form-control"
+                                           name="shift-name"
+                                           value="{{ old('shift-name') }}"
+                                           placeholder="Αναγνωριστικό Βάρδιας"
+                                           autocomplete="shift-name"
+                                           autofocus>
 
                                     @error('shift-name')
                                         <strong>Εισάγετε Όνομα Βάρδιας (π.χ. Σημείο Φύλαξης Χ, πρωινή βάρδια)</strong>

@@ -9,8 +9,9 @@
                         <strong>Επιβεβαιωμένες Βάρδιες</strong>
                     </div>
                     <div class="card-body">
-                        <div class="m-4" style="text-align: center"><p><strong>Η εξαγωγή excel ή pdf αρχείων, γίνεται μόνο για τις βάρδιες που έχουν επιβεβαιωθεί από τον επόπτη.
-                        Μπορείτε να υποβάλετε κάθε βάρδια ξεχωριστά αν επιστρέψετε στην προηγούμενη σελίδα ή να κάνετε μαζική υποβολή
+                        <div class="m-4" style="text-align: justify"><p><strong>Η εξαγωγή excel ή pdf αρχείων, γίνεται μόνο για τις βάρδιες που έχουν υποβληθεί από τον επόπτη
+                                    και έχουν επιβεβαιωθεί από τον επόπτη ή τον επιστάτη.
+                        Μπορείτε να υποβάλετε ή να επιβεβαιώσετε κάθε βάρδια ξεχωριστά αν επιστρέψετε στην προηγούμενη σελίδα ή να κάνετε μαζική υποβολή
                                 στις βάρδιες που εμφανίζονται εδώ ανά σημείο φύλαξης.</strong></p></div>
                         <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; max-height: 700px; overflow: auto; display: block">
                         <table class="table table-striped table-bordered">

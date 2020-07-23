@@ -40,10 +40,17 @@
                            <div class="form-group row">
                                <label for="tier" class="col-md-3 col-form-label text-md-right"><strong>Βαθμίδα</strong></label>
                                <div class="col-md-6">
-                                   <select name="tier" id="tier" class="form-control input-lg dynamic">
+                                   <select name="tier" id="tier" class="form-control input-lg dynamic" required>
                                        <option selected value="{{ $user->tier }}">{{ $user->tier }}</option>
-                                       <option value="Καθηγήτρια">Καθηγήτρια</option>
                                        <option value="Καθηγητής">Καθηγητής</option>
+                                       <option value="Καθηγήτρια">Καθηγήτρια</option>
+                                       <option value="Αναπλ. Καθηγητής">Αναπλ. Καθηγητής</option>
+                                       <option value="Αναπλ. Καθηγήτρια">Αναπλ. Καθηγήτρια</option>
+                                       <option value="Λέκτορας">Λέκτορας</option>
+                                       <option value="Ε.ΔΙ.Π.">Ε.ΔΙ.Π.</option>
+                                       <option value="Ε.Ε.Π.">Ε.Ε.Π.</option>
+                                       <option value="Ε.ΤΕ.Π.">Ε.ΤΕ.Π.</option>
+                                       <option value="Διοικητικός Υπάλληλος">Διοικητικός Υπάλληλος</option>
                                    </select>
                                    @error('tier')
                                    <strong>Παρακαλώ επιλέξτε βαθμίδα</strong>

@@ -649,7 +649,7 @@ class ActiveShiftsController extends Controller
         }
         if ($activeShifts == [])
         {
-            $request->session()->flash('warning', 'Δεν υπάρχουν επιβεβαιωμένες βάρδιες για αυτό το σημείο φύλαξης.');
+            $request->session()->flash('warning', 'Δεν υπάρχουν επιβεβαιωμένες βάρδιες για αυτό το σημείο φύλαξης για αυτό το χρονικό διάστημα.');
             return redirect(route('active-shift.index'));
         }
 
@@ -771,7 +771,7 @@ class ActiveShiftsController extends Controller
                     $totalHours[$key]['totalHoursAbsentByLocation'] = $totalHoursAbsentByLocation;
 
                     $totalHoursAbsent += $activeShift['absent'];
-                    $totalFactorAbsent += ($activeShift['absent'] *  ($activeShift['factor'] / $activeShift['duration']) );
+                    $totalFactorAbsent += ($activeShift['absent'] * ($activeShift['factor'] / $activeShift['duration']) );
                 }
             }
         }
@@ -800,13 +800,18 @@ class ActiveShiftsController extends Controller
                     $groups[$key]['holiday_regular'] += $item['holiday_regular'];
                     $groups[$key]['holiday_night'] += $item['holiday_night'];
                 }
+
+//                $totalTemp[$locationName]['weekday_regular'] += $item['weekday_regular'];
+//                $totalTemp[$locationName]['weekday_night'] += $item['weekday_night'];
+//                $totalTemp[$locationName]['holiday_regular'] += $item['holiday_regular'];
+//                $totalTemp[$locationName]['holiday_night'] += $item['holiday_night'];
             }
 
             $exportData[$locationName][] = $groups;
         }
 
 //        return view('active-shift.export-committee-pdf',
-//            compact('activeShifts', 'from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
+//            compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
 
         $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
