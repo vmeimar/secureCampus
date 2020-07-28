@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ActiveShift;
+use App\Company;
 use App\Exports\ActiveShiftsExport;
 use App\Guard;
 use App\Location;
@@ -128,10 +129,7 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
-        $date = $activeShiftData[0];
-        $isHoliday = $activeShiftData[1];
-        $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $date, $timeOffset);
+        $dayFrameArray = $this->calculateFrames($staticShift->shift_from, $staticShift->shift_until, $data['active-shift-date'], $timeOffset);
         $factorData = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
@@ -141,27 +139,38 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
+        $i = 0;
+
         foreach ($assignedGuardIds as $assignedGuardId)
         {
             if ($assignedGuardId == 'absent')
             {
                 $absent += $shiftDuration / 3600;
                 $comments = 'Απουσία φύλακα στη βάρδια';
+
+                $absentGuardId = $this->findOrCreateAbsentGuard();
+                $assignedGuardIds[$i] = strval($absentGuardId);
             }
+            $i++;
         }
 
+        /**
+         *  Partial Absence Start
+         */
 //        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0) )
 //        {
 //            $absent = $request['hours'];
 //            $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
 //        }
-
+        /**
+         * Partial Absence End
+         */
 
         $activeShift = ActiveShift::create([
             'shift_id'  =>  $staticShift->id,
             'location_id'  =>  $staticShift->location_id,
             'name'  =>  $staticShift->name,
-            'date'  =>  $date,
+            'date'  =>  $data['active-shift-date'],
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'duration'  =>  $shiftDuration / 3600,  // IN HOURS
@@ -174,7 +183,7 @@ class ActiveShiftsController extends Controller
             'holiday_evening'   =>  $factorData['holiday_evening'],
             'holiday_night'   =>  $factorData['holiday_night'],
             'factor'    =>  $factorData['frame_factor'],
-            'is_holiday' => $isHoliday,
+            'is_holiday' => $factorData['is_holiday'],
         ]);
 
         $guards = Guard::whereIn('id', $assignedGuardIds)->get();
@@ -211,10 +220,7 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        $activeShiftData = explode('|', $data['active-shift-date']);  // DATE | IS_HOLIDAY
-        $date = $activeShiftData[0];
-        $isHoliday = $activeShiftData[1];
-        $dayFrameArray = $this->calculateFrames($activeShift->from, $activeShift->until, $date, $timeOffset);
+        $dayFrameArray = $this->calculateFrames($activeShift->from, $activeShift->until, $data['active-shift-date'], $timeOffset);
         $factorData = $this->assignFactors($dayFrameArray);
 
         $first_key = array_key_first($dayFrameArray);
@@ -224,22 +230,33 @@ class ActiveShiftsController extends Controller
         $shiftUntil = $dayFrameArray[$last_key]['end_frame'];
         $shiftDuration = strtotime($shiftUntil) - strtotime($shiftFrom);
 
+        /**
+         * Partial Absence Start
+         */
 //        if ( !is_null($data['hours']) and isset($data['hours']) and ($data['hours'] > 0) )
 //        {
 //            $absent = $data['hours'];
 //        }
+        /**
+         * Partial Absence End
+         */
+
+        $i = 0;
 
         foreach ($assignedGuardIds as $assignedGuardId)
         {
             if ($assignedGuardId == 'absent')
             {
                 $absent += $shiftDuration / 3600;
+                $absentGuardId = $this->findOrCreateAbsentGuard();
+                $assignedGuardIds[$i] = strval($absentGuardId);
             }
+            $i++;
         }
 
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
-            'date'  =>  $date,
+            'date'  =>  $data['active-shift-date'],
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'comments'  =>  $data['active-shift-comments'],
@@ -252,7 +269,7 @@ class ActiveShiftsController extends Controller
             'holiday_evening'   =>  $factorData['holiday_evening'],
             'holiday_night'   =>  $factorData['holiday_night'],
             'factor'    =>  $factorData['frame_factor'],
-            'is_holiday' => $isHoliday,
+            'is_holiday' => $factorData['is_holiday'],
         ]))
         {
             request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση.');
@@ -304,6 +321,7 @@ class ActiveShiftsController extends Controller
         $data = $request->all();
         $locationId = $location->id;
         $month = $data['month'];
+        $year = $data['year'];
         $allActiveShifts = $location->activeShifts()->get();
 
         if ( !isset($allActiveShifts) or is_null($allActiveShifts) )
@@ -319,7 +337,8 @@ class ActiveShiftsController extends Controller
                 continue;
             }
 
-            if ( (date('m', strtotime($activeShift->from)) == $month) or ($month == 'all') )
+            if ( ((date('m', strtotime($activeShift->from)) == $month) or ($month == 'all'))
+                and ((date('Y', strtotime($activeShift->from)) == $year) or ($year == 'all')) )
             {
                 $activeShifts[] = $activeShift;
 
@@ -333,7 +352,7 @@ class ActiveShiftsController extends Controller
         }
 
         \request()->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
-        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month'));
+        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
 //        return redirect(route('active-shift.index'));
     }
 
@@ -512,6 +531,8 @@ class ActiveShiftsController extends Controller
         $frameEnd = null;
         $frameFactor = null;
 
+        $isHoliday = 0;
+
         foreach ($dayFrameArray as $key => $value)
         {
             $newarray[$value['frame']][$value['start_frame']] = $value['end_frame'];
@@ -547,6 +568,8 @@ class ActiveShiftsController extends Controller
 
                 if ($shiftDay->is_holiday)
                 {
+                    $isHoliday = 1;
+
                     $factor = DB::table('factors')
                         ->where('name', 'sunday_'.$frame.'_rate')
                         ->value('rate');
@@ -607,14 +630,31 @@ class ActiveShiftsController extends Controller
             'holiday_morning'   =>  ($holidayMorningDimes / 6),
             'holiday_evening'   =>  ($holidayEveningDimes / 6),
             'holiday_night'   =>  ($holidayNightDimes / 6),
+            'is_holiday'    =>  $isHoliday,
         ];
 
         return $factorData;
     }
 
-    public function exportByLocation(Location $location)
+    private function findOrCreateAbsentGuard()
     {
-        $activeShifts = $location->activeShifts()->get();
+        $absenceCompany = Company::firstOrCreate([
+            'name'  =>  'Test Company'
+        ]);
+
+        $absentGuard = Guard::firstOrCreate([
+            'name'  =>  'ΦΥΛΑΚΑΣ',
+            'surname'   =>  'ΑΠΩΝ/ΟΥΣΑ',
+            'company_id'    =>  $absenceCompany->id,
+        ]);
+
+        return $absentGuard->id;
+    }
+
+    public function exportByLocation(Location $location, Request $request)
+    {
+        $activeShiftsIds = $request->get('activeShifts');
+        $activeShifts = ActiveShift::find($activeShiftsIds);
 
         if ( is_null($activeShifts) or !isset($activeShifts) )
         {
@@ -632,35 +672,44 @@ class ActiveShiftsController extends Controller
         $data = $request->validate([
             'location'  =>  'required',
             'month'     =>  'required',
+            'year'      =>  'required',
         ]);
 
         $locationId = $data['location'];
         $allActiveShifts = ActiveShift::all();
         $month = $data['month'];
+        $year = $data['year'];
 
         foreach ($allActiveShifts as $row)
         {
             if ( ($row->shift->location->id == $locationId) and ($row->confirmed_steward == 1) )
             {
-                if ( ($month != date('m', strtotime($row->from))) and ($month != 'all') ) continue;
+                if ( (($month != date('m', strtotime($row->from))) and ($month != 'all'))
+                    or (($year != date('Y', strtotime($row->from)))  and ($year != 'all')) )
+                {
+                    continue;
+                }
 
                 $activeShifts[] = $row;
             }
         }
+
         if ($activeShifts == [])
         {
             $request->session()->flash('warning', 'Δεν υπάρχουν επιβεβαιωμένες βάρδιες για αυτό το σημείο φύλαξης για αυτό το χρονικό διάστημα.');
             return redirect(route('active-shift.index'));
         }
 
-        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month'));
+        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
     }
 
     public function exportPdf(Location $location, Request $request)
     {
         $user = Auth::user();
         $data = $request->all();
+        $year = $data['year'];
         $month = $data['month'];
+
         $allActiveShifts = $location->activeShifts()->get();
 
         if ( !isset($allActiveShifts) or is_null($allActiveShifts) )
@@ -669,11 +718,10 @@ class ActiveShiftsController extends Controller
             return redirect()->back();
         }
 
-
         if ($month == 'all')
         {
-            $from = date('d/m/Y', strtotime('Jan 1'));
-            $to = date('d/m/Y', strtotime('Dec 31'));
+            $from = date('d/m/Y', strtotime('Jan 1 '.$year));
+            $to = date('d/m/Y', strtotime('Dec 31 '.$year));
         }
         else
         {
@@ -681,8 +729,8 @@ class ActiveShiftsController extends Controller
             // convert number to month name
             $month_name = date("F", mktime(0, 0, 0, $month, 10));
 
-            $from = date('01/m/Y', strtotime($month_name));
-            $to = date('t/m/Y', strtotime($month_name));
+            $from = date('01/m/Y', strtotime($month_name.' '.$year));
+            $to = date('t/m/Y', strtotime($month_name.' '.$year));
         }
 
         $guards = Guard::all();
@@ -691,7 +739,7 @@ class ActiveShiftsController extends Controller
         {
             foreach ($guard->activeShifts()->get() as $activeShift)
             {
-                if ( (($month == date('m', strtotime($activeShift->from))) or ($month == 'all') ) and
+                if ( ((($month == date('m', strtotime($activeShift->from))) or ($month == 'all') ) and ($year == date('Y', strtotime($activeShift->from))) ) and
                     ( $activeShift->location_id == $location->id ) and
                     ( $activeShift->confirmed_supervisor == 1 ) and
                     ( $activeShift->confirmed_steward == 1 ) )
@@ -709,7 +757,6 @@ class ActiveShiftsController extends Controller
 
         $pdf = PDF::loadView('/active-shift/export-pdf', compact('location', 'user', 'from', 'to', 'activeShifts'));
         return $pdf->download('Κτήριο '.$location->name.'.pdf');
-
     }
 
     public function exportCommitteePdf(Request $request)
@@ -723,6 +770,7 @@ class ActiveShiftsController extends Controller
 
         $totalHoursAbsent = 0;
         $totalFactorAbsent = 0;
+        $totalTemp = [];
 
         foreach ($locations as $location)
         {
@@ -731,10 +779,6 @@ class ActiveShiftsController extends Controller
 
         foreach ($locShifts as $key => $value)
         {
-            $totalHoursWeekdaysRegular = 0;
-            $totalHoursWeekdaysNight = 0;
-            $totalHoursHolidaysRegular = 0;
-            $totalHoursHolidaysNight = 0;
             $totalHoursAbsentByLocation = 0;
 
             foreach ($value[0] as $activeShift)
@@ -757,17 +801,7 @@ class ActiveShiftsController extends Controller
                 if ( date('m', strtotime($activeShift['date'])) == $data['month'])
                 {
                     $activeShifts[$key][] = $activeShift;
-
-                    $totalHoursWeekdaysRegular += ($activeShift['weekday_morning'] + $activeShift['weekday_evening']);
-                    $totalHoursWeekdaysNight += $activeShift['weekday_night'];
-                    $totalHoursHolidaysRegular += ($activeShift['holiday_morning'] + $activeShift['holiday_evening']);
-                    $totalHoursHolidaysNight += $activeShift['holiday_night'];
                     $totalHoursAbsentByLocation += $activeShift['absent'];
-
-                    $totalHours[$key]['totalHoursWeekdaysRegular'] = $totalHoursWeekdaysRegular;
-                    $totalHours[$key]['totalHoursWeekdaysNight'] = $totalHoursWeekdaysNight;
-                    $totalHours[$key]['totalHoursHolidaysRegular'] = $totalHoursHolidaysRegular;
-                    $totalHours[$key]['totalHoursHolidaysNight'] = $totalHoursHolidaysNight;
                     $totalHours[$key]['totalHoursAbsentByLocation'] = $totalHoursAbsentByLocation;
 
                     $totalHoursAbsent += $activeShift['absent'];
@@ -779,6 +813,11 @@ class ActiveShiftsController extends Controller
         foreach ($locationGuardArray as $locationName => $value)
         {
             $groups = [];
+
+            $totalTemp[$locationName]['weekday_regular'] = 0;
+            $totalTemp[$locationName]['weekday_night'] = 0;
+            $totalTemp[$locationName]['holiday_regular'] = 0;
+            $totalTemp[$locationName]['holiday_night'] = 0;
 
             foreach ($value as $item)
             {
@@ -801,19 +840,19 @@ class ActiveShiftsController extends Controller
                     $groups[$key]['holiday_night'] += $item['holiday_night'];
                 }
 
-//                $totalTemp[$locationName]['weekday_regular'] += $item['weekday_regular'];
-//                $totalTemp[$locationName]['weekday_night'] += $item['weekday_night'];
-//                $totalTemp[$locationName]['holiday_regular'] += $item['holiday_regular'];
-//                $totalTemp[$locationName]['holiday_night'] += $item['holiday_night'];
+                $totalTemp[$locationName]['weekday_regular'] += $item['weekday_regular'];
+                $totalTemp[$locationName]['weekday_night'] += $item['weekday_night'];
+                $totalTemp[$locationName]['holiday_regular'] += $item['holiday_regular'];
+                $totalTemp[$locationName]['holiday_night'] += $item['holiday_night'];
             }
 
             $exportData[$locationName][] = $groups;
         }
 
 //        return view('active-shift.export-committee-pdf',
-//            compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
+//            compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
 
-        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData'));
+        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
     }
 
@@ -885,7 +924,7 @@ class ActiveShiftsController extends Controller
                     break;
             }
 
-            $output .= '<option value="'.$row->date.'|'.$row->is_holiday.'">'.$greekDay.' '.date('d-m-Y', strtotime($row->date)).'</option>';
+            $output .= '<option value="'.$row->date.'">'.$greekDay.' '.date('d-m-Y', strtotime($row->date)).'</option>';
         }
         echo $output;
     }

@@ -33,6 +33,8 @@ class GuardsExport implements FromCollection, withHeadings
             'Επώνυμο',
             'Ώρες Εργασίας',
             'Ισοδύναμες Ώρες',
+            'Μήνας',
+            'Έτος'
         ];
     }
 }

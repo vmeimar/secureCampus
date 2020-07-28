@@ -8,6 +8,7 @@ use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -26,7 +27,21 @@ class GuardsController extends Controller
 
     public function show(Guard $guard)
     {
-        return view('guard.show', compact('guard'));
+        $activeShifts = $guard->activeShifts()->get()->toArray();
+
+        foreach ($activeShifts as $activeShift)
+        {
+            $months[] = date('m', strtotime($activeShift['from']));
+            $years[] = date('Y', strtotime($activeShift['until']));
+        }
+
+        $uniqueMonths = array_unique($months);
+        $uniqueYears = array_unique($years);
+
+        sort($uniqueYears);
+        sort($uniqueYears);
+
+        return view('guard.show', compact('guard', 'uniqueMonths', 'uniqueYears'));
     }
 
     public function create(Company $company)
@@ -169,8 +184,6 @@ class GuardsController extends Controller
     {
         $hours = floor($decimal / 60);
         $minutes = floor($decimal % 60);
-//        $seconds = $decimal - (int)$decimal;
-//        $seconds = round($seconds * 60);
 
         return str_pad($hours, 2, "0", STR_PAD_LEFT) . " Ώρες, " . str_pad($minutes, 2, "0", STR_PAD_LEFT) . " Λεπτά ";
     }
@@ -178,12 +191,13 @@ class GuardsController extends Controller
     public function export(Guard $guard)
     {
         $requestData = \request()->validate([
-            'month' =>  'required'
+            'month' =>  'required',
+            'year'  =>  'required',
         ]);
 
-        if ($requestData['month'] == '')
+        if ($requestData['month'] == '' or $requestData['year'] == '')
         {
-            \request()->session()->flash('warning', 'Επιλέξτε Μήνα');
+            \request()->session()->flash('warning', 'Επιλέξτε μήνα και έτος για εξαγωγή');
             return redirect()->back();
         }
 
@@ -193,7 +207,8 @@ class GuardsController extends Controller
 
         foreach ($guardShifts as $activeShift)
         {
-            if ( ($requestData['month'] != 'all') and ($requestData['month'] != date('m', strtotime($activeShift->date))) )
+            if ( (($requestData['month'] != 'all') and ($requestData['month'] != date('m', strtotime($activeShift->date))))
+            or (($requestData['year'] != 'all') and ($requestData['year'] != date('Y', strtotime($activeShift->date)))) )
             {
                 continue;
             }
@@ -207,6 +222,8 @@ class GuardsController extends Controller
             'Επώνυμο' => $guard->surname,
             'Ώρες Εργασίας' => $totalHours,
             'Ισοδύναμες Ώρες' => $totalCredits,
+            'Μήνας' =>  $requestData['month'] == 'all' ? 'Όλοι οι μήνες' : $requestData['month'],
+            'Έτος'  =>  $requestData['year'] == 'all' ? 'Όλα τα έτη' : $requestData['year'],
         ];
 
         return Excel::download(new GuardsExport(collect($exportData)), $guard->surname.'_'.$guard->name.'.xlsx');

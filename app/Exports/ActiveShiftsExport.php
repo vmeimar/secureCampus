@@ -44,10 +44,19 @@ class ActiveShiftsExport implements FromCollection, WithMapping, WithHeadings
             $fullNames[] = $guard['name'].' '.$guard['surname'];
         }
 
+        if (!isset($fullNames) or is_null($fullNames))
+        {
+            $guardNames = 'Απουσία Φύλακα';
+        }
+        else
+        {
+            $guardNames = implode(', ', $fullNames);
+        }
+
         return [
             $activeShift->id,
             $activeShift->name,
-            implode(', ', $fullNames),
+            $guardNames,
             date('d/m/Y H:i:s', strtotime($activeShift->from)),
             date('d/m/Y H:i:s', strtotime($activeShift->until)),
             $activeShift->comments,

@@ -36,7 +36,7 @@
                                         @can('assign-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
-                                                <button type="button" class="btn btn-primary btn-sm mb-1 ml-2 mr-2">Παρουσιολόγιο Βάρδιας</button>
+                                                <button type="button" style="width: 105px" class="btn btn-primary btn-sm mb-1 ml-1 mr-1">Παρουσιολόγιο</button>
                                             </a>
                                         </div>
                                         @endcan
@@ -45,17 +45,19 @@
 
                                             @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
-                                                <button type="button" class="btn btn-info btn-sm mb-1 mr-1 ml-2">Επεξεργασία</button>
+                                                <button type="button" style="width: 105px" class="btn btn-info btn-sm mb-1 mr-1 ml-1">Επεξεργασία</button>
                                             </a>
                                             @endcan
-
+                                        </div>
+                                        <div class="row">
                                             @can('admin')
                                             <form action="{{ route('shift.destroy', $shift) }}" method="POST" class="float-left">
                                                 @csrf
                                                 {{ method_field('DELETE') }}
                                                 <button type="submit"
+                                                        style="width: 105px"
                                                         onclick="return confirm('Επιβεβαίωση Διαγραφής')"
-                                                        class="btn btn-danger btn-sm mb-1 mr-1 ml-2">
+                                                        class="btn btn-danger btn-sm mb-1 mr-1 ml-1">
                                                     Διαγραφή</button>
                                             </form>
                                             @endcan

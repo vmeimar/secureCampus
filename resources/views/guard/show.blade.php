@@ -9,18 +9,16 @@
                         <strong>{{ $guard->name }} {{ $guard->surname }}</strong>
                     </div>
                     <div class="card-body">
-
                         <div class="d-flex justify-content-center mb-4">
                             <div class="row col-md-8">
                                 <h6>
                                     <strong>
-                                        Έχετε τη δυνατότητα να εμφανίσετε τις βάρδιες του φύλακα {{ $guard->name }} {{ $guard->surname }}
+                                        Έχετε τη δυνατότητα να εμφανίσετε τις βάρδιες του/της φύλακα {{ $guard->name }} {{ $guard->surname }}
                                         για συγκεκριμένο χρονικό διάστημα ή να εξάγετε αρχείο τύπου excel ανά μήνα ή συνολικά για όλες τις βάρδιες.
                                     </strong>
                                 </h6>
                             </div>
                         </div>
-
                         <form method="post" action="{{ route('guard.custom-range', $guard->id) }}" enctype="multipart/form-data">
                             @csrf
                                 <div class="form-group row">
@@ -52,38 +50,37 @@
                                     <button type="submit" class="btn btn-primary" style="max-height: 35px">Εμφάνιση</button>
                                 </div>
                         </form>
-
-
-
                         <form method="post" action="{{ route('guard.export', $guard->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα για εξαγωγή</label>
-                                <div class="col-md-4">
-                                    <select name="month" id="month" class="form-control input-lg dynamic">
+                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα και έτος για εξαγωγή</label>
+                                <div class="col-md-2">
+                                    <select name="month" id="month" class="form-control input-lg">
                                         <option disabled selected value="">Επιλέξτε Μήνα</option>
                                         <option value="all">Όλοι οι μήνες</option>
-                                        <option value="01">Ιανουάριος</option>
-                                        <option value="02">Φεβρουάριος</option>
-                                        <option value="03">Μάρτιος</option>
-                                        <option value="04">Απρίλιος</option>
-                                        <option value="05">Μάιος</option>
-                                        <option value="06">Ιούνιος</option>
-                                        <option value="07">Ιούλιος</option>
-                                        <option value="08">Αύγουστος</option>
-                                        <option value="09">Σεπτέμβριος</option>
-                                        <option value="10">Οκτώβριος</option>
-                                        <option value="11">Νοέμβριος</option>
-                                        <option value="12">Δεκέμβριος</option>
+                                        @foreach($uniqueMonths as $month)
+                                            <option value="{{ $month }}">{{ $month }}</option>
+                                        @endforeach
                                     </select>
                                     @error('month')
                                     <strong>Παρακαλώ επιλέξτε μήνα</strong>
                                     @enderror
                                 </div>
+                                <div class="col-md-2">
+                                    <select name="year" id="year" class="form-control input-lg">
+                                        <option disabled selected value="">Επιλέξτε Έτος</option>
+                                        <option value="all">Όλα τα έτη</option>
+                                        @foreach($uniqueYears as $year)
+                                            <option value="{{ $year }}">{{ $year }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('year')
+                                    <strong>Παρακαλώ επιλέξτε έτος</strong>
+                                    @enderror
+                                </div>
                                 <button type="submit" class="btn btn-success" style="max-height: 35px">Εξαγωγή Excel</button>
                             </div>
                         </form>
-
                     </div>
                 </div>
                 <div class="row">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ActiveShift;
 use App\Imports\HolidaysImport;
 use App\Imports\UserEmailImport;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,11 +23,20 @@ class AppController extends Controller
         return view('app.index');
     }
 
-    public function populateDaysTable()
+    private function populateDaysTable()
     {
-        $currentDate = getdate();
-        $startDay = $currentDate['year'].'-01-01';
-        $endOfYear = $currentDate['year'].'-12-31';
+        $importedHolidays = DB::table('holidays')->get('date');
+
+        foreach ($importedHolidays as $importedHoliday)
+        {
+            $importedHolidaysYears[] = date('Y', strtotime($importedHoliday->date));
+        }
+
+        $uniqueYears = array_unique($importedHolidaysYears);
+        sort($uniqueYears);
+
+        $startDay = reset($uniqueYears).'-01-01';
+        $endOfYear = end($uniqueYears).'-12-31';
 
         $this->createDaysTable();
 
@@ -49,6 +59,30 @@ class AppController extends Controller
         }
         request()->session()->flash('success', 'Επιτυχές γέμισμα του πίνακα');
         return redirect(route('app.index'));
+    }
+
+    private function checkActiveShifts()
+    {
+        $activeShifts = DB::table('active_shifts')->get();
+
+        foreach ($activeShifts as $activeShift)
+        {
+            $startDay = date('Y-m-d', strtotime($activeShift->from));
+            $endDay = date('Y-m-d', strtotime($activeShift->until));
+
+            if ( (($this->isHoliday($startDay) or $this->isHoliday($endDay)) and $activeShift->is_holiday == 0)
+                or ((!$this->isHoliday($startDay) and !$this->isHoliday($endDay)) and $activeShift->is_holiday == 1) )
+            {
+                $flawedShifts[] = $activeShift;
+            }
+        }
+
+//        if (!is_null($flawedShifts) and isset($flawedShifts))
+//        {
+//            dd($flawedShifts);
+//        }
+
+        return true;
     }
 
     private function isHoliday($date)
@@ -86,6 +120,9 @@ class AppController extends Controller
         } else {
             $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
         }
+
+        $this->populateDaysTable();
+        $this->checkActiveShifts();
 
         return redirect()->back();
     }

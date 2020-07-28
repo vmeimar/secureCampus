@@ -53,14 +53,18 @@
                     </div>
                     <form method="post" action="{{ route('active-shift.export-by-location', $locationId)}}" enctype="multipart/form-data">
                         @csrf
+                        @foreach($activeShifts as $activeShift)
+                            <input type="hidden" name="activeShifts[]" value="{{ $activeShift->id }}">
+                        @endforeach
                         <div class="row">
                             <button type="submit" class="btn btn-success m-4" style="max-height: 35px">Εξαγωγή Excel</button>
                         </div>
                     </form>
                     <form method="post" action="{{ route('active-shift.export-pdf', $locationId) }}" enctype="multipart/form-data">
                         @csrf
+                        <input name="year" id="year" type="hidden" value="{{$year}}">
                         <div class="row">
-                            <button name="test" type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
+                            <button type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
                             <input name="month" id="month" type="hidden" value="{{$month}}">
                         </div>
                     </form>
@@ -70,6 +74,7 @@
                         <div class="row">
                             <button type="submit" class="btn btn-primary m-4" style="max-height: 35px">Υποβολή Όλων</button>
                             <input name="month" id="month" type="hidden" value="{{$month}}">
+                            <input name="year" id="year" type="hidden" value="{{$year}}">
                         </div>
                     </form>
                 </div>

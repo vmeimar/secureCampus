@@ -64,10 +64,10 @@
                     @endforeach
                     <tr>
                         <th>Σύνολο ωρών φύλαξης</th>
-                        <td>{{ $totalHours[$locationName]['totalHoursWeekdaysRegular'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursWeekdaysNight'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursHolidaysRegular'] }}</td>
-                        <td>{{ $totalHours[$locationName]['totalHoursHolidaysNight'] }}</td>
+                        <td>{{ $totalTemp[$locationName]['weekday_regular'] }}</td>
+                        <td>{{ $totalTemp[$locationName]['weekday_night'] }}</td>
+                        <td>{{ $totalTemp[$locationName]['holiday_regular'] }}</td>
+                        <td>{{ $totalTemp[$locationName]['holiday_night'] }}</td>
                     </tr>
                     </tbody>
                 </table>

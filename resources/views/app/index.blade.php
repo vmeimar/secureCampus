@@ -21,14 +21,14 @@
                                 </h6>
                             </div>
                         </div>
-                        <div class="d-flex">
-                            <div class="col-md-6">
-                                <p><strong>Γέμισμα πίνακα ημερών του έτους</strong></p>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <a href="{{ route('app.populate-days') }}" class="btn btn-primary">Εκτέλεση</a>
-                            </div>
-                        </div>
+{{--                        <div class="d-flex">--}}
+{{--                            <div class="col-md-6">--}}
+{{--                                <p><strong>Γέμισμα πίνακα ημερών του έτους</strong></p>--}}
+{{--                            </div>--}}
+{{--                            <div class="form-group col-md-6">--}}
+{{--                                <a href="{{ route('app.populate-days') }}" class="btn btn-primary">Εκτέλεση</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="d-flex">
                             <div class="col-md-6">
                                 <p><strong>Εμφάνιση και Επεξεργασία Συντελεστών Βαρδιών</strong></p>
