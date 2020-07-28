@@ -8,7 +8,6 @@ use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -38,8 +37,13 @@ class GuardsController extends Controller
         $uniqueMonths = array_unique($months);
         $uniqueYears = array_unique($years);
 
+        sort($uniqueMonths);
         sort($uniqueYears);
-        sort($uniqueYears);
+
+        for ($i=0; $i<sizeof($uniqueMonths); $i++)
+        {
+            $uniqueMonths[$i] = $this->getGreekMonth($uniqueMonths[$i]);
+        }
 
         return view('guard.show', compact('guard', 'uniqueMonths', 'uniqueYears'));
     }
@@ -377,6 +381,49 @@ class GuardsController extends Controller
     public function exportByMonth(Company $company)
     {
         return view('guard.export-by-month', compact('company'));
+    }
+
+    private function getGreekMonth($month)
+    {
+        switch ($month)
+        {
+            case '01':
+                return 'Ιανουάριος';
+                break;
+            case '02':
+                return 'Φεβρουάριος';
+                break;
+            case '03':
+                return 'Μάρτιος';
+                break;
+            case '04':
+                return 'Απρίλιος';
+                break;
+            case '05':
+                return 'Μάιος';
+                break;
+            case '06':
+                return 'Ιούνιος';
+                break;
+            case '07':
+                return 'Ιούλιος';
+                break;
+            case '08':
+                return 'Αύγουστος';
+                break;
+            case '09':
+                return 'Σεπτέμβριος';
+                break;
+            case '10':
+                return 'Οκτώβριος';
+                break;
+            case '11':
+                return 'Νοέμβριος';
+                break;
+            case '12':
+                return 'Δεκέμβριος';
+                break;
+        }
     }
 
     /**

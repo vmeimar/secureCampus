@@ -74,9 +74,8 @@
                            <div class="form-group row">
                                <label for="locations" class="col-md-3 col-form-label text-md-right"><strong>Ανάθεση Σημείων Φύλαξης</strong></label>
                                <div class="col-md-6">
-
                                    <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; height: 395px; overflow: auto; display: block">
-                                       <table id="myTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                       <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                            <thead>
                                            <tr class="d-flex">
                                                <th class="col-3">Επιλογή</th>
@@ -87,7 +86,7 @@
                                            @foreach($locations as $location)
                                            <tr class="d-flex">
                                                <td class="col-3">
-                                                   <div class="form-check custom-control custom-checkbox">
+                                                   <div class="form-check custom-control custom-checkbox locations-checkbox">
                                                        <input type="checkbox" class="custom-control-input" name="locations[]"
                                                               id="{{ $location->id }}" value="{{ $location->id }}"
                                                               @if($user->locations()->pluck('location_id')->contains($location->id)) checked @endif>
@@ -120,10 +119,10 @@
                                        @foreach($roles as $role)
                                        <tr class="d-flex">
                                            <td class="col-3">
-                                               <div class="form-check custom-control custom-checkbox">
-                                                   <input type="checkbox" class="custom-control-input" name="roles[]" id="{{ $role->id }}" value="{{ $role->id }}"
+                                               <div class="form-check custom-control custom-checkbox roles-checkbox">
+                                                   <input type="checkbox" class="custom-control-input" name="roles[]" id="role{{ $role->id }}" value="{{ $role->id }}"
                                                           @if($user->roles->pluck('id')->contains($role->id)) checked @endif>
-                                                   <label class="custom-control-label" for="{{ $role->id }}"></label>
+                                                   <label class="custom-control-label" for="role{{ $role->id }}"></label>
                                                </div>
                                            </td>
                                            <td class="col-9">{{ $role->name }}</td>

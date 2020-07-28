@@ -48,7 +48,7 @@
     <div class="row col-md-4 text-left" style="left: -30px"><p><strong>Προς: Επιτροπή Παραλαβής των υπηρεσιών φύλαξης του Ε.Κ.Π.Α.</strong></p></div>
     <div class="row col-md-8"><p class="text-center"><u><strong>ΒΕΒΑΙΩΣΗ</strong></u></p></div>
     <div class="row">
-        <p class="keimeno">Ο υπογράφων Επόπτης {{ $user->name }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης στη θέση {{ $location->name }} Ε.Κ.Π.Α,
+        <p class="keimeno">Ο υπογράφων Επόπτης {{ $user->name }} {{ $user->surname }}, βεβαιώνω ότι οι υπηρεσίες φύλαξης στη θέση {{ $location->name }} Ε.Κ.Π.Α,
             πραγματοποιήθηκαν σύμφωνα με τους όρους της σύμβασης, για το χρονικό διάστημα από {{ $from }} έως {{ $to }}, ως εξής:</p>
     </div>
     <div class="row">

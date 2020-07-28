@@ -16,8 +16,8 @@ class SecurityController extends Controller
     public function index()
     {
         $user_id = Auth::id();
+        $companies = Company::where('active', 1)->get();
 
-        $companies = Company::all();
         return view('security.index', compact('companies', 'user_id'));
     }
 

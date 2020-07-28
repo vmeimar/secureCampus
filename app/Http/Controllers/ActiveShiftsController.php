@@ -28,6 +28,10 @@ class ActiveShiftsController extends Controller
         $user = Auth::user();
         $activeShiftsIds = [];
 
+        $monthsYears = $this->getMonthsYears();
+
+//        dd($monthsYears['months']);
+
         if ($user->hasAnyRoles(['admin', 'epitropi']))
         {
             $activeShifts = ActiveShift::latest()->paginate(10);
@@ -47,7 +51,7 @@ class ActiveShiftsController extends Controller
             $activeShifts = ActiveShift::whereIn('id', $activeShiftsIds)->latest()->paginate(10);
         }
 
-        return view('active-shift.index', compact('activeShifts', 'user'));
+        return view('active-shift.index', compact('activeShifts', 'user', 'monthsYears'));
     }
 
     public function create(Shift $shift)
@@ -639,7 +643,8 @@ class ActiveShiftsController extends Controller
     private function findOrCreateAbsentGuard()
     {
         $absenceCompany = Company::firstOrCreate([
-            'name'  =>  'Test Company'
+            'name'  =>  'Test Company',
+            'active'    =>  0,
         ]);
 
         $absentGuard = Guard::firstOrCreate([
@@ -701,6 +706,35 @@ class ActiveShiftsController extends Controller
         }
 
         return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
+    }
+
+    private function getMonthsYears()
+    {
+        $activeShifts = DB::table('active_shifts')->get();
+
+        foreach ($activeShifts as $activeShift)
+        {
+            $months[] = date('m', strtotime($activeShift->from));
+            $years[] = date('Y', strtotime($activeShift->until));
+        }
+
+        $uniqueMonths = array_unique($months);
+        $uniqueYears = array_unique($years);
+
+        sort($uniqueMonths);
+        sort($uniqueYears);
+
+        for ($i=0; $i<sizeof($uniqueMonths); $i++)
+        {
+            $uniqueMonths[$i] = $this->getGreekMonth($uniqueMonths[$i]);
+        }
+
+        $monthsYears = [
+            'months'    =>  $uniqueMonths,
+            'years'     =>  $uniqueYears,
+        ];
+
+        return $monthsYears;
     }
 
     public function exportPdf(Location $location, Request $request)
@@ -854,6 +888,49 @@ class ActiveShiftsController extends Controller
 
         $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
+    }
+
+    private function getGreekMonth($month)
+    {
+        switch ($month)
+        {
+            case '01':
+                return 'Ιανουάριος';
+                break;
+            case '02':
+                return 'Φεβρουάριος';
+                break;
+            case '03':
+                return 'Μάρτιος';
+                break;
+            case '04':
+                return 'Απρίλιος';
+                break;
+            case '05':
+                return 'Μάιος';
+                break;
+            case '06':
+                return 'Ιούνιος';
+                break;
+            case '07':
+                return 'Ιούλιος';
+                break;
+            case '08':
+                return 'Αύγουστος';
+                break;
+            case '09':
+                return 'Σεπτέμβριος';
+                break;
+            case '10':
+                return 'Οκτώβριος';
+                break;
+            case '11':
+                return 'Νοέμβριος';
+                break;
+            case '12':
+                return 'Δεκέμβριος';
+                break;
+        }
     }
 
     /**
