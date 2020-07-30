@@ -8,6 +8,7 @@ use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -42,7 +43,10 @@ class GuardsController extends Controller
 
         for ($i=0; $i<sizeof($uniqueMonths); $i++)
         {
-            $uniqueMonths[$i] = $this->getGreekMonth($uniqueMonths[$i]);
+            $uniqueMonths[$i] = [
+                'name'  =>  $this->getGreekMonth($uniqueMonths[$i]),
+                'value' =>  $uniqueMonths[$i],
+            ];
         }
 
         return view('guard.show', compact('guard', 'uniqueMonths', 'uniqueYears'));
@@ -280,6 +284,7 @@ class GuardsController extends Controller
     {
         $data = \request()->validate([
             'month' =>  'required',
+            'year'  =>  'required',
         ]);
 
         $guards = $company->guards()->get();
@@ -305,7 +310,8 @@ class GuardsController extends Controller
 
             foreach ($guardShifts as $activeShift)
             {
-                if ( ($data['month'] != 'all') and (date('m', strtotime($activeShift->date)) != $data['month']) )
+                if ( (($data['month'] != 'all') and (date('m', strtotime($activeShift->date)) != $data['month']))
+                    or ( date('Y', strtotime($activeShift->date)) != $data['year'] ) )
                 {
                     continue;
                 }
@@ -343,13 +349,18 @@ class GuardsController extends Controller
     public function exportCommittee(Request $request)
     {
 
-        $data = $request->all();
+        $data = $request->validate([
+            'month' =>  'required',
+            'year' =>  'required',
+        ]);
+
         $month = $data['month'];
+        $year = $data['year'];
 
         if ($month == 'all')
         {
-            $from = date('d/m/Y', strtotime('Jan 1'));
-            $to = date('d/m/Y', strtotime('Dec 31'));
+            $from = date('d/m/Y', strtotime('Jan 1 '.$year));
+            $to = date('d/m/Y', strtotime('Dec 31 '.$year));
         }
         else
         {
@@ -357,8 +368,8 @@ class GuardsController extends Controller
             // convert number to month name
             $month_name = date("F", mktime(0, 0, 0, $month, 10));
 
-            $from = date('01/m/Y', strtotime($month_name));
-            $to = date('t/m/Y', strtotime($month_name));
+            $from = date('01/m/Y', strtotime($month_name.' '.$year));
+            $to = date('t/m/Y', strtotime($month_name.' '.$year));
         }
 
 
@@ -380,7 +391,40 @@ class GuardsController extends Controller
 
     public function exportByMonth(Company $company)
     {
-        return view('guard.export-by-month', compact('company'));
+        $monthsYears = $this->getMonthsYears();
+        return view('guard.export-by-month', compact('company', 'monthsYears'));
+    }
+
+    private function getMonthsYears()
+    {
+        $activeShifts = DB::table('active_shifts')->get();
+
+        foreach ($activeShifts as $activeShift)
+        {
+            $months[] = date('m', strtotime($activeShift->from));
+            $years[] = date('Y', strtotime($activeShift->until));
+        }
+
+        $uniqueMonths = array_unique($months);
+        $uniqueYears = array_unique($years);
+
+        sort($uniqueMonths);
+        sort($uniqueYears);
+
+        for ($i=0; $i<sizeof($uniqueMonths); $i++)
+        {
+            $uniqueMonths[$i] = [
+                'name'  =>  $this->getGreekMonth($uniqueMonths[$i]),
+                'value' =>  $uniqueMonths[$i],
+            ];
+        }
+
+        $monthsYears = [
+            'months'    =>  $uniqueMonths,
+            'years'     =>  $uniqueYears,
+        ];
+
+        return $monthsYears;
     }
 
     private function getGreekMonth($month)

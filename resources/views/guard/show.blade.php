@@ -47,19 +47,19 @@
                                         <strong>Παρακαλώ εισάγετε ημερομηνία</strong>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary" style="max-height: 35px">Εμφάνιση</button>
+                                    <button type="submit" class="btn btn-primary" style="max-height: 35px; width: 90px;">Εμφάνιση</button>
                                 </div>
                         </form>
                         <form method="post" action="{{ route('guard.export', $guard->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
-                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα και έτος για εξαγωγή</label>
+                                <label for="month" class="col-md-4 col-form-label text-md-right">Επιλέξτε μήνα και έτος για εξαγωγή <strong>excel</strong></label>
                                 <div class="col-md-2">
                                     <select name="month" id="month" class="form-control input-lg">
                                         <option disabled selected value="">Επιλέξτε Μήνα</option>
                                         <option value="all">Όλοι οι μήνες</option>
                                         @foreach($uniqueMonths as $month)
-                                            <option value="{{ $month }}">{{ $month }}</option>
+                                            <option value="{{ $month['value'] }}">{{ $month['name'] }}</option>
                                         @endforeach
                                     </select>
                                     @error('month')
@@ -78,7 +78,7 @@
                                     <strong>Παρακαλώ επιλέξτε έτος</strong>
                                     @enderror
                                 </div>
-                                <button type="submit" class="btn btn-success" style="max-height: 35px">Εξαγωγή Excel</button>
+                                <button type="submit" class="btn btn-success" style="max-height: 35px; width: 90px">Εξαγωγή</button>
                             </div>
                         </form>
                     </div>

@@ -94,7 +94,6 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'doy',
             ]);
         });
 
@@ -118,6 +117,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-security', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
+                'epitropi',
                 'doy',
             ]);
         });

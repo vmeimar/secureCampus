@@ -27,7 +27,7 @@
                            <div class="form-group row">
                                <label for="surname" class="col-md-3 col-form-label text-md-right"><strong>Επώνυμο</strong></label>
                                <div class="col-md-6">
-                                   <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ $user->surname }}" required>
+                                   <input id="surname" type="text" class="form-control @error('surname') is-invalid @enderror" name="surname" value="{{ $user->surname }}">
 
                                    @error('surname')
                                    <span class="invalid-feedback" role="alert">
@@ -40,7 +40,7 @@
                            <div class="form-group row">
                                <label for="tier" class="col-md-3 col-form-label text-md-right"><strong>Βαθμίδα</strong></label>
                                <div class="col-md-6">
-                                   <select name="tier" id="tier" class="form-control input-lg dynamic" required>
+                                   <select name="tier" id="tier" class="form-control input-lg dynamic">
                                        <option selected value="{{ $user->tier }}">{{ $user->tier }}</option>
                                        <option value="Καθηγητής">Καθηγητής</option>
                                        <option value="Καθηγήτρια">Καθηγήτρια</option>

@@ -59,7 +59,7 @@
                                 <label for="active-shift-date" class="col-md-4 col-form-label text-md-right">Ημερομηνία Βάρδιας (Ημέρα)</label>
                                 <div class="col-md-6">
                                     <select required name="active-shift-date" id="active-shift-date" class="form-control input-lg dynamic">
-                                        <option selected value="{{ date('Y-m-d', strtotime($activeShift->date)) }}|{{$activeShift->is_holiday}}">Επιλέξτε Πρώτα Μήνα</option>
+                                        <option selected value="{{ date('Y-m-d', strtotime($activeShift->date)) }}">Επιλέξτε Πρώτα Μήνα</option>
                                     </select>
                                 </div>
                             </div>

@@ -4,39 +4,90 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <strong>Εμφάνιση Φιλτραρισμένων Βαρδιών</strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="row col-md-8">
-                                <h6>
-                                    <strong>
-                                        Έχετε τη δυνατότητα να εμφανίσετε τις <u>επιβεβαιωμένες</u> βάρδιες ανά σημείο φύλαξης και ανά μήνα, ή να δείτε
-                                        το σύνολο όλων παρακάτω.
-                                    </strong>
-                                </h6>
-                            </div>
+
+                @can('epoptis')
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <strong>Εμφάνιση Φιλτραρισμένων Βαρδιών</strong>
                         </div>
-                        <form method="post" action="{{ route('active-shift.show-by-location') }}" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group row">
-                                <label for="location" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε σημείο φύλαξης</strong></label>
-                                <div class="col-md-4">
-                                    <select required name="location" id="location" class="form-control input-lg dynamic">
-                                        <option disabled selected value="">Σημεία Φύλαξης</option>
-                                        @foreach($user->locations()->get() as $location)
-                                            <option value="{{ $location->id }}">
-                                                {{ $location->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('location')
-                                    <strong>Παρακαλώ εισάγετε τοποθεσία</strong>
-                                    @enderror
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-4">
+                                <div class="row col-md-8">
+                                    <h6>
+                                        <strong>
+                                            Έχετε τη δυνατότητα να εμφανίσετε τις <u>επιβεβαιωμένες</u> βάρδιες ανά σημείο φύλαξης και ανά μήνα, ή να δείτε
+                                            το σύνολο όλων παρακάτω.
+                                        </strong>
+                                    </h6>
                                 </div>
                             </div>
+                            <form method="post" action="{{ route('active-shift.show-by-location') }}" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group row">
+                                    <label for="location" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε σημείο φύλαξης</strong></label>
+                                    <div class="col-md-4">
+                                        <select required name="location" id="location" class="form-control input-lg dynamic">
+                                            <option disabled selected value="">Σημεία Φύλαξης</option>
+                                            @foreach($user->locations()->get() as $location)
+                                                <option value="{{ $location->id }}">
+                                                    {{ $location->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('location')
+                                        <strong>Παρακαλώ εισάγετε τοποθεσία</strong>
+                                        @enderror
+                                    </div>
+                                </div>
+                                    <div class="form-group row">
+                                        <label for="month" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε μήνα και έτος για εξαγωγή</strong></label>
+                                        <div class="col-md-2">
+                                            <select required name="month" id="month" class="form-control input-lg dynamic">
+                                                <option disabled selected value="">Επιλέξτε Μήνα</option>
+                                                <option value="all">Όλοι οι μήνες</option>
+                                                @foreach($monthsYears['months'] as $month)
+                                                    <option value="{{ $month['value'] }}">{{ $month['name'] }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('month')
+                                            <strong>Παρακαλώ επιλέξτε μήνα</strong>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select required name="year" id="year" class="form-control input-lg dynamic">
+                                                <option disabled selected value="">Επιλέξτε Έτος</option>
+                                                @foreach($monthsYears['years'] as $year)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('year')
+                                            <strong>Παρακαλώ επιλέξτε έτος</strong>
+                                            @enderror
+                                        </div>
+                                        <button type="submit" class="btn btn-primary ml-5" style="max-height: 35px">Εμφάνιση</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                @endcan
+
+                @can('epitropi')
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <strong>Σύνολο Εκτελεσμένων Βαρδιών</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-4">
+                                <div class="row col-md-8">
+                                    <h6>
+                                        <strong>
+                                            Εξαγωγή όλων των βαρδιών για κάθε σημείο φύλαξης ανά μήνα (Επιτροπή)
+                                        </strong>
+                                    </h6>
+                                </div>
+                            </div>
+                            <form method="post" action="{{ route('active-shift.export-committee-pdf') }}" enctype="multipart/form-data">
+                                @csrf
                                 <div class="form-group row">
                                     <label for="month" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε μήνα και έτος για εξαγωγή</strong></label>
                                     <div class="col-md-2">
@@ -44,7 +95,7 @@
                                             <option disabled selected value="">Επιλέξτε Μήνα</option>
                                             <option value="all">Όλοι οι μήνες</option>
                                             @foreach($monthsYears['months'] as $month)
-                                                <option value="{{ $month }}">{{ $month }}</option>
+                                                <option value="{{ $month['value'] }}">{{ $month['name'] }}</option>
                                             @endforeach
                                         </select>
                                         @error('month')
@@ -62,58 +113,12 @@
                                         <strong>Παρακαλώ επιλέξτε έτος</strong>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary ml-5" style="max-height: 35px">Εμφάνιση</button>
+                                    <button type="submit" class="btn btn-danger ml-5" style="max-height: 35px">Εξαγωγή PDF</button>
                                 </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <strong>Σύνολο Εκτελεσμένων Βαρδιών</strong>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center mb-4">
-                            <div class="row col-md-8">
-                                <h6>
-                                    <strong>
-                                        Εξαγωγή όλων των βαρδιών για κάθε σημείο φύλαξης ανά μήνα (Επιτροπή)
-                                    </strong>
-                                </h6>
-                            </div>
+                            </form>
                         </div>
-                        <form method="post" action="{{ route('active-shift.export-committee-pdf') }}" enctype="multipart/form-data">
-                            @csrf
-                            <div class="form-group row">
-                                <label for="month" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε μήνα και έτος για εξαγωγή</strong></label>
-                                <div class="col-md-2">
-                                    <select required name="month" id="month" class="form-control input-lg dynamic">
-                                        <option disabled selected value="">Επιλέξτε Μήνα</option>
-                                        <option value="all">Όλοι οι μήνες</option>
-                                        @foreach($monthsYears['months'] as $month)
-                                            <option value="{{ $month }}">{{ $month }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('month')
-                                    <strong>Παρακαλώ επιλέξτε μήνα</strong>
-                                    @enderror
-                                </div>
-                                <div class="col-md-2">
-                                    <select required name="year" id="year" class="form-control input-lg dynamic">
-                                        <option disabled selected value="">Επιλέξτε Έτος</option>
-                                        @foreach($monthsYears['years'] as $year)
-                                            <option value="{{ $year }}">{{ $year }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('year')
-                                    <strong>Παρακαλώ επιλέξτε έτος</strong>
-                                    @enderror
-                                </div>
-                                <button type="submit" class="btn btn-danger ml-5" style="max-height: 35px">Εξαγωγή PDF</button>
-                            </div>
-                        </form>
                     </div>
-                </div>
+                @endcan
 
                 <div class="card">
                     <div class="card-header">
@@ -129,7 +134,7 @@
                                 <th scope="col">Από</th>
                                 <th scope="col">Μέχρι</th>
                                 <th scope="col">Επιβεβαιωμένη</th>
-                                <th scope="col">Ισοδύναμες Ώρες</th>
+                                <th scope="col" class="text-center">Ισοδύναμες Ώρες</th>
                                 @canany(['confirm-shifts', 'confirm-shifts-steward'])
                                     <th scope="col">Ενέργειες</th>
                                 @endcanany

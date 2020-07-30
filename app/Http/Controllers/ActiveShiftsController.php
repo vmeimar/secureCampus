@@ -30,8 +30,6 @@ class ActiveShiftsController extends Controller
 
         $monthsYears = $this->getMonthsYears();
 
-//        dd($monthsYears['months']);
-
         if ($user->hasAnyRoles(['admin', 'epitropi']))
         {
             $activeShifts = ActiveShift::latest()->paginate(10);
@@ -214,7 +212,6 @@ class ActiveShiftsController extends Controller
         }
 
         $data = request()->all();
-
         $data['active-shift-id'] = $activeShift->id;
         $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
@@ -357,7 +354,6 @@ class ActiveShiftsController extends Controller
 
         \request()->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
         return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
-//        return redirect(route('active-shift.index'));
     }
 
     public function confirmActiveShiftSteward($id)
@@ -448,23 +444,41 @@ class ActiveShiftsController extends Controller
                 $guardShiftFrom = date('d-m-Y H:i:s', strtotime($guardShift->from));
                 $guardShiftUntil = date('d-m-Y H:i:s', strtotime($guardShift->until));
 
-                if ( isset($activeShift) and ($guardShift->id == $activeShift->id) ) continue;
+                if ( isset($activeShift) and ($guardShift->id == $activeShift->id) )    continue;
 
-                $dateHoliday = explode('|', $data['active-shift-date']);
-                $staticDate = $dateHoliday[0];
-
+                $staticDate = $data['active-shift-date'];
                 $staticShift = Shift::find($data['shift-id']);
                 $checkFrom = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_from));
                 $checkUntil = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_until));
 
-                if ( ( (strtotime($checkFrom) >= strtotime($guardShiftFrom)) and (strtotime($checkFrom) <= strtotime($guardShiftUntil)) )
-                    or ( (strtotime($checkUntil) >= strtotime($guardShiftFrom)) and (strtotime($checkUntil) <= strtotime($guardShiftUntil)) ) )
+                $durationInMinutes = $this->calculateDurationInMinutes($checkFrom, $checkUntil);
+
+                if ( ( (strtotime($checkFrom) > strtotime($guardShiftFrom)) and (strtotime($checkFrom) < strtotime($guardShiftUntil)) )
+                    or ( (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') > strtotime($guardShiftFrom)) and (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') < strtotime($guardShiftUntil)) ) )
                 {
                     $overLap = 1;
                 }
             }
         }
         return $overLap;
+    }
+
+    private function calculateDurationInMinutes($from, $until)
+    {
+        $start = strtotime($from);
+
+        if ( $start > strtotime($until) )
+        {
+            $end = strtotime($until." +1 day");
+        }
+        else
+        {
+            $end = strtotime($until);
+        }
+
+        $duration = ($end - $start) / 60;     //IN MINUTES
+
+        return $duration;
     }
 
     private function calculateFrames($from, $until, $date, $offset)
@@ -726,7 +740,10 @@ class ActiveShiftsController extends Controller
 
         for ($i=0; $i<sizeof($uniqueMonths); $i++)
         {
-            $uniqueMonths[$i] = $this->getGreekMonth($uniqueMonths[$i]);
+            $uniqueMonths[$i] = [
+                'name'  =>  $this->getGreekMonth($uniqueMonths[$i]),
+                'value' =>  $uniqueMonths[$i],
+            ];
         }
 
         $monthsYears = [
@@ -797,10 +814,22 @@ class ActiveShiftsController extends Controller
     {
         $data = $request->all();
         $locations = Location::all();
+        $month = $data['month'];
+        $year = $data['year'];
 
-        $month_name = date("F", mktime(0, 0, 0, $data['month'], 10));
-        $from = date('01/m/Y', strtotime($month_name));
-        $to = date('t/m/Y', strtotime($month_name));
+        if ($month == 'all')
+        {
+            $from = date('d/m/Y', strtotime('Jan 1 '.$year));
+            $to = date('d/m/Y', strtotime('Dec 31 '.$year));
+        }
+        else
+        {
+            // Use mktime() and date() function to
+            // convert number to month name
+            $month_name = date("F", mktime(0, 0, 0, $month, 10));
+            $from = date('01/m/Y', strtotime($month_name.' '.$year));
+            $to = date('t/m/Y', strtotime($month_name.' '.$year));
+        }
 
         $totalHoursAbsent = 0;
         $totalFactorAbsent = 0;
@@ -819,7 +848,7 @@ class ActiveShiftsController extends Controller
             {
                 foreach ($activeShift->guards()->get() as $guard)
                 {
-                    if ( date('m', strtotime($activeShift['date'])) == $data['month'])
+                    if ( (date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all') )
                     {
                         $locationGuardArray[$key][] = [
                             'guard_id'  =>  $guard->id,
@@ -832,7 +861,7 @@ class ActiveShiftsController extends Controller
                     }
                 }
 
-                if ( date('m', strtotime($activeShift['date'])) == $data['month'])
+                if ( (date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all') )
                 {
                     $activeShifts[$key][] = $activeShift;
                     $totalHoursAbsentByLocation += $activeShift['absent'];

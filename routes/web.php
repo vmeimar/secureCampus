@@ -68,7 +68,7 @@ Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
 
-Route::get('/app/index', 'AppController@index')->middleware('can:admin')->name('app.index');
+Route::get('/app/index', 'AppController@index')->middleware('can:doy')->name('app.index');
 Route::get('/app/populate-days-table', 'AppController@populateDaysTable')->name('app.populate-days');
 Route::post('/app/holidays/import', 'AppController@import')->name('holidays.import');
 Route::post('/app/user-emails/import', 'AppController@userEmailsImport')->name('user-emails.import');

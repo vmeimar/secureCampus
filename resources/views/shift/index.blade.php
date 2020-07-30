@@ -19,7 +19,9 @@
                                 <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
+                                @can('assign-shifts')
                                 <th scope="col">Ενέργεις</th>
+                                @endcan
                             </tr>
                             </thead>
                             <tbody>

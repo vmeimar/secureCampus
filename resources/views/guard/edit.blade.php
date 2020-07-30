@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/security/index" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="/guard/{{ $guard->company->id }}/index" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>
