@@ -63,7 +63,7 @@ Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
 Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
 Route::post('/guard/{company}/export-all-guards', 'GuardsController@exportAllGuards')->name('guard.export-all-guards');
 Route::post('/guard/{company}/export-all-guards-pdf', 'GuardsController@exportAllGuardsPdf')->name('guard.export-all-guards-pdf');
-Route::post('/guard/export-committee', 'GuardsController@exportCommittee')->middleware('can:epitropi')->name('guard.export-committee');
+Route::post('/guard/{company}/export-committee', 'GuardsController@exportCommittee')->middleware('can:epitropi')->name('guard.export-committee');
 Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');

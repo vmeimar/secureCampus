@@ -14,8 +14,8 @@
                             <div class="row col-md-8">
                                 <h6 class="justify-content-center">
                                     <strong>
-                                        Έχετε τη δυνατότητα να εξάγετε αρχείο τύπου Pdf για τις βάρδιες όλων των φυλάκων
-                                        ανά μήνα με τις ώρες εργασίας και τις ισοδύναμες μονάδες βάρδιας.
+                                        Έχετε τη δυνατότητα να εξάγετε αρχείο τύπου Pdf για τις βάρδιες όλων των φυλάκων της εταιρίας
+                                        {{ $company->name }} ανά μήνα με τις ώρες εργασίας και τις ισοδύναμες μονάδες βάρδιας.
                                     </strong>
                                 </h6>
                             </div>
@@ -53,7 +53,7 @@
                         </form>
 
                         @can('epitropi')
-                        <form method="post" action="{{ route('guard.export-committee') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.export-committee', $company->id) }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label for="month" class="col-md-6 col-form-label text-md-right">Επιλέξτε μήνα και έτος για εξαγωγή βεβαίωσης Επιτροπής</label>

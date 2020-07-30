@@ -7,6 +7,8 @@ use App\Exports\AllGuardsExport;
 use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
+use App\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -346,9 +348,8 @@ class GuardsController extends Controller
 //        return view('guard.export-all-guards-pdf', compact('exportData'));
     }
 
-    public function exportCommittee(Request $request)
+    public function exportCommittee(Request $request, Company $company)
     {
-
         $data = $request->validate([
             'month' =>  'required',
             'year' =>  'required',
@@ -372,8 +373,9 @@ class GuardsController extends Controller
             $to = date('t/m/Y', strtotime($month_name.' '.$year));
         }
 
+        $committeeMembers = $this->getCommitteeMembers();
 
-        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to'))->setPaper('a4');
+        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company'))->setPaper('a4');
         return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 
@@ -468,6 +470,12 @@ class GuardsController extends Controller
                 return 'Δεκέμβριος';
                 break;
         }
+    }
+
+    private function getCommitteeMembers()
+    {
+        $committeeRole = Role::where('name', 'epitropi')->first();
+        return $committeeRole->users()->get();
     }
 
     /**

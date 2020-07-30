@@ -43,8 +43,8 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style="text-align: center"><strong>{{ $totalDuration }}</strong></td>
-                                <td style="text-align: center"><strong>{{ $totalCredits }}</strong></td>
+                                <td style="text-align: center; font-size: small;"><strong>{{ $totalDuration }}</strong></td>
+                                <td style="text-align: center; font-size: small;"><strong>{{ $totalCredits }}</strong></td>
                             </tr>
                             </tbody>
                         </table>
