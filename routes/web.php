@@ -43,12 +43,15 @@ Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController
 Route::patch('/active-shift/{location}/confirm-all-supervisor', 'ActiveShiftsController@confirmAllSupervisor')->middleware('can:supervisor');
 Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
 Route::patch('/as/{activeShift}', 'ActiveShiftsController@update')->middleware('can:confirm-shifts')->name('active-shift.update');
-Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->middleware('can:admin')->name('active-shift.destroy');
+Route::delete('/active-shift/{activeShift}', 'ActiveShiftsController@destroy')->middleware('can:assign-shifts')->name('active-shift.destroy');
 
 Route::get('/security/index', 'SecurityController@index')->middleware('can:manage-security')->name('company.index');
+Route::get('/security/choose-company', 'SecurityController@chooseCompany')->middleware('can:epitropi')->name('security.choose-company');
 Route::get('/security/create', 'SecurityController@create')->middleware('can:manage-security');
 Route::get('/security/{company}/edit', 'SecurityController@edit')->middleware('can:manage-security')->name('company.edit');
 Route::post('/s', 'SecurityController@store')->middleware('can:manage-security');
+Route::post('/security/choose-export', 'SecurityController@chooseExport')->middleware('can:epitropi')->name('security.choose-export');
+Route::post('/security/{company}/show-overtime', 'SecurityController@showOvertime')->middleware('can:epitropi')->name('security.show-overtime');
 Route::patch('/s/{company}', 'SecurityController@update')->middleware('can:manage-security');
 Route::delete('/security/{company}', 'SecurityController@destroy')->middleware('can:admin')->name('company.destroy');
 
@@ -57,9 +60,8 @@ Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('ca
 Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
 Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-security')->name('guard.show');
 Route::get('/guard/{company}/export-by-month', 'GuardsController@exportByMonth')->middleware('can:manage-security')->name('guard.export-by-month');
-Route::post('/guard/{company}/show-overtime', 'GuardsController@showOvertime')->middleware('can:manage-security')->name('guard.show-overtime');
 Route::post('/guard/{guard}/custom-range', 'GuardsController@showCustomRangeShifts')->name('guard.custom-range');
-Route::post('/guard/import', 'GuardsController@import')->name('guard.import');
+Route::post('/guard/{company}/import', 'GuardsController@import')->name('guard.import');
 Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
 Route::post('/guard/{company}/export-all-guards', 'GuardsController@exportAllGuards')->name('guard.export-all-guards');
 Route::post('/guard/{company}/export-all-guards-pdf', 'GuardsController@exportAllGuardsPdf')->name('guard.export-all-guards-pdf');

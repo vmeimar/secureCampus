@@ -5,17 +5,18 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
 
-                @can('epoptis')
+                @can('supervisor')
                     <div class="card mb-4">
                         <div class="card-header">
-                            <strong>Εμφάνιση Φιλτραρισμένων Βαρδιών</strong>
+                            <strong>Επιλογή Βαρδιών</strong>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center mb-4">
                                 <div class="row col-md-8">
                                     <h6>
                                         <strong>
-                                            Έχετε τη δυνατότητα να εμφανίσετε τις <u>επιβεβαιωμένες</u> βάρδιες ανά σημείο φύλαξης και ανά μήνα, ή να δείτε
+                                            Έχετε τη δυνατότητα να εμφανίσετε ως Επόπτης και να εκτυπώσετε τις αποθηκευμένες
+                                            βάρδιες οι οποίες εκτελέστηκαν ανά σημείο φύλαξης και ανά μήνα και έτος, ή να δείτε
                                             το σύνολο όλων παρακάτω.
                                         </strong>
                                     </h6>
@@ -81,7 +82,7 @@
                                 <div class="row col-md-8">
                                     <h6>
                                         <strong>
-                                            Εξαγωγή όλων των βαρδιών για κάθε σημείο φύλαξης ανά μήνα (Επιτροπή)
+                                            Εξαγωγή αρχείου PDF με το σύνολο των βαρδιών για κάθε σημείο φύλαξης ανά μήνα και έτος ως Επιτροπή.
                                         </strong>
                                     </h6>
                                 </div>
@@ -113,7 +114,7 @@
                                         <strong>Παρακαλώ επιλέξτε έτος</strong>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-danger ml-5" style="max-height: 35px">Εξαγωγή PDF</button>
+                                    <button type="submit" class="btn btn-danger ml-5" style="max-height: 35px">Εξαγωγή</button>
                                 </div>
                             </form>
                         </div>
@@ -122,7 +123,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <strong>Όλες οι Ενεργές Βάρδιες</strong>
+                        <strong>Βάρδιες οι οποίες εκτελέστηκαν</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped table-bordered">
@@ -133,7 +134,7 @@
                                 <th scope="col">Φύλακες</th>
                                 <th scope="col">Από</th>
                                 <th scope="col">Μέχρι</th>
-                                <th scope="col">Επιβεβαιωμένη</th>
+                                <th scope="col">Υποβολή</th>
                                 <th scope="col" class="text-center">Ισοδύναμες Ώρες</th>
                                 @canany(['confirm-shifts', 'confirm-shifts-steward'])
                                     <th scope="col">Ενέργειες</th>
@@ -152,7 +153,7 @@
                                     </td>
                                     <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['from'])) }}</td>
                                     <td>{{ date('d/m/Y H:i:s', strtotime($activeShift['until'])) }}</td>
-                                    <td style="text-align: center"><strong>{{ $activeShift['confirmed_steward'] ? 'Ναι' : 'Όχι'}}</strong></td>
+                                    <td style="text-align: center"><strong>{{ $activeShift['confirmed_supervisor'] ? 'Ναι' : 'Όχι'}}</strong></td>
                                     <td style="text-align: center">{{ $activeShift['factor'] }}</td>
                                     <td>
                                         @can('confirm-shifts')
@@ -161,35 +162,37 @@
                                                     @csrf
                                                     @method('patch')
                                                     <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2">
-                                                        {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Κατάργηση υποβολής'}}
+                                                        {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Υπεβλήθη'}}
                                                     </button>
                                                 </form>
                                             </div>
                                         @endcan
-                                        @can('confirm-shifts-steward')
-                                            <div class="row mb-1">
-                                                <form action="/active-shift/{{ $activeShift->id }}/confirm-steward" method="POST" class="float-left">
-                                                    @csrf
-                                                    @method('patch')
-                                                    <button type="submit" style="width: 100px" class="btn btn-info btn-sm ml-2 mr-2">
-                                                        {{ $activeShift->confirmed_steward == 0 ? 'Επιβαβαίωση' : 'Κατάργηγη επιβεβαίωσης'}}
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        @endcan
+{{--                                        @can('confirm-shifts-steward')--}}
+{{--                                            <div class="row mb-1">--}}
+{{--                                                <form action="/active-shift/{{ $activeShift->id }}/confirm-steward" method="POST" class="float-left">--}}
+{{--                                                    @csrf--}}
+{{--                                                    @method('patch')--}}
+{{--                                                    <button type="submit" style="width: 100px" class="btn btn-info btn-sm ml-2 mr-2">--}}
+{{--                                                        {{ $activeShift->confirmed_steward == 0 ? 'Επιβαβαίωση' : 'Κατάργηγη επιβεβαίωσης'}}--}}
+{{--                                                    </button>--}}
+{{--                                                </form>--}}
+{{--                                            </div>--}}
+{{--                                        @endcan--}}
                                         @can('edit-shifts')
                                         <div class="row mb-1">
                                             <a href="{{ route('active-shift.edit', $activeShift->id) }}" style="width: 100px" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
                                         </div>
                                         @endcan
-                                        @can('admin')
+                                        @can('assign-shifts')
+                                            @if($activeShift->confirmed_supervisor == 0)
                                             <div class="row">
                                                 <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" style="width: 100px" class="btn btn-danger btn-sm ml-2 mr-2">Διαγραφή</button>
+                                                    <button type="submit" onclick="return confirm('Επιβεβαίωση διαγραφής')" style="width: 100px" class="btn btn-danger btn-sm ml-2 mr-2">Διαγραφή</button>
                                                 </form>
                                             </div>
+                                            @endif
                                         @endcan
                                     </td>
                                 </tr>

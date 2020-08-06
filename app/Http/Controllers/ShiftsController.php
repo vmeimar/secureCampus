@@ -46,13 +46,16 @@ class ShiftsController extends Controller
         switch ($shift->shift_type)
         {
             case 'Weekdays':
+            case 'weekdays':
                 $type = 'Καθημερινές';
                 break;
             case 'Saturday':
+            case 'saturday':
                 $type = 'Σάββατο';
                 break;
             case 'Sunday':
-                $type = 'Κυριακή/Αργίες';
+            case 'sunday':
+                $type = 'Κυριακή';
                 break;
         }
 

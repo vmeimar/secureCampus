@@ -2,6 +2,7 @@
 
 namespace App\Imports;
 
+use App\Company;
 use App\Guard;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\RegistersEventListeners;
@@ -18,6 +19,16 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
 {
     use Importable, RegistersEventListeners;
 
+    /**
+     * @var Company
+     */
+    private $company;
+
+    public function __construct(Company $company)
+    {
+        $this->company = $company;
+    }
+
     public static function beforeImport(BeforeImport $event)
     {
         $worksheet = $event->reader->getActiveSheet();
@@ -31,6 +42,13 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
         }
     }
 
+    public function sheets(): array
+    {
+        return [
+            0   =>  new GuardsImport($this->company),
+        ];
+    }
+
 
     /**
     * @param array $row
@@ -39,8 +57,6 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
     */
     public function model(array $row)
     {
-//        echo "<pre>";
-
         if ( !is_null($row['onoma_fylaka']) and isset($row['onoma_fylaka']) and $row['onoma_fylaka'] !== 'ΣΥΝΟΛΟ' )
         {
             $fullName = explode(' ', $row['onoma_fylaka']);
@@ -48,18 +64,9 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
             return new Guard([
                 'name'  =>  $fullName[1],
                 'surname'   =>  $fullName[0],
-                'company_id'    =>  1,
+                'company_id'    =>  $this->company->id,
             ]);
         }
-    }
-
-
-    public function sheets(): array
-    {
-        return [
-            // Select by sheet index
-            0 => new GuardsImport(),
-        ];
     }
 
     public function rules(): array

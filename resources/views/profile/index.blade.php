@@ -10,7 +10,6 @@
             <div>
                 <h2>Καλωσήρθατε στην πλατφόρμα Secure Campus του ΕΚΠΑ</h2>
             </div>
-
             <div class="pt-2">
                 <div>Είστε συνδεδεμένος/η ως <strong>{{ $user->name }} {{ $user->surname }}</strong></div>
                 @can('admin')
@@ -21,12 +20,10 @@
                 </div>
                 <hr>
             </div>
-
             <div class="row">
                 <div class="col-8 mb-4 d-flex">
-
                     @can('manage-security')
-                    <div class="card mr-2">
+                    <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
                             <strong>Φύλακες / Εταιρίες</strong>
                         </div>
@@ -37,39 +34,46 @@
                         </div>
                     </div>
                     @endcan
-
                     @can('view-shifts')
-                    <div class="card mr-2">
+                    <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
                             <strong>Βάρδιες / Σημεία Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Διαχειριστείτε τις Βάρδιες και τα Σημεία Φύλαξης</h5>
+                            <h5 class="card-title">Έλεγχος και Παραλαβή Υπηρεσιών στις Βάρδιες των σημείων φύλαξης από τους Επόπτες</h5>
                             <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
-                            <a href="{{ route('shift.index') }}" class="btn btn-primary">Διαχείριση</a>
+                            <a href="{{ route('shift.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
                     @endcan
                 </div>
             </div>
-
             @can('doy')
             <div class="row">
-                <div class="col-8">
-                    <div class="card mr-2">
+                <div class="col-8 mb-4 d-flex">
+                    <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
-                            <strong>Διαχείριση Συστήματος</strong>
+                            <strong>Διαχείριση Παραμέτρων</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Διαχειριστείτε τις Λειτουργίες της Εφαρμογής</h5>
+                            <h5 class="card-title">Διαχειριστείτε τις παραμέτρους της Εφαρμογής</h5>
                             <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
-                            <a href="{{ route('app.index') }}" class="btn btn-primary">Διαχείριση</a>
+                            <a href="{{ route('app.index') }}" class="btn btn-primary">Είσοδος</a>
+                        </div>
+                    </div>
+            @endcan
+                    <div class="card mr-2" style="width: 1000px">
+                        <div class="card-header">
+                            <strong>Επιτροπή Παραλαβής Υπηρεσιών Φύλαξης</strong>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">exports</h5>
+                            <p class="card-text">exports</p>
+                            <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
                 </div>
             </div>
-            @endcan
-
         </div>
     </div>
 </div>

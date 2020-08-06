@@ -30,6 +30,8 @@ class GuardsController extends Controller
     public function show(Guard $guard)
     {
         $activeShifts = $guard->activeShifts()->get()->toArray();
+        $months = [];
+        $years = [];
 
         foreach ($activeShifts as $activeShift)
         {
@@ -153,41 +155,6 @@ class GuardsController extends Controller
         $totalDuration = $this->decimal_to_time($duration * 60);
 
         return view('guard.custom-range', compact('activeShifts', 'guard', 'totalCredits', 'totalDuration'));
-    }
-
-    public function showOvertime()
-    {
-        $guards = Guard::all();
-
-        foreach ($guards as $guard)
-        {
-            $guardShifts = $guard->activeShifts()->get()->sortBy('from');
-            $prevUntil = null;
-            $prevShift= null;
-            $prevDuration = 0;
-
-            foreach ($guardShifts as $guardShift)
-            {
-                if ( ($guardShift['from'] == $prevUntil) and ( ($guardShift['duration'] + $prevDuration) >= 11 ) )
-                {
-                    $overTimeShiftsPair[] = [$prevShift, $guardShift];
-                }
-
-                $prevUntil = $guardShift['until'];
-                $prevShift = $guardShift;
-                $prevDuration = $guardShift['duration'];
-            }
-        }
-
-        if (isset($overTimeShiftsPair) and !is_null($overTimeShiftsPair))
-        {
-            return view('guard.show-overtime', compact('overTimeShiftsPair'));
-        }
-        else
-        {
-            \request()->session()->flash('warning', 'Δεν υπάρχει φύλακας με υπερεργασία.');
-            return redirect()->back();
-        }
     }
 
     private function decimal_to_time($decimal)
@@ -375,14 +342,28 @@ class GuardsController extends Controller
 
         $committeeMembers = $this->getCommitteeMembers();
 
+        if (sizeof($committeeMembers) != 3)
+        {
+            $request->session()->flash('warning', 'Τα μέλη της Τριμελούς Επιτροπής δεν έχουν οριστεί σωστά.');
+            return redirect()->back();
+        }
+
         $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company'))->setPaper('a4');
         return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 
-    public function import(Request $request)
+    public function import(Request $request, Company $company)
     {
+        if (is_null($request->file('import_file')))
+        {
+            $request->session()->flash('Παρακαλώ επιλέξτε αρχείο.');
+            return redirect()->back();
+        }
+
+        Guard::query()->delete();
+
         try {
-            (new GuardsImport)->import($request->file('import_file'));
+            (new GuardsImport($company))->import($request->file('import_file'));
         } catch (\Exception $e) {
             $failures = $e->failures();
             dd($failures[0]);

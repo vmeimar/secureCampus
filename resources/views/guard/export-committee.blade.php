@@ -26,7 +26,10 @@
 </header>
 <div class="container">
     <div>
-        <p class="text-center"><strong>ΠΡΩΤΟΚΟΛΛΟ ΤΡΙΜΕΛΟΥΣ ΕΠΙΤΡΟΠΗΣ</strong></p>
+        <p class="text-center"><strong>ΠΡΩΤΟΚΟΛΛΟ ΤΡΙΜΕΛΟΥΣ ΕΠΙΤΡΟΠΗΣ ΥΠΗΡΕΣΙΩΝ ΦΥΛΑΞΗΣ</strong></p>
+    </div>
+    <div>
+        <p class="text-center">{{ date('d/m/Y') }}</p>
     </div>
     <div>
         <p class="text-left">Οι κάτωθι υπογεγραμμένοι:</p>

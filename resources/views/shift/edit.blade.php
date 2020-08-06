@@ -98,9 +98,9 @@
                                 <div class="col-md-6">
                                     <select name="shift-type" id="shift-type" class="form-control input-lg dynamic">
                                         <option selected value="{{ $shift->shift_type }}">{{ $type }}</option>
-                                        <option value="weekdays">Καθημερινές</option>
-                                        <option value="saturday">Σάββατο</option>
-                                        <option value="holiday">Κυριακή/Αργίες</option>
+                                        <option value="Weekdays">Καθημερινές</option>
+                                        <option value="Saturday">Σάββατο</option>
+                                        <option value="Sunday">Κυριακή</option>
                                     </select>
                                     @error('shift-type')
                                     <strong>Επιλέξτε Τύπο</strong>

@@ -58,17 +58,16 @@
 
                     </div>
                 </div>
-                @can('manage-security')
+                @can('doy')
                     <div class="d-flex">
                         <div class="row">
                             <a href="/security/create" class="btn btn-primary m-4">Δημιουργία Νέας Εταιρίας</a>
                         </div>
+                @endcan
                         <div class="row">
                             <a href="/profile/{{ $user_id }}" class="btn btn-secondary m-4">Επιστροφή στο Προφίλ</a>
                         </div>
                     </div>
-
-                @endcan
             </div>
         </div>
     </div>

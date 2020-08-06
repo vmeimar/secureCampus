@@ -53,7 +53,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Φιλοσοφική Κυριακή Πρωί',
+            'name'  =>  'Φιλοσοφική Κυριακή/Αργίες Πρωί',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -63,7 +63,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Φιλοσοφική Κυριακή Απόγευμα',
+            'name'  =>  'Φιλοσοφική Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -73,7 +73,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Φιλοσοφική Κυριακή Βράδυ',
+            'name'  =>  'Φιλοσοφική Κυριακή/Αργίες Βράδυ',
             'location_id'   => 1,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -143,7 +143,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Διδασκαλείο Κυριακή Πρωί',
+            'name'  =>  'Διδασκαλείο Κυριακή/Αργίες Πρωί',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -153,7 +153,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Διδασκαλείο Κυριακή Απόγευμα',
+            'name'  =>  'Διδασκαλείο Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -163,7 +163,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Διδασκαλείο Κυριακή Βράδυ',
+            'name'  =>  'Διδασκαλείο Κυριακή/Αργίες Βράδυ',
             'location_id'   => 2,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -223,7 +223,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή Πρωί',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή/Αργίες Πρωί',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -233,7 +233,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή Απόγευμα',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -243,7 +243,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή Βράδυ',
+            'name'  =>  'Βιβλιοθήκη Φιλοσοφικής Κυριακή/Αργίες Βράδυ',
             'location_id'   => 3,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -303,7 +303,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Θεολογική Κυριακή Πρωί',
+            'name'  =>  'Θεολογική Κυριακή/Αργίες Πρωί',
             'location_id'   => 4,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -313,7 +313,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Θεολογική Κυριακή Απόγευμα',
+            'name'  =>  'Θεολογική Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 4,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -323,7 +323,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Θεολογική Κυριακή Βράδυ',
+            'name'  =>  'Θεολογική Κυριακή/Αργίες Βράδυ',
             'location_id'   => 4,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -383,7 +383,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή/Αργίες Πρωί',
             'location_id'   => 5,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -393,7 +393,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή Απόγευμα',
+            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 5,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -403,7 +403,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Πληροφορικής & Τηλ/νιών Κυριακή/Αργίες Βράδυ',
             'location_id'   => 5,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -463,7 +463,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φυσικής Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Φυσικής Κυριακή/Αργίες Πρωί',
             'location_id'   => 6,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -473,7 +473,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φυσικής Κυριακή Απόγευμα',
+            'name'  =>  'Κτήριο Φυσικής Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 6,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -483,7 +483,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φυσικής Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Φυσικής Κυριακή/Αργίες Βράδυ',
             'location_id'   => 6,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -543,7 +543,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Χημείας Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Χημείας Κυριακή/Αργίες Πρωί',
             'location_id'   => 7,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -553,7 +553,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Χημείας Κυριακή Απόγευμα',
+            'name'  =>  'Κτήριο Χημείας Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 7,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -563,7 +563,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Χημείας Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Χημείας Κυριακή/Αργίες Βράδυ',
             'location_id'   => 7,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -623,7 +623,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Βιολογίας Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Βιολογίας Κυριακή/Αργίες Πρωί',
             'location_id'   => 8,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -633,7 +633,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Βιολογίας Κυριακή Απόγευμα',
+            'name'  =>  'Κτήριο Βιολογίας Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 8,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -643,7 +643,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Βιολογίας Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Βιολογίας Κυριακή/Αργίες Βράδυ',
             'location_id'   => 8,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -713,7 +713,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή/Αργίες Πρωί',
             'location_id'   => 9,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -723,7 +723,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή Απόγευμα',
+            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 9,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -733,7 +733,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Γεωλογίας & Γεωπεριβάλλοντος Κυριακή/Αργίες Βράδυ',
             'location_id'   => 9,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -793,7 +793,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Μαθηματικό Κυριακή Πρωί',
+            'name'  =>  'Νέο Μαθηματικό Κυριακή/Αργίες Πρωί',
             'location_id'   => 10,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -803,7 +803,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Μαθηματικό Κυριακή Απόγευμα',
+            'name'  =>  'Νέο Μαθηματικό Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 10,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -813,7 +813,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Μαθηματικό Κυριακή Βράδυ',
+            'name'  =>  'Νέο Μαθηματικό Κυριακή/Αργίες Βράδυ',
             'location_id'   => 10,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -863,7 +863,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Μαθηματικό Κυριακή Πρωί',
+            'name'  =>  'Παλαιό Μαθηματικό Κυριακή/Αργίες Πρωί',
             'location_id'   => 11,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -873,7 +873,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Μαθηματικό Κυριακή Απόγευμα',
+            'name'  =>  'Παλαιό Μαθηματικό Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 11,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -883,7 +883,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Μαθηματικό Κυριακή Βράδυ',
+            'name'  =>  'Παλαιό Μαθηματικό Κυριακή/Αργίες Βράδυ',
             'location_id'   => 11,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -943,7 +943,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φαρμακευτικού Κυριακή Πρωί',
+            'name'  =>  'Κτήριο Φαρμακευτικού Κυριακή/Αργίες Πρωί',
             'location_id'   => 12,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -953,7 +953,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Κτήριο Φαρμακευτικού Κυριακή Βράδυ',
+            'name'  =>  'Κτήριο Φαρμακευτικού Κυριακή/Αργίες Βράδυ',
             'location_id'   => 12,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1023,7 +1023,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή Πρωί',
+            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή/Αργίες Πρωί',
             'location_id'   => 13,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1033,7 +1033,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή Απόγευμα',
+            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 13,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1043,7 +1043,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή Βράδυ',
+            'name'  =>  'ΙΦΕ (Γραμματεία) Κυριακή/Αργίες Βράδυ',
             'location_id'   => 13,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1092,7 +1092,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΙΦΕ (Αίθουσες) Κυριακή Απόγευμα',
+            'name'  =>  'ΙΦΕ (Αίθουσες) Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 14,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1102,7 +1102,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΙΦΕ (Αίθουσες) Κυριακή Βράδυ',
+            'name'  =>  'ΙΦΕ (Αίθουσες) Κυριακή/Αργίες Βράδυ',
             'location_id'   => 14,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1172,7 +1172,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή Πρωί',
+            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή/Αργίες Πρωί',
             'location_id'   => 15,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1182,7 +1182,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή Απόγευμα',
+            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 15,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1192,7 +1192,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή Βράδυ',
+            'name'  =>  'Βιβλιοθήκη ΣΘΕ Κυριακή/Αργίες Βράδυ',
             'location_id'   => 15,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1252,7 +1252,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή Πρωί',
+            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή/Αργίες Πρωί',
             'location_id'   => 16,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1262,7 +1262,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή Απόγευμα',
+            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 16,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1272,7 +1272,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή Βράδυ',
+            'name'  =>  'ΤΥΠΑ - ΕΛΚΕ Κυριακή/Αργίες Βράδυ',
             'location_id'   => 16,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1332,7 +1332,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή Πρωί',
+            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή/Αργίες Πρωί',
             'location_id'   => 17,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1342,7 +1342,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή Απόγευμα',
+            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 17,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1352,7 +1352,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή Βράδυ',
+            'name'  =>  'ΕΛΚΕ - ΚΕΠΑ Κυριακή/Αργίες Βράδυ',
             'location_id'   => 17,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1432,7 +1432,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Οδοντιατρική Κυριακή Πρωί',
+            'name'  =>  'Οδοντιατρική Κυριακή/Αργίες Πρωί',
             'location_id'   => 19,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1442,7 +1442,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Οδοντιατρική Κυριακή Απόγευμα',
+            'name'  =>  'Οδοντιατρική Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 19,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1452,7 +1452,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Οδοντιατρική Κυριακή Βράδυ',
+            'name'  =>  'Οδοντιατρική Κυριακή/Αργίες Βράδυ',
             'location_id'   => 19,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1522,7 +1522,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή Πρωί',
+            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή/Αργίες Πρωί',
             'location_id'   => 20,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -1532,7 +1532,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή Απόγευμα',
+            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 20,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -1542,7 +1542,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή Βράδυ',
+            'name'  =>  'Ιατρική Μ. Ασίας Κυριακή/Αργίες Βράδυ',
             'location_id'   => 20,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -1602,7 +1602,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή Πρωί',
+            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή/Αργίες Πρωί',
             'location_id'   => 21,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1612,7 +1612,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή Απόγευμα',
+            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 21,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1622,7 +1622,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή Βράδυ',
+            'name'  =>  'Ιατρική Τετραπόλεως Κυριακή/Αργίες Βράδυ',
             'location_id'   => 21,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1692,7 +1692,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Αττικό Κυριακή Πρωί',
+            'name'  =>  'Ιατρική Αττικό Κυριακή/Αργίες Πρωί',
             'location_id'   => 22,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1702,7 +1702,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Αττικό Κυριακή Απόγευμα',
+            'name'  =>  'Ιατρική Αττικό Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 22,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1712,7 +1712,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Ιατρική Αττικό Κυριακή Βράδυ',
+            'name'  =>  'Ιατρική Αττικό Κυριακή/Αργίες Βράδυ',
             'location_id'   => 22,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1802,7 +1802,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή Πρωί',
+            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή/Αργίες Πρωί',
             'location_id'   => 24,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1812,7 +1812,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή Απόγευμα',
+            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 24,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1822,7 +1822,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή Βράδυ',
+            'name'  =>  'Βιβλιοθήκη Επιστημών Υγείας Κυριακή/Αργίες Βράδυ',
             'location_id'   => 24,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1852,7 +1852,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΣΕΦΑΑ Κυριακή Πρωί',
+            'name'  =>  'ΣΕΦΑΑ Κυριακή/Αργίες Πρωί',
             'location_id'   => 26,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1902,7 +1902,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΣΕΦΑΑ Κυριακή Απόγευμα',
+            'name'  =>  'ΣΕΦΑΑ Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 26,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1912,7 +1912,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'ΣΕΦΑΑ Κυριακή Βράδυ',
+            'name'  =>  'ΣΕΦΑΑ Κυριακή/Αργίες Βράδυ',
             'location_id'   => 26,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1962,7 +1962,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή Πρωί',
+            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή/Αργίες Πρωί',
             'location_id'   => 27,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1972,7 +1972,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή Απόγευμα',
+            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 27,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -1982,7 +1982,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή Βράδυ',
+            'name'  =>  'Πανεπιστημιακή Λέσχη Κυριακή/Αργίες Βράδυ',
             'location_id'   => 27,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2002,7 +2002,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Χημείο Κυριακή Πρωί',
+            'name'  =>  'Νέο Χημείο Κυριακή/Αργίες Πρωί',
             'location_id'   => 28,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2052,7 +2052,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Χημείο Κυριακή Απόγευμα',
+            'name'  =>  'Νέο Χημείο Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 28,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2062,7 +2062,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Νέο Χημείο Κυριακή Βράδυ',
+            'name'  =>  'Νέο Χημείο Κυριακή/Αργίες Βράδυ',
             'location_id'   => 28,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2212,7 +2212,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Χημείο Κυριακή Πρωί',
+            'name'  =>  'Παλαιό Χημείο Κυριακή/Αργίες Πρωί',
             'location_id'   => 35,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2222,7 +2222,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Χημείο Κυριακή Απόγευμα',
+            'name'  =>  'Παλαιό Χημείο Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 35,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2232,7 +2232,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Παλαιό Χημείο Κυριακή Βράδυ',
+            'name'  =>  'Παλαιό Χημείο Κυριακή/Αργίες Βράδυ',
             'location_id'   => 35,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2302,7 +2302,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή Πρωί',
+            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή/Αργίες Πρωί',
             'location_id'   => 36,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2312,7 +2312,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή Απόγευμα',
+            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 36,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2322,7 +2322,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή Βράδυ',
+            'name'  =>  'Μουσείο Ιστορίας Θόλου Κυριακή/Αργίες Βράδυ',
             'location_id'   => 36,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2392,7 +2392,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημίου 30 Κυριακή Πρωί',
+            'name'  =>  'Πανεπιστημίου 30 Κυριακή/Αργίες Πρωί',
             'location_id'   => 37,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -2402,7 +2402,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημίου 30 Κυριακή Απόγευμα',
+            'name'  =>  'Πανεπιστημίου 30 Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 37,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -2412,7 +2412,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Πανεπιστημίου 30 Κυριακή Βράδυ',
+            'name'  =>  'Πανεπιστημίου 30 Κυριακή/Αργίες Βράδυ',
             'location_id'   => 37,
             'user_id'   =>  1,
             'number_of_guards'  =>  1,
@@ -2482,7 +2482,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή Πρωί',
+            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή/Αργίες Πρωί',
             'location_id'   => 38,
             'user_id'   =>  1,
             'number_of_guards'  =>  3,
@@ -2492,7 +2492,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή Απόγευμα',
+            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 38,
             'user_id'   =>  1,
             'number_of_guards'  =>  3,
@@ -2502,7 +2502,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή Βράδυ',
+            'name'  =>  'Εποπτεία Παν/πολης 1 Κυριακή/Αργίες Βράδυ',
             'location_id'   => 38,
             'user_id'   =>  1,
             'number_of_guards'  =>  3,
@@ -2592,7 +2592,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή Πρωί',
+            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή/Αργίες Πρωί',
             'location_id'   => 39,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -2602,7 +2602,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή Απόγευμα',
+            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή/Αργίες Απόγευμα',
             'location_id'   => 39,
             'user_id'   =>  1,
             'number_of_guards'  =>  2,
@@ -2612,7 +2612,7 @@ class ShiftsTableSeeder extends Seeder
         ]);
 
         Shift::create([
-            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή Βράδυ',
+            'name'  =>  'Εποπτεία Παν/πολης 2 Κυριακή/Αργίες Βράδυ',
             'location_id'   => 39,
             'user_id'   =>  1,
             'number_of_guards'  =>  4,

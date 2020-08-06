@@ -30,6 +30,12 @@ class ActiveShiftsController extends Controller
 
         $monthsYears = $this->getMonthsYears();
 
+        if (!$monthsYears)
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν ανατεθιμένες βάρδιες.');
+            return redirect(route('shift.index'));
+        }
+
         if ($user->hasAnyRoles(['admin', 'epitropi']))
         {
             $activeShifts = ActiveShift::latest()->paginate(10);
@@ -60,49 +66,50 @@ class ActiveShiftsController extends Controller
             return redirect(route('shift.index'));
         }
 
-        switch ($shift->shift_type)
-        {
-            case 'Saturday':
-                $availableDates = DB::table('days_of_year')
-                    ->where('day', 'Saturday')
-                    ->get();
-                break;
-            case 'Sunday':
-                $availableDates = DB::table('days_of_year')
-                    ->where('day', 'Sunday')
-                    ->get();
-                break;
-            default:
-                $availableDates = DB::table('days_of_year')
-                    ->whereNotIn('day', ['Saturday', 'Sunday'])
-                    ->get();
-                break;
-        }
+//        switch ($shift->shift_type)
+//        {
+//            case 'Saturday':
+//                $availableDates = DB::table('days_of_year')
+//                    ->where('day', 'Saturday')
+//                    ->get();
+//                break;
+//            case 'Sunday':
+//                $availableDates = DB::table('days_of_year')
+//                    ->where('day', 'Sunday')
+//                    ->orWhere('is_holiday', '=', 1)
+//                    ->get();
+//                break;
+//            default:
+//                $availableDates = DB::table('days_of_year')
+//                    ->whereNotIn('day', ['Saturday', 'Sunday'])
+//                    ->get();
+//                break;
+//        }
 
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
-        return view('active-shift.create', compact('shift', 'guards', 'availableDates'));
+        return view('active-shift.create', compact('shift', 'guards'));
     }
 
     public function edit(ActiveShift $activeShift)
     {
-        switch (date('l', strtotime($activeShift->date)))
-        {
-            case 'Saturday':
-                $availableDates = DB::table('days_of_year')
-                    ->where('day', 'Saturday')
-                    ->get();
-                break;
-            case 'Sunday':
-                $availableDates = DB::table('days_of_year')
-                    ->where('day', 'Sunday')
-                    ->get();
-                break;
-            default:
-                $availableDates = DB::table('days_of_year')
-                    ->whereNotIn('day', ['Saturday', 'Sunday'])
-                    ->get();
-                break;
-        }
+//        switch (date('l', strtotime($activeShift->date)))
+//        {
+//            case 'Saturday':
+//                $availableDates = DB::table('days_of_year')
+//                    ->where('day', 'Saturday')
+//                    ->get();
+//                break;
+//            case 'Sunday':
+//                $availableDates = DB::table('days_of_year')
+//                    ->where('day', 'Sunday')
+//                    ->get();
+//                break;
+//            default:
+//                $availableDates = DB::table('days_of_year')
+//                    ->whereNotIn('day', ['Saturday', 'Sunday'])
+//                    ->get();
+//                break;
+//        }
 
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.edit', compact('activeShift', 'guards', 'availableDates'));
@@ -304,9 +311,7 @@ class ActiveShiftsController extends Controller
 
         if ($activeShift->confirmed_supervisor == 1)
         {
-            $activeShift->confirmed_supervisor = 0;
-            $activeShift->save();
-            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+            request()->session()->flash('success', 'Η Βάρδια έχει ήδη υποβληθεί επιτυχώς.');
             return redirect( route('active-shift.index') );
         }
 
@@ -356,24 +361,24 @@ class ActiveShiftsController extends Controller
         return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
     }
 
-    public function confirmActiveShiftSteward($id)
-    {
-        $activeShift = ActiveShift::findOrFail($id);
-
-        if ($activeShift->confirmed_steward == 1)
-        {
-            $activeShift->confirmed_steward = 0;
-            $activeShift->save();
-            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
-            return redirect( route('active-shift.index') );
-        }
-
-        $activeShift->confirmed_steward = 1;
-        $activeShift->save();
-
-        request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
-        return redirect( route('active-shift.index') );
-    }
+//    public function confirmActiveShiftSteward($id)
+//    {
+//        $activeShift = ActiveShift::findOrFail($id);
+//
+//        if ($activeShift->confirmed_steward == 1)
+//        {
+//            $activeShift->confirmed_steward = 0;
+//            $activeShift->save();
+//            request()->session()->flash('success', 'Επιτυχής αλλαγή κατάστασης');
+//            return redirect( route('active-shift.index') );
+//        }
+//
+//        $activeShift->confirmed_steward = 1;
+//        $activeShift->save();
+//
+//        request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
+//        return redirect( route('active-shift.index') );
+//    }
 
     private function fetchData($numberOfGuards)
     {
@@ -724,6 +729,8 @@ class ActiveShiftsController extends Controller
 
     private function getMonthsYears()
     {
+        $months = [];
+        $years = [];
         $activeShifts = DB::table('active_shifts')->get();
 
         foreach ($activeShifts as $activeShift)
@@ -731,6 +738,9 @@ class ActiveShiftsController extends Controller
             $months[] = date('m', strtotime($activeShift->from));
             $years[] = date('Y', strtotime($activeShift->until));
         }
+
+        if (is_null($months) or !isset($months) or is_null($years) or !isset($years))
+            return false;
 
         $uniqueMonths = array_unique($months);
         $uniqueYears = array_unique($years);
@@ -984,10 +994,12 @@ class ActiveShiftsController extends Controller
             case 'Sunday':
                 $daysOfYear = DB::table('days_of_year')
                     ->where('day', 'Sunday')
+                    ->orWhere('is_holiday', '=', 1)
                     ->get();
                 break;
             default:
                 $daysOfYear = DB::table('days_of_year')
+                    ->where('is_holiday', '!=', 1)
                     ->whereNotIn('day', ['Saturday', 'Sunday'])
                     ->get();
                 break;

@@ -34,7 +34,7 @@
 </header>
 <div class="row">
     <div class="col">
-        <div class="text-center mb-2" id="appendix"><span>Παράρτημα</span></div>
+        <div class="text-center mb-2" id="appendix"><span>ΠΑΡΑΡΤΗΜΑ Α</span></div>
     </div>
 </div>
     <table id="table" class="table table-striped table-bordered table-sm">

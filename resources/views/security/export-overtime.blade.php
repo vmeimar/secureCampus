@@ -35,63 +35,36 @@
 </header>
 <div class="container">
     <div>
-        <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΔΙΑΣΤΗΜΑ ΑΠΟ {{ $from }} ΜΕΧΡΙ {{ $to }}</strong></p>
+        <p class="text-center"><strong>ΥΠΕΡΕΡΓΑΣΙΑ ΥΠΑΛΛΗΛΩΝ ΦΥΛΑΞΗΣ (ΠΑΡΑΡΤΗΜΑ Β)</strong></p>
     </div>
     <div>
-        @foreach($exportData as $locationName => $value)
-            <p class="mt-4"><strong>{{ $locationName }}</strong></p>
+        @foreach($data as $guard => $shifts)
+            <p class="mt-4"><strong>{{ $guard }}</strong></p>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="table">
                     <thead>
                     <tr>
-                        <th style="width: 30%">Όνομα Φύλακα</th>
-                        <th style="width: 17.5%">Ώρες Εργάσιμες Πρωί/Απόγευμα</th>
-                        <th style="width: 17.5%">Ώρες Εργάσιμες Βράδυ</th>
-                        <th style="width: 17.5%">Ώρες Κυριακή/Αργία Πρωί/Απόγευμα</th>
-                        <th style="width: 17.5%">Ώρες Κυριακή/Αργία Βράδυ</th>
+                        <th style="width: 15%">#</th>
+                        <th style="width: 30%">Βάρδια</th>
+                        <th style="width: 20%">Έναρξη</th>
+                        <th style="width: 20%">Λήξη</th>
+                        <th style="width: 15%">Διάρκεια</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($value[0] as $guardName => $guard)
+                    @foreach($shifts as $shift)
                         <tr>
-                            <td>{{ $guardName }}</td>
-                            <td>{{ $guard['weekday_regular'] }}</td>
-                            <td>{{ $guard['weekday_night'] }}</td>
-                            <td>{{ $guard['holiday_regular'] }}</td>
-                            <td>{{ $guard['holiday_night'] }}</td>
+                            <td>{{ $shift->id }}</td>
+                            <td>{{ $shift->name }}</td>
+                            <td>{{ $shift->from }}</td>
+                            <td>{{ $shift->until }}</td>
+                            <td>{{ $shift->duration }}</td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <th>Σύνολο ωρών φύλαξης</th>
-                        <td>{{ $totalTemp[$locationName]['weekday_regular'] }}</td>
-                        <td>{{ $totalTemp[$locationName]['weekday_night'] }}</td>
-                        <td>{{ $totalTemp[$locationName]['holiday_regular'] }}</td>
-                        <td>{{ $totalTemp[$locationName]['holiday_night'] }}</td>
-                    </tr>
                     </tbody>
                 </table>
-                <p><strong>Σύνολο ωρών που δεν πραγματοποιήθηκε φύλαξη λόγω απουσίας φύλακα: {{ $totalHours[$locationName]['totalHoursAbsentByLocation'] }}</strong></p>
             </div>
         @endforeach
-    </div>
-    <div>
-        <div class="table-responsive mt-4">
-            <table class="table table-striped table-bordered" id="table">
-                <thead>
-                <tr>
-                    <th>Γενικό Σύνολο Διαφοράς</th>
-                    <td>{{ $totalHoursAbsent }}</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th>Διαφορά σε Ισοδύναμες Ώρες</th>
-                    <td>{{ $totalFactorAbsent }}</td>
-                </tr>
-                <tr></tr>
-                </tbody>
-            </table>
-        </div>
     </div>
 </div>
 </body>

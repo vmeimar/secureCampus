@@ -6,13 +6,12 @@
             <div class="col-md-12 scroll">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Επιβεβαιωμένες Βάρδιες</strong>
+                        <strong>Αποθηκευμένες Βάρδιες</strong>
                     </div>
                     <div class="card-body">
-                        <div class="m-4" style="text-align: justify"><p><strong>Η εξαγωγή excel ή pdf αρχείων, γίνεται μόνο για τις βάρδιες που έχουν υποβληθεί από τον επόπτη
-                                    και έχουν επιβεβαιωθεί από τον επόπτη ή τον επιστάτη.
-                        Μπορείτε να υποβάλετε ή να επιβεβαιώσετε κάθε βάρδια ξεχωριστά αν επιστρέψετε στην προηγούμενη σελίδα ή να κάνετε μαζική υποβολή
-                                στις βάρδιες που εμφανίζονται εδώ ανά σημείο φύλαξης.</strong></p></div>
+                        <div class="m-4" style="text-align: justify"><p><strong>Η εξαγωγή αρχείων excel ή pdf, γίνεται μόνο για βάρδιες οι οποίες έχουν υποβληθεί από τον Επόπτη.
+                        Μπορείτε να υποβάλετε κάθε βάρδια ξεχωριστά αν επιστρέψετε στην προηγούμενη σελίδα ή να πραγματοποιείσετε συνολική υποβολή
+                                στις βάρδιες οι οποίες εμφανίζονται εδώ ανά σημείο φύλαξης.</strong></p></div>
                         <div class="table-wrapper-scroll-y my-custom-scrollbar" style="position: relative; max-height: 700px; overflow: auto; display: block">
                         <table class="table table-striped table-bordered">
                             <thead>
@@ -57,14 +56,14 @@
                             <input type="hidden" name="activeShifts[]" value="{{ $activeShift->id }}">
                         @endforeach
                         <div class="row">
-                            <button type="submit" class="btn btn-success m-4" style="max-height: 35px">Εξαγωγή Excel</button>
+                            <button type="submit" class="btn btn-success m-4" style="max-height: 35px">Βάρδιες (Excel)</button>
                         </div>
                     </form>
                     <form method="post" action="{{ route('active-shift.export-pdf', $locationId) }}" enctype="multipart/form-data">
                         @csrf
                         <input name="year" id="year" type="hidden" value="{{$year}}">
                         <div class="row">
-                            <button type="submit" class="btn btn-danger m-4" style="max-height: 35px">Εξαγωγή PDF</button>
+                            <button type="submit" class="btn btn-danger m-4" style="max-height: 35px">Βεβαίωση Επόπτη (PDF)</button>
                             <input name="month" id="month" type="hidden" value="{{$month}}">
                         </div>
                     </form>

@@ -28,13 +28,11 @@
                                         @can('manage-security')
                                             <div class="d-flex">
                                                 <div class="row mr-1">
-                                                    <a href="{{route('guard.show', $guard->id)}}" class="btn btn-info btn-sm">Λεπτομέριες</a>
+                                                    <a href="{{route('guard.show', $guard->id)}}" class="btn btn-info btn-sm">Λεπτομέρειες</a>
                                                 </div>
-
                                                 <div class="row mr-3 ml-1">
                                                     <a href="{{route('guard.edit', $guard->id)}}" class="btn btn-primary btn-sm">Επεξεργασία</a>
                                                 </div>
-
                                                 @can('admin')
                                                 <div class="row">
                                                     <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
@@ -62,31 +60,24 @@
                         {{ $guards->links() }}
                     </div>
                 </div>
-                @can('manage-security')
+                @can('create-guard')
                     <div class="d-flex">
                         <div class="row">
                             <a href="/guard/{{ $company->id }}/create" class="btn btn-primary m-4">Δημιουργία Φύλακα</a>
                         </div>
+                @endcan
                         <div class="row">
                             <a href="/security/index" class="btn btn-secondary m-4">Πίσω</a>
                         </div>
-                        <form action="{{ route('guard.import') }}" method="POST" enctype="multipart/form-data">
+                @can('manage-security')
+                        <form action="{{ route('guard.import', $company->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="row">
-                                <input type="file" name="import_file" class="mt-4 ml-4"/>
+                            <div class="row ml-5">
+                                <input type="file" name="import_file" class="mt-4 ml-4" required/>
                                 <br />
-                                <input type="submit" value="Μαζική Εισαγωγή Excel" class="btn btn-success mt-4 ml-2"/>
+                                <input type="submit" value="Μαζική Εισαγωγή Φυλάκων" class="btn btn-success mt-4 ml-2"/>
                             </div>
                         </form>
-                    </div>
-                    <div class="d-flex">
-                        <form method="post" action="{{ route('guard.show-overtime', $company->id) }}" enctype="multipart/form-data">
-                            <div class="row">
-                                @csrf
-                                <button type="submit" class="btn btn-dark ml-4" style="max-height: 35px">Προβολή Υπερεργασίας</button>
-                            </div>
-                        </form>
-                        <a href="{{ route('guard.export-by-month', $company->id) }}" class="btn btn-primary ml-4">Εξαγωγή Ανά Μήνα</a>
                     </div>
                 @endcan
             </div>

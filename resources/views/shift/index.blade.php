@@ -5,7 +5,6 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-
                     <div class="card-header">
                         <strong>Σημεία Φύλαξης / Βάρδιες</strong>
                     </div>
@@ -14,13 +13,13 @@
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <th scope="col">Αναγνωριστικό</th>
+                                <th scope="col">Βάρδιες</th>
                                 <th scope="col">Κτήριο</th>
                                 <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
                                 @can('assign-shifts')
-                                <th scope="col">Ενέργεις</th>
+                                <th style="width: 105px" scope="col">Ενέργεις</th>
                                 @endcan
                             </tr>
                             </thead>
@@ -34,7 +33,6 @@
                                     <td>{{ $shift->shift_until }}</td>
                                     <td>
                                     @can('manage-shifts')
-
                                         @can('assign-shifts')
                                         <div class="row">
                                             <a href="{{ route('active-shift.create', $shift) }}">
@@ -42,9 +40,7 @@
                                             </a>
                                         </div>
                                         @endcan
-
                                         <div class="row">
-
                                             @can('edit-shifts')
                                             <a href="{{ route('shift.edit', $shift->id) }}">
                                                 <button type="button" style="width: 105px" class="btn btn-info btn-sm mb-1 mr-1 ml-1">Επεξεργασία</button>
@@ -77,14 +73,17 @@
                     {{ $shifts->links() }}
                 </div>
                 <div class="d-flex">
+                    <p class="mt-4"><strong>Βάρδιες οι οποίες έχουν εκτελεστεί:</strong></p>
+                    <div class="row">
+                        <a href="{{ route('active-shift.index') }}" style="max-height: 38px" class="btn btn-primary mt-3 ml-4">Προβολή & Υποβολή</a>
+                    </div>
+                </div>
+                <div class="d-flex">
                     @can('create-shifts')
                     <div class="row">
-                        <a href="/shift/create" class="btn btn-primary m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
+                        <a href="/shift/create" class="btn btn-info m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
                     </div>
                     @endcan
-                    <div class="row">
-                        <a href="{{ route('active-shift.index') }}" class="btn btn-warning m-4">Προβολή Ανατεθειμένων Βαρδιών</a>
-                    </div>
                     <div class="row">
                         <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Επιστροφή στο Προφίλ</a>
                     </div>

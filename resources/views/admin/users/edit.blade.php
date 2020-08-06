@@ -6,11 +6,10 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Επεξεργασία Χρήστη: {{ $user->name }}</strong>
+                        <strong>Επεξεργασία Χρήστη: {{ $user->name }} {{ $user->surname }}</strong>
                     </div>
                     <div class="card-body">
                        <form action="{{ route('admin.users.update', $user) }}" method="POST">
-
                            <div class="form-group row">
                                <label for="name" class="col-md-3 col-form-label text-md-right"><strong>Όνομα</strong></label>
                                <div class="col-md-6">
@@ -23,7 +22,6 @@
                                    @enderror
                                </div>
                            </div>
-
                            <div class="form-group row">
                                <label for="surname" class="col-md-3 col-form-label text-md-right"><strong>Επώνυμο</strong></label>
                                <div class="col-md-6">
@@ -36,7 +34,6 @@
                                    @enderror
                                </div>
                            </div>
-
                            <div class="form-group row">
                                <label for="tier" class="col-md-3 col-form-label text-md-right"><strong>Βαθμίδα</strong></label>
                                <div class="col-md-6">
@@ -57,7 +54,6 @@
                                    @enderror
                                </div>
                            </div>
-
                            <div class="form-group row">
                                <label for="email" class="col-md-3 col-form-label text-md-right"><strong>Email</strong></label>
 
@@ -102,7 +98,6 @@
 
                                </div>
                            </div>
-
                            @csrf
                            {{ method_field('PUT') }}
                            <div class="form-group row">
@@ -140,7 +135,6 @@
                                    <a href="/admin/users" class="btn btn-secondary">Πίσω</a>
                                </div>
                            </div>
-
                        </form>
                     </div>
                 </div>

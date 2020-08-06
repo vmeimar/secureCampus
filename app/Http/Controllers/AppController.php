@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\ActiveShift;
 use App\Imports\HolidaysImport;
 use App\Imports\UserEmailImport;
 use Illuminate\Database\Schema\Blueprint;
@@ -51,13 +50,13 @@ class AppController extends Controller
                 'is_holiday'    =>  $this->isHoliday($date)
             ]))
             {
-                request()->session()->flash('error', 'Εκδηλώθηκε σφάλμα κατά το γέμισμα του πίνακα');
+                request()->session()->flash('error', 'Εκδηλώθηκε σφάλμα κατά την εισαγωγή.');
                 return redirect(route('app.index'));
             }
 
             $startDay = date("y-m-d", strtotime("+1 day", strtotime($startDay)));
         }
-        request()->session()->flash('success', 'Επιτυχές γέμισμα του πίνακα');
+        request()->session()->flash('success', 'Επιτυχής εισαγωγή.');
         return redirect(route('app.index'));
     }
 
@@ -116,9 +115,9 @@ class AppController extends Controller
         DB::table('holidays')->truncate();
 
         if ( Excel::import(new HolidaysImport(), $request->file('import_file')) ) {
-            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
+            $request->session()->flash('success', 'Επιτυχής εισαγωγή.');
         } else {
-            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
+            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή.');
         }
 
         $this->populateDaysTable();
@@ -132,12 +131,11 @@ class AppController extends Controller
         DB::table('user_emails')->truncate();
 
         if ( Excel::import(new UserEmailImport(), $request->file('import_file')) ) {
-            $request->session()->flash('success', 'Επιτυχής εισαγωγή');
+            $request->session()->flash('success', 'Επιτυχής εισαγωγή.');
         } else {
-            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή');
+            $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή.');
         }
 
         return redirect()->back();
     }
-
 }

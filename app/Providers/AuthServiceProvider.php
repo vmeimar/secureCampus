@@ -57,11 +57,18 @@ class AuthServiceProvider extends ServiceProvider
             ]);
         });
 
+        Gate::define('create-guard', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
+                'epoptis',
+                'doy',
+            ]);
+        });
+
         Gate::define('create-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
                 'doy',
-                'epoptis',
             ]);
         });
 
@@ -94,6 +101,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
+                'epoptis',
+                'epistatis',
             ]);
         });
 
