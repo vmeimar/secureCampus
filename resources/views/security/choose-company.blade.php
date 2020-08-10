@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/security/{{ $company->id }}" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/guard/{{ $company->id }}/index" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="/security/choose-company" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

@@ -25,12 +25,12 @@
                     @can('manage-security')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
-                            <strong>Φύλακες / Εταιρίες</strong>
+                            <strong>Φύλακες / Εταιρίες Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Διαχειριστείτε τους Φύλακες και τις Εταιρίες Φύλαξης</h5>
+                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιριών Φύλαξης και Υπαλλήλων Φύλαξης</h5>
                             <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
-                            <a href="/security/index" class="btn btn-primary">Διαχείριση</a>
+                            <a href="/security/index" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
                     @endcan
@@ -67,8 +67,8 @@
                             <strong>Επιτροπή Παραλαβής Υπηρεσιών Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">exports</h5>
-                            <p class="card-text">exports</p>
+                            <h5 class="card-title">Εξαγωγή Μηνιαίας Βεβαίωσης Επιτροπής Παραλαβής</h5>
+                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
                             <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
