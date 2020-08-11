@@ -30,9 +30,11 @@
                                                 <div class="row mr-1">
                                                     <a href="{{route('guard.show', $guard->id)}}" class="btn btn-info btn-sm">Λεπτομέρειες</a>
                                                 </div>
+                                                @can('create-guard')
                                                 <div class="row mr-3 ml-1">
                                                     <a href="{{route('guard.edit', $guard->id)}}" class="btn btn-primary btn-sm">Επεξεργασία</a>
                                                 </div>
+                                                @endcan
                                                 @can('admin')
                                                 <div class="row">
                                                     <form action="{{ route('guard.destroy', $guard) }}" method="POST" class="ml-1">
@@ -69,7 +71,7 @@
                         <div class="row">
                             <a href="/security/index" class="btn btn-secondary m-4">Πίσω</a>
                         </div>
-                @can('manage-security')
+                @can('create-guard')
                         <form action="{{ route('guard.import', $company->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row ml-5">

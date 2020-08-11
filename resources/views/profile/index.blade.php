@@ -62,6 +62,7 @@
                         </div>
                     </div>
             @endcan
+                    @can('epitropi')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
                             <strong>Επιτροπή Παραλαβής Υπηρεσιών Φύλαξης</strong>
@@ -72,6 +73,7 @@
                             <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
+                    @endcan
                 </div>
             </div>
         </div>

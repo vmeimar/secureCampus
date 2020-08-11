@@ -86,7 +86,6 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAnyRoles([
                 'admin',
                 'epoptis',
-                'epitropi'
             ]);
         });
 
@@ -102,7 +101,6 @@ class AuthServiceProvider extends ServiceProvider
             return $user->hasAnyRoles([
                 'admin',
                 'epoptis',
-                'epistatis',
             ]);
         });
 

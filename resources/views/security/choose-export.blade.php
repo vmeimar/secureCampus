@@ -84,7 +84,7 @@
                                         <strong>Παρακαλώ επιλέξτε έτος</strong>
                                         @enderror
                                     </div>
-                                    <button type="submit" class="btn btn-primary" style="margin-left: 10px; max-height: 35px;">Εξαγωγή</button>
+                                    <button id="disable-on-load" type="submit" class="btn btn-primary" style="margin-left: 10px; max-height: 35px;">Εξαγωγή</button>
                                 </div>
                             </form>
                             <form method="post" action="{{ route('security.show-overtime', $company->id) }}" enctype="multipart/form-data">
@@ -103,4 +103,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $(document).on('submit', 'form', function () {
+                $('#disable-on-load').attr('disabled', 'disabled');
+            });
+        });
+    </script>
 @endsection

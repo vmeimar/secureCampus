@@ -360,13 +360,12 @@ class GuardsController extends Controller
             return redirect()->back();
         }
 
-        Guard::query()->delete();
-
         try {
             (new GuardsImport($company))->import($request->file('import_file'));
         } catch (\Exception $e) {
-            $failures = $e->failures();
-            dd($failures[0]);
+            $failures = $e->getMessage();
+            $request->session()->flash('error', $failures);
+            return redirect()->back();
         }
 
         return redirect()->back();

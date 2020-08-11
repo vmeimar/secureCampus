@@ -61,12 +61,26 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
         {
             $fullName = explode(' ', $row['onoma_fylaka']);
 
-            return new Guard([
-                'name'  =>  $fullName[1],
-                'surname'   =>  $fullName[0],
-                'company_id'    =>  $this->company->id,
-            ]);
+            if (! $this->guardAlreadyExists($fullName[1], $fullName[0]))
+            {
+                return new Guard([
+                    'name'  =>  $fullName[1],
+                    'surname'   =>  $fullName[0],
+                    'company_id'    =>  $this->company->id,
+                ]);
+            }
         }
+    }
+
+    private function guardAlreadyExists($name, $surname)
+    {
+        if (Guard::where('name', '=', $name)
+            ->where('surname', '=', $surname)
+            ->exists())
+        {
+            return true;
+        }
+        return false;
     }
 
     public function rules(): array

@@ -36,9 +36,13 @@ class ActiveShiftsController extends Controller
             return redirect(route('shift.index'));
         }
 
-        if ($user->hasAnyRoles(['admin', 'epitropi']))
+        if ($user->hasAnyRoles(['doy', 'epitropi']))
         {
-            $activeShifts = ActiveShift::latest()->paginate(10);
+            $activeShifts = ActiveShift::where('confirmed_supervisor', 1)->latest()->paginate(10);
+        }
+        elseif ($user->hasRole('admin'))
+        {
+            $activeShifts = ActiveShift::latest()->paginate(15);
         }
         else
         {
@@ -338,11 +342,6 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $activeShift)
         {
-            if ($activeShift->confirmed_steward == 0)
-            {
-                continue;
-            }
-
             if ( ((date('m', strtotime($activeShift->from)) == $month) or ($month == 'all'))
                 and ((date('Y', strtotime($activeShift->from)) == $year) or ($year == 'all')) )
             {
@@ -706,7 +705,7 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $row)
         {
-            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_steward == 1) )
+            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_supervisor == 1) )
             {
                 if ( (($month != date('m', strtotime($row->from))) and ($month != 'all'))
                     or (($year != date('Y', strtotime($row->from)))  and ($year != 'all')) )
@@ -802,8 +801,7 @@ class ActiveShiftsController extends Controller
             {
                 if ( ((($month == date('m', strtotime($activeShift->from))) or ($month == 'all') ) and ($year == date('Y', strtotime($activeShift->from))) ) and
                     ( $activeShift->location_id == $location->id ) and
-                    ( $activeShift->confirmed_supervisor == 1 ) and
-                    ( $activeShift->confirmed_steward == 1 ) )
+                    ( $activeShift->confirmed_supervisor == 1 ) )
                 {
                     $activeShifts[$guard->surname.' '.$guard->name][] = $activeShift;
                 }
