@@ -70,51 +70,12 @@ class ActiveShiftsController extends Controller
             return redirect(route('shift.index'));
         }
 
-//        switch ($shift->shift_type)
-//        {
-//            case 'Saturday':
-//                $availableDates = DB::table('days_of_year')
-//                    ->where('day', 'Saturday')
-//                    ->get();
-//                break;
-//            case 'Sunday':
-//                $availableDates = DB::table('days_of_year')
-//                    ->where('day', 'Sunday')
-//                    ->orWhere('is_holiday', '=', 1)
-//                    ->get();
-//                break;
-//            default:
-//                $availableDates = DB::table('days_of_year')
-//                    ->whereNotIn('day', ['Saturday', 'Sunday'])
-//                    ->get();
-//                break;
-//        }
-
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.create', compact('shift', 'guards'));
     }
 
     public function edit(ActiveShift $activeShift)
     {
-//        switch (date('l', strtotime($activeShift->date)))
-//        {
-//            case 'Saturday':
-//                $availableDates = DB::table('days_of_year')
-//                    ->where('day', 'Saturday')
-//                    ->get();
-//                break;
-//            case 'Sunday':
-//                $availableDates = DB::table('days_of_year')
-//                    ->where('day', 'Sunday')
-//                    ->get();
-//                break;
-//            default:
-//                $availableDates = DB::table('days_of_year')
-//                    ->whereNotIn('day', ['Saturday', 'Sunday'])
-//                    ->get();
-//                break;
-//        }
-
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.edit', compact('activeShift', 'guards', 'availableDates'));
     }
@@ -668,6 +629,7 @@ class ActiveShiftsController extends Controller
         $absentGuard = Guard::firstOrCreate([
             'name'  =>  'ΦΥΛΑΚΑΣ',
             'surname'   =>  'ΑΠΩΝ/ΟΥΣΑ',
+            'active'    =>  0,
             'company_id'    =>  $absenceCompany->id,
         ]);
 
@@ -705,7 +667,7 @@ class ActiveShiftsController extends Controller
 
         foreach ($allActiveShifts as $row)
         {
-            if ( ($row->shift->location->id == $locationId) and ($row->confirmed_supervisor == 1) )
+            if ( ($row->shift->location->id == $locationId) )
             {
                 if ( (($month != date('m', strtotime($row->from))) and ($month != 'all'))
                     or (($year != date('Y', strtotime($row->from)))  and ($year != 'all')) )

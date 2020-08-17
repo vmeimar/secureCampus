@@ -15,9 +15,6 @@
                 @can('admin')
                 <div><strong>Ρόλος:</strong> {{ implode(", ", $userRoles) }}</div>
                 @endcan
-                <div class="pt-3">
-                    <p>Μέσα από την εφαρμογή, μπορείτε να διαχειριστείτε τη φύλαξη του Ιδρύματος.</p>
-                </div>
                 <hr>
             </div>
             <div class="row">
@@ -48,9 +45,9 @@
                     @endcan
                 </div>
             </div>
-            @can('doy')
             <div class="row">
                 <div class="col-8 mb-4 d-flex">
+                    @can('doy')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
                             <strong>Διαχείριση Παραμέτρων</strong>
@@ -61,7 +58,7 @@
                             <a href="{{ route('app.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
-            @endcan
+                    @endcan
                     @can('epitropi')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">

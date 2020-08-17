@@ -97,6 +97,15 @@ class SecurityController extends Controller
     public function chooseCompany()
     {
         $companies = Company::where('active', 1)->get();
+
+//        dd($companies);
+
+        if (is_null($companies) or !isset($companies))
+        {
+            \request()->session()->flash('warning', 'Δεν υπάρχουν εταιρίες φύλαξης για προβολή.');
+            return redirect()->back();
+        }
+
         return view('security.choose-company', compact('companies'));
     }
 
@@ -105,6 +114,13 @@ class SecurityController extends Controller
         $companyId = $request->get('company');
         $company = Company::findOrFail($companyId);
         $monthsYears = $this->getMonthsYears();
+
+        if (!$monthsYears)
+        {
+            request()->session()->flash('warning', 'Δεν υπάρχουν πραγματοποιημένες βάρδιες για εξαγωγή.');
+            return redirect('/profile/'.Auth::id());
+        }
+
         return view('security.choose-export', compact('company', 'monthsYears'));
     }
 
@@ -170,6 +186,13 @@ class SecurityController extends Controller
     private function getMonthsYears()
     {
         $activeShifts = DB::table('active_shifts')->get();
+
+        if (is_null($activeShifts) or !isset($activeShifts) or (sizeof($activeShifts) == 0))
+        {
+//            dd('here');
+//            request()->session()->flash('warning', 'Δεν υπάρχουν πραγματοποιημένες βάρδιες για εξαγωγή.');
+            return false;
+        }
 
         foreach ($activeShifts as $activeShift)
         {
