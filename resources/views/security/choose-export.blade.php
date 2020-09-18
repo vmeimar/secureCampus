@@ -57,7 +57,7 @@
                                     <button type="submit" class="btn btn-primary" style="margin-left: 10px; max-height: 35px;">Εξαγωγή</button>
                                 </div>
                             </form>
-                            <form method="post" action="{{ route('guard.export-all-guards-pdf', $company->id) }}" enctype="multipart/form-data">
+                            <form method="post" action="{{ route('guard.export-all-guards-pdf', $company->id) }}" id="deactivate-on-submit" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group row">
                                     <label for="month" class="col-md-6 col-form-label text-md-right">Επιλέξτε μήνα και έτος για εξαγωγή PDF με τις βάρδιες (Παράρτημα Α)</label>
@@ -90,7 +90,7 @@
                             <form method="post" action="{{ route('security.show-overtime', $company->id) }}" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group row">
-                                    <p class="col-md-6 col-form-label text-md-right">Εξαγωγή Βαρδιών που πραγματοποιήθηκε υπερεργασία (Παράρτημα Β)</p>
+                                    <p class="col-md-6 col-form-label text-md-right">Εξαγωγή Βαρδιών στις οποίες πραγματοποιήθηκε υπερεργασία (Παράρτημα Β)</p>
                                     <button type="submit" class="btn btn-primary" style="margin-left: 10px; max-height: 35px;">Εξαγωγή</button>
                                 </div>
                             </form>
@@ -106,7 +106,7 @@
 
     <script>
         $(document).ready(function () {
-            $(document).on('submit', 'form', function () {
+            $(document).on('submit', '#deactivate-on-submit', function () {
                 $('#disable-on-load').attr('disabled', 'disabled');
             });
         });

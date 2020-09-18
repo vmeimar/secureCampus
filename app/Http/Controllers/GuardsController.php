@@ -8,7 +8,6 @@ use App\Exports\GuardsExport;
 use App\Guard;
 use App\Imports\GuardsImport;
 use App\Role;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -344,8 +343,8 @@ class GuardsController extends Controller
 
         if (sizeof($committeeMembers) != 3)
         {
-            $request->session()->flash('warning', 'Τα μέλη της Τριμελούς Επιτροπής δεν έχουν οριστεί σωστά.');
-            return redirect()->back();
+            $request->session()->flash('warning', 'Τα μέλη της Τριμελούς Επιτροπής δεν έχουν οριστεί σωστά. Παρακαλώ επικοινωνήστε με τον Διαχειριστή.');
+            return redirect(route('security.choose-company'));
         }
 
         $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company'))->setPaper('a4');

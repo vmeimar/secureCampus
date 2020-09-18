@@ -98,8 +98,6 @@ class SecurityController extends Controller
     {
         $companies = Company::where('active', 1)->get();
 
-//        dd($companies);
-
         if (is_null($companies) or !isset($companies))
         {
             \request()->session()->flash('warning', 'Δεν υπάρχουν εταιρίες φύλαξης για προβολή.');
@@ -189,8 +187,6 @@ class SecurityController extends Controller
 
         if (is_null($activeShifts) or !isset($activeShifts) or (sizeof($activeShifts) == 0))
         {
-//            dd('here');
-//            request()->session()->flash('warning', 'Δεν υπάρχουν πραγματοποιημένες βάρδιες για εξαγωγή.');
             return false;
         }
 
