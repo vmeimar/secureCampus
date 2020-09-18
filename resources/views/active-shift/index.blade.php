@@ -161,7 +161,7 @@
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm-supervisor" method="POST" class="float-left">
                                                     @csrf
                                                     @method('patch')
-                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2">
+                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2" id="shift-submit" value="{{ $activeShift->confirmed_supervisor }}">
                                                         {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Υπεβλήθη'}}
                                                     </button>
                                                 </form>
