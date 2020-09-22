@@ -73,11 +73,11 @@ class UsersController extends Controller
 
         if ($user->save())
         {
-            $request->session()->flash('success', $user->name.' αποθηκεύτηκε επιτυχώς');
+            $request->session()->flash('success', $user->name.' '.$user->surname.' αποθηκεύτηκε επιτυχώς');
         }
         else
         {
-            $request->session()->flash('error', 'Παρουσιάστηκε σφάλμα κατά την αποθήκευση του χρήστη '.$user->name);
+            $request->session()->flash('error', 'Παρουσιάστηκε σφάλμα κατά την αποθήκευση του χρήστη '.$user->name.' '.$user->surname);
         }
 
         return redirect()->route('admin.users.index');
@@ -93,6 +93,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->roles()->detach();
+        $user->locations()->detach();
         $user->delete();
 
         return redirect()->route('admin.users.index');
