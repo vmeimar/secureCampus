@@ -32,7 +32,7 @@ class ActiveShiftsController extends Controller
 
         if (!$monthsYears)
         {
-            \request()->session()->flash('warning', 'Δεν υπάρχουν ανατεθιμένες βάρδιες.');
+            \request()->session()->flash('warning', 'Δεν υπάρχουν ανατεθειμένες βάρδιες.');
             return redirect(route('shift.index'));
         }
 

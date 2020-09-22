@@ -54,7 +54,17 @@ class UsersController extends Controller
     public function update(Request $request, User $user)
     {
         $user->roles()->sync($request->roles);
-        $user->locations()->sync($request->locations);
+        $userAssignedRoles = Role::whereIn('id', $request->roles)->pluck('name')->toArray();
+
+        if (in_array('epitropi', $userAssignedRoles))
+        {
+            $allLocations = Location::pluck('id')->toArray();
+            $user->locations()->sync($allLocations);
+        }
+        else
+        {
+            $user->locations()->sync($request->locations);
+        }
 
         $user->name = $request->name;
         $user->surname = $request->surname;
