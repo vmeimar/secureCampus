@@ -36,7 +36,7 @@ class ActiveShiftsController extends Controller
             return redirect(route('shift.index'));
         }
 
-        if ($user->hasAnyRoles(['doy', 'epitropi']))
+        if ($user->hasAnyRoles(['doy']))
         {
             $activeShifts = ActiveShift::where('confirmed_supervisor', 1)->latest()->paginate(10);
         }
@@ -321,6 +321,9 @@ class ActiveShiftsController extends Controller
         return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
     }
 
+    /**
+     *  Extra layer of shift confirmation. Currently inactive.
+     */
 //    public function confirmActiveShiftSteward($id)
 //    {
 //        $activeShift = ActiveShift::findOrFail($id);
@@ -598,12 +601,13 @@ class ActiveShiftsController extends Controller
             }
         }
 
+        // DEBUG
 //        print_r(    'Normal Morning: '.($weekdayMorningDimes / 6).
-//                            '<br>Normal Evening: '.($weekdayEveningDimes / 6).
-//                            '<br>Normal Night: '.($weekdayNightDimes / 6).
-//                            '<br>Holiday Morning: '.($holidayMorningDimes / 6).
-//                            '<br>Holiday Evening: '.($holidayEveningDimes / 6).
-//                            '<br>Holiday Night: '.($holidayNightDimes / 6) );
+//                    '<br>Normal Evening: '.($weekdayEveningDimes / 6).
+//                    '<br>Normal Night: '.($weekdayNightDimes / 6).
+//                    '<br>Holiday Morning: '.($holidayMorningDimes / 6).
+//                    '<br>Holiday Evening: '.($holidayEveningDimes / 6).
+//                    '<br>Holiday Night: '.($holidayNightDimes / 6) );
 
         $factorData = [
             'frame_factor'   =>  ($frameFactor / 3600),
@@ -818,7 +822,8 @@ class ActiveShiftsController extends Controller
             {
                 foreach ($activeShift->guards()->get() as $guard)
                 {
-                    if ( (date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all') )
+                    // Inactive Company contains the Absent Guard Instance.
+                    if ( ((date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all')) and ($guard->company->active == 1) )
                     {
                         $locationGuardArray[$key][] = [
                             'guard_id'  =>  $guard->id,

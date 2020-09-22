@@ -10,7 +10,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
+                                <th scope="col" style="text-align: center">Αναγνωριστικό</th>
                                 <th scope="col">Επώνυμο</th>
                                 <th scope="col">Όνομα</th>
                                 @can('manage-security')
@@ -21,7 +21,7 @@
                             <tbody>
                             @foreach($guards as $guard)
                                 <tr>
-                                    <th scope="row">{{ $guard->id }}</th>
+                                    <th scope="row" style="text-align: center">{{ $guard->id }}</th>
                                     <td scope="row">{{ $guard->surname }}</td>
                                     <td>{{ $guard->name }}</td>
                                     <td>
