@@ -124,7 +124,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-security', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
-                'epitropi',
+                'epoptis',
                 'doy',
             ]);
         });

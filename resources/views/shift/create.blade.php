@@ -5,8 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header"><strong>Δημιουργία Βάρδιας σε Σημείο Φύλαξης</strong></div>
-
+                    <div class="card-header">
+                        <strong>Δημιουργία Βάρδιας σε Σημείο Φύλαξης</strong>
+                    </div>
                     <div class="card-body">
                         <form method="post" action="/sh" enctype="multipart/form-data">
                             @csrf
@@ -26,7 +27,6 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="number-of-guards" class="col-md-4 col-form-label text-md-right">Αριθμός Φυλάκων</label>
                                 <div class="col-md-6">
@@ -36,13 +36,18 @@
                                         <option value="2">2</option>
                                         <option value="3">3</option>
                                         <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
                                     </select>
                                     @error('number-of-guards')
                                     <strong>Επιλέξτε Αριθμό Φυλάκων</strong>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="time" class="col-md-4 col-form-label text-md-right">Ώρες Φύλαξης (Έναρξη - Λήξη)</label>
                                 <div class="col-md-6 d-flex">
@@ -74,24 +79,20 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="form-group row">
-                                <label for="shift-name" class="col-md-4 col-form-label text-md-right">Όνομα Βάρδιας</label>
+                                <label for="shift-frame" class="col-md-4 col-form-label text-md-right">Όνομα Βάρδιας</label>
                                 <div class="col-md-6">
-                                    <input id="shift-name"
-                                           type="text" class="form-control"
-                                           name="shift-name"
-                                           value="{{ old('shift-name') }}"
-                                           placeholder="Αναγνωριστικό Βάρδιας"
-                                           autocomplete="shift-name"
-                                           autofocus>
-
-                                    @error('shift-name')
-                                        <strong>Εισάγετε Όνομα Βάρδιας (π.χ. Σημείο Φύλαξης Χ, πρωινή βάρδια)</strong>
+                                    <select name="shift-frame" id="shift-frame" class="form-control input-lg required">
+                                        <option selected disabled>Επιλέξτε Όνομα</option>
+                                        <option value="morning">Πρωί</option>
+                                        <option value="evening">Απόγευμα</option>
+                                        <option value="night">Βράδυ</option>
+                                    </select>
+                                    @error('shift-frame')
+                                        <strong>Παρακαλώ επιλέξτε ένα στοιχείο από τη λίστα</strong>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="shift-type" class="col-md-4 col-form-label text-md-right">Τύπος Βάρδιας</label>
                                 <div class="col-md-6">
@@ -99,14 +100,13 @@
                                         <option selected disabled>Επιλέξτε Τύπο</option>
                                             <option value="Weekdays">Καθημερινές</option>
                                             <option value="Saturday">Σάββατο</option>
-                                            <option value="Sunday">Κυριακή</option>
+                                            <option value="Sunday">Κυριακή / Αργία</option>
                                     </select>
                                     @error('shift-type')
                                     <strong>Επιλέξτε Τύπο</strong>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">

@@ -28,7 +28,7 @@
                                         @can('manage-security')
                                             <div class="d-flex">
                                                 <div class="row mr-1">
-                                                    <a href="{{route('guard.show', $guard->id)}}" class="btn btn-info btn-sm">Λεπτομέρειες</a>
+                                                    <a href="{{route('guard.show', $guard->id)}}" class="btn btn-info btn-sm">Ιστορικό Εργασίας</a>
                                                 </div>
                                                 @can('create-guard')
                                                 <div class="row mr-3 ml-1">
@@ -77,7 +77,7 @@
                             <div class="row ml-5">
                                 <input type="file" name="import_file" class="mt-4 ml-4" required/>
                                 <br />
-                                <input type="submit" value="Μαζική Εισαγωγή Φυλάκων" class="btn btn-success mt-4 ml-2"/>
+                                <input type="submit" value="Μαζική Εισαγωγή Φυλάκων (.xls)" class="btn btn-success mt-4 ml-1"/>
                             </div>
                         </form>
                     </div>

@@ -35,9 +35,9 @@ class SecurityController extends Controller
         return view('security.create', compact('user_id'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $data = \request()->validate([
+        $data = $request->validate([
             'name' => 'required',
         ]);
 
@@ -45,11 +45,11 @@ class SecurityController extends Controller
 
         if ($company->create(['name'  =>  $data['name']]))
         {
-            \request()->session()->flash('success', 'Επιτυχής δημιουργία');
+            $request->session()->flash('success', 'Επιτυχής δημιουργία');
         }
         else
         {
-            \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
+            $request->session()->flash('error', 'Σφάλμα κατά τη δημιουργία');
         }
 
         return redirect()->route('company.index');
@@ -166,7 +166,6 @@ class SecurityController extends Controller
             $sorted = $collection->sortBy('from');
             $data[$key] = $sorted;
         }
-
 
         if (isset($sorted) and !is_null($sorted))
         {

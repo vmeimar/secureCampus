@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Department;
+use App\DayFrame;
 use App\Guard;
 use App\Location;
 use App\Shift;
@@ -39,29 +39,6 @@ class ShiftsController extends Controller
         return view('shift.show', compact('guards', 'shift'));
     }
 
-    public function edit(Shift $shift)
-    {
-        $user = User::find(Auth::id());
-
-        switch ($shift->shift_type)
-        {
-            case 'Weekdays':
-            case 'weekdays':
-                $type = 'Καθημερινές';
-                break;
-            case 'Saturday':
-            case 'saturday':
-                $type = 'Σάββατο';
-                break;
-            case 'Sunday':
-            case 'sunday':
-                $type = 'Κυριακή';
-                break;
-        }
-
-        return view('shift.edit', compact('shift', 'user', 'type'));
-    }
-
     public function create()
     {
         $authUser = User::find(Auth::id());
@@ -78,6 +55,29 @@ class ShiftsController extends Controller
         return view('shift.create', compact( 'locations') );
     }
 
+    public function edit(Shift $shift)
+    {
+        $user = User::find(Auth::id());
+
+        switch ($shift->shift_type)
+        {
+            case 'Weekdays':
+            case 'weekdays':
+                $type = 'Καθημερινές';
+                break;
+            case 'Saturday':
+            case 'saturday':
+                $type = 'Σάββατο';
+                break;
+            case 'Sunday':
+            case 'sunday':
+                $type = 'Κυριακή/Αργία';
+                break;
+        }
+
+        return view('shift.edit', compact('shift', 'user', 'type'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -85,16 +85,22 @@ class ShiftsController extends Controller
             'shift-from' => 'required',
             'shift-until' => 'required',
             'number-of-guards' => 'required',
-            'shift-name' => 'required',
+            'shift-frame' => 'required',
             'shift-type' => 'required',
         ]);
+
+        $frameGreekName = DayFrame::where('name', '=', $data['shift-frame'])->value('greek_name');
+        $locationGreekName = Location::where('id', '=', $data['location'])->value('name');
+        $greekDay = $this->getGreekDay($data['shift-type']);
+        $shiftGreekName = $locationGreekName.' '.$greekDay.' '.$frameGreekName;
 
         if ( auth()->user()->shifts()->create([
             'location_id'  =>  $data['location'],
             'number_of_guards'  =>  $data['number-of-guards'],
-            'name'  =>  $data['shift-name'],
+            'name'  =>  $shiftGreekName,
             'shift_from'    =>  $data['shift-from'],
             'shift_until'    =>  $data['shift-until'],
+            'shift_frame'   =>  $data['shift-frame'],
             'shift_type'    =>  $data['shift-type'],
         ]) )
         {
@@ -115,21 +121,22 @@ class ShiftsController extends Controller
             'shift-from' => 'required',
             'shift-until' => 'required',
             'number-of-guards' => 'required',
-            'shift-name' => 'required',
+            'shift-frame' => 'required',
             'shift-type' => 'required',
         ]);
 
-        $location_id = DB::table('locations')
-            ->select('id')
-            ->where('name', '=', $data['location'])
-            ->first();
+        $frameGreekName = DayFrame::where('name', '=', $data['shift-frame'])->value('greek_name');
+        $locationGreekName = Location::where('id', '=', $data['location'])->value('name');
+        $greekDay = $this->getGreekDay($data['shift-type']);
+        $shiftGreekName = $locationGreekName.' '.$greekDay.' '.$frameGreekName;
 
         if ($shift->update([
-            'location_id'  =>  $location_id->id,
+            'location_id'  =>  $data['location'],
             'number_of_guards'  =>  $data['number-of-guards'],
-            'name'  =>  $data['shift-name'],
+            'name'  =>  $shiftGreekName,
             'shift_from'    =>  $data['shift-from'],
             'shift_until'    =>  $data['shift-until'],
+            'shift_frame'   =>  $data['shift-frame'],
             'shift_type'    =>  $data['shift-type'],
         ]))
         {
@@ -150,5 +157,25 @@ class ShiftsController extends Controller
             : request()->session()->flash('error', 'Σφάλμα κατά τη διαγραφή');
 
         return redirect('/shift/index');
+    }
+
+    private function getGreekDay($englishDay)
+    {
+        $greekDay = '';
+
+        switch ($englishDay)
+        {
+            case 'Weekdays':
+                $greekDay = 'Καθημερινές';
+                break;
+            case 'Saturday':
+                $greekDay = 'Σάββατο';
+                break;
+            case 'Sunday':
+                $greekDay = 'Κυριακή/Αργία';
+                break;
+        }
+
+        return $greekDay;
     }
 }

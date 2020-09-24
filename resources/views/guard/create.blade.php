@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="company" class="col-md-4 col-form-label text-md-right">Εταιρία</label>
+                                <label for="company" class="col-md-4 col-form-label text-md-right">Εταιρεία</label>
                                 <div class="col-md-6">
 
                                     <input id="company"
@@ -58,7 +58,7 @@
                                            autocomplete="company" autofocus>
 
                                     @error('company')
-                                    <strong>Διαλέξτε εταιρία</strong>
+                                    <strong>Διαλέξτε εταιρεία</strong>
                                     @enderror
                                 </div>
                             </div>

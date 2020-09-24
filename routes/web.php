@@ -80,6 +80,9 @@ Route::get('/factor/edit/{factor}', 'FactorsController@edit')->name('factor.edit
 Route::patch('/f/{factor}', 'FactorsController@update')->name('factor.update');
 Route::delete('/factor/{factor}', 'FactorsController@destroy')->middleware('can:admin')->name('factor.destroy');
 
+Route::get('/location/create', 'LocationsController@create')->name('location.create');
+Route::post('/l', 'LocationsController@store');
+
 //Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 
 Route::namespace('Admin')

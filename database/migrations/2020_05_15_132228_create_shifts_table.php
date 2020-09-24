@@ -21,6 +21,7 @@ class CreateShiftsTable extends Migration
             $table->integer('number_of_guards');
             $table->string('shift_from');
             $table->string('shift_until');
+            $table->string('shift_frame')->nullable();
             $table->string('shift_type')->nullable();
             $table->timestamps();
         });

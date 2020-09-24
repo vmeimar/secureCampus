@@ -13,8 +13,8 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Όνομα</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Τηλέφωνο</th>
+{{--                                <th scope="col">Email</th>--}}
+{{--                                <th scope="col">Τηλέφωνο</th>--}}
                                 @can('manage-security')
                                     <th scope="col">Ενέργειες</th>
                                 @endcan
@@ -25,17 +25,17 @@
                                 <tr>
                                     <th scope="row">{{ $company->id }}</th>
                                     <td>{{ $company->name }}</td>
-                                    <td>{{ $company->email }}</td>
-                                    <td>{{ $company->phone }}</td>
+{{--                                    <td>{{ $company->email }}</td>--}}
+{{--                                    <td>{{ $company->phone }}</td>--}}
                                     <td>
 
                                         @can('manage-security')
                                             <div class="row d-flex">
                                                 <a href="/guard/{{ $company->id }}/index">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Προβολή Φυλάκων</button>
+                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Επεξεργασία Φυλάκων</button>
                                                 </a>
                                                 <a href="/security/{{ $company->id }}/edit" class="ml-1">
-                                                    <button type="button" class="btn btn-primary btn-sm mb-1">Επεξεργασία</button>
+                                                    <button type="button" class="btn btn-info btn-sm mb-1">Επεξεργασία Εταιρείας</button>
                                                 </a>
                                                 @can('admin')
                                                 <form action="{{ route('company.destroy', $company) }}" method="POST" class="ml-1">
@@ -61,7 +61,7 @@
                 @can('doy')
                     <div class="d-flex">
                         <div class="row">
-                            <a href="/security/create" class="btn btn-primary m-4">Δημιουργία Νέας Εταιρίας</a>
+                            <a href="/security/create" class="btn btn-primary m-4">Δημιουργία Νέας Εταιρείας</a>
                         </div>
                 @endcan
                         <div class="row">

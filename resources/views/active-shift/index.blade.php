@@ -15,8 +15,8 @@
                                 <div class="row col-md-8">
                                     <h6>
                                         <strong>
-                                            Έχετε τη δυνατότητα να εμφανίσετε ως Επόπτης και να εκτυπώσετε τις αποθηκευμένες
-                                            βάρδιες οι οποίες εκτελέστηκαν ανά σημείο φύλαξης και ανά μήνα και έτος, ή να δείτε
+                                            Έχετε τη δυνατότητα να εμφανίσετε ως Επόπτης και να εκτυπώσετε τη βεβαίωση εκτέλεσης υπηρεσιών φύλαξης,
+                                            καθώς και τις αποθηκευμένες βάρδιες οι οποίες πραγματοποιήθηκαν ανά σημείο φύλαξης και ανά μήνα και έτος, ή να δείτε
                                             το σύνολο όλων παρακάτω.
                                         </strong>
                                     </h6>
@@ -65,7 +65,7 @@
                                             <strong>Παρακαλώ επιλέξτε έτος</strong>
                                             @enderror
                                         </div>
-                                        <button type="submit" class="btn btn-primary ml-5" style="max-height: 35px">Εμφάνιση</button>
+                                        <button type="submit" class="btn btn-primary ml-5" style="max-height: 35px">Μετάβαση</button>
                                     </div>
                             </form>
                         </div>
@@ -75,14 +75,14 @@
                 @can('epitropi')
                     <div class="card mb-4">
                         <div class="card-header">
-                            <strong>Σύνολο Εκτελεσμένων Βαρδιών</strong>
+                            <strong>Σύνολο Ολοκληρωμένων Βαρδιών</strong>
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center mb-4">
                                 <div class="row col-md-8">
                                     <h6>
                                         <strong>
-                                            Εξαγωγή αρχείου PDF με το σύνολο των βαρδιών για κάθε σημείο φύλαξης ανά μήνα και έτος ως Επιτροπή.
+                                            Εξαγωγή αρχείου PDF με το σύνολο των βαρδιών για κάθε σημείο φύλαξης ανά μήνα και έτος (Επιτροπή).
                                         </strong>
                                     </h6>
                                 </div>
@@ -123,7 +123,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <strong>Βάρδιες οι οποίες εκτελέστηκαν</strong>
+                        <strong>Βάρδιες οι οποίες ολοκληρώθηκαν</strong>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped table-bordered">
@@ -178,22 +178,22 @@
 {{--                                                </form>--}}
 {{--                                            </div>--}}
 {{--                                        @endcan--}}
-                                        @can('edit-shifts')
-                                        <div class="row mb-1">
-                                            <a href="{{ route('active-shift.edit', $activeShift->id) }}" style="width: 100px" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
-                                        </div>
-                                        @endcan
-                                        @can('assign-shifts')
-                                            @if($activeShift->confirmed_supervisor == 0)
-                                            <div class="row">
-                                                <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" onclick="return confirm('Επιβεβαίωση διαγραφής')" style="width: 100px" class="btn btn-danger btn-sm ml-2 mr-2">Διαγραφή</button>
-                                                </form>
-                                            </div>
-                                            @endif
-                                        @endcan
+                                        @if($activeShift->confirmed_supervisor == 0)
+                                            @can('edit-shifts')
+                                                <div class="row mb-1">
+                                                    <a href="{{ route('active-shift.edit', $activeShift->id) }}" style="width: 100px" class="btn btn-warning btn-sm ml-2 mr-2">Επεξεργασία</a>
+                                                </div>
+                                            @endcan
+                                            @can('assign-shifts')
+                                                <div class="row">
+                                                    <form action="{{ route('active-shift.destroy', $activeShift) }}" method="POST" class="float-left">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" onclick="return confirm('Επιβεβαίωση διαγραφής')" style="width: 100px" class="btn btn-danger btn-sm ml-2 mr-2">Διαγραφή</button>
+                                                    </form>
+                                                </div>
+                                            @endcan
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

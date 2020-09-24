@@ -91,7 +91,10 @@ class ActiveShiftsController extends Controller
             $assignedGuardIds[] = $item;
         }
 
-        $data = $this->fetchData( count($assignedGuardIds) );
+        $data = $request->validate([
+            'active-shift-date' =>  'required',
+            'shift-id'  =>  'required',
+        ]);
 
         $staticShift = Shift::findOrFail($data['shift-id']);
 
@@ -297,7 +300,7 @@ class ActiveShiftsController extends Controller
 
         if ( !isset($allActiveShifts) or is_null($allActiveShifts) )
         {
-            \request()->session()->flash('warning', 'Δεν υπάρχουν βάρδιες προς υποβολή.');
+            $request->session()->flash('warning', 'Δεν υπάρχουν βάρδιες προς υποβολή.');
             return redirect()->back();
         }
 
@@ -317,8 +320,8 @@ class ActiveShiftsController extends Controller
             }
         }
 
-        \request()->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
-        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
+       $request->session()->flash('success', 'Επιτυχής μαζική υποβολή.');
+        return view('active-shift.show-by-location', compact('activeShifts', 'locationId', 'month', 'year'));
     }
 
     /**
@@ -342,55 +345,6 @@ class ActiveShiftsController extends Controller
 //        request()->session()->flash('success', 'Επιτυχής επιβεβαίωση');
 //        return redirect( route('active-shift.index') );
 //    }
-
-    private function fetchData($numberOfGuards)
-    {
-        switch ($numberOfGuards)
-        {
-            case 1:
-                $data = \request()->validate([
-                    'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
-                    'guard1'    =>  'required'
-                ]);
-                break;
-            case 2:
-                $data = \request()->validate([
-                    'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
-                    'guard1'    =>  'required',
-                    'guard2'    =>  'required',
-                ]);
-                break;
-            case 3:
-                $data = \request()->validate([
-                    'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
-                    'guard1'    =>  'required',
-                    'guard2'    =>  'required',
-                    'guard3'    =>  'required',
-                ]);
-                break;
-            case 4:
-                $data = \request()->validate([
-                    'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
-                    'guard1'    =>  'required',
-                    'guard2'    =>  'required',
-                    'guard3'    =>  'required',
-                    'guard4'    =>  'required',
-                ]);
-                break;
-            default:
-                $data = \request()->validate([
-                    'active-shift-date' =>  'required',
-                    'shift-id'  =>  'required',
-                    'guard1'    =>  'required',
-                ]);
-                break;
-        }
-        return $data;
-    }
 
     private function checkShiftOverlap($assignedGuardIds, $data)
     {
@@ -689,7 +643,7 @@ class ActiveShiftsController extends Controller
             return redirect(route('active-shift.index'));
         }
 
-        return view('active-shift.custom-index', compact('activeShifts', 'locationId', 'month', 'year'));
+        return view('active-shift.show-by-location', compact('activeShifts', 'locationId', 'month', 'year'));
     }
 
     private function getMonthsYears()

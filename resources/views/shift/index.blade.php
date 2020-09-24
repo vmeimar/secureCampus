@@ -14,7 +14,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">Βάρδιες</th>
-                                <th scope="col">Κτήριο</th>
+                                <th scope="col">Κτήριο / Θέση</th>
                                 <th scope="col">Αρ. Φυλάκων</th>
                                 <th scope="col">Έναρξη</th>
                                 <th scope="col">Λήξη</th>
@@ -73,19 +73,22 @@
                     {{ $shifts->links() }}
                 </div>
                 <div class="d-flex">
-                    <p class="mt-4"><strong>Βάρδιες οι οποίες έχουν εκτελεστεί:</strong></p>
                     <div class="row">
-                        <a href="{{ route('active-shift.index') }}" style="max-height: 38px" class="btn btn-primary mt-3 ml-4">Προβολή & Υποβολή</a>
+                        <a href="/shift/create" class="btn btn-info m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
+                    </div>
+                    <div class="row">
+                        <a href="/location/create" class="btn btn-primary m-4">Δημιουργία Νέου Σημείου Φύλαξης</a>
                     </div>
                 </div>
                 <div class="d-flex">
                     @can('create-shifts')
                     <div class="row">
-                        <a href="/shift/create" class="btn btn-info m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
+                        <p class="mt-4"><strong>Βάρδιες οι οποίες έχουν εκτελεστεί:</strong></p>
+                        <a href="{{ route('active-shift.index') }}" style="max-height: 38px" class="btn btn-primary mt-4 ml-4">Προβολή & Υποβολή</a>
                     </div>
                     @endcan
                     <div class="row">
-                        <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary m-4">Επιστροφή στο Προφίλ</a>
+                        <a href="/profile/{{ Auth::user()->id }}" class="btn btn-secondary mt-4 ml-5">Επιστροφή στο Προφίλ</a>
                     </div>
                 </div>
             </div>

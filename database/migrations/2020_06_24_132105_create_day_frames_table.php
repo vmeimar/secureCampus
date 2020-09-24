@@ -18,6 +18,7 @@ class CreateDayFramesTable extends Migration
             $table->string('start_frame');
             $table->string('end_frame');
             $table->string('name');
+            $table->string('greek_name');
             $table->timestamps();
         });
     }

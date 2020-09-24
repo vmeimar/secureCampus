@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Συντελεστές Βάρδιας</strong></div>
+                    <div class="card-header"><strong>Βάρδιες - Συντελεστές προσαύξησης</strong></div>
 
                     <div class="card-body">
                         <table class="table table-bordered table-striped">

@@ -25,8 +25,8 @@
                             <strong>Φύλακες / Εταιρίες Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιριών Φύλαξης και Υπαλλήλων Φύλαξης</h5>
-                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιρειών Φύλαξης και Υπαλλήλων Φύλαξης</h5>
+                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="/security/index" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
@@ -37,8 +37,8 @@
                             <strong>Βάρδιες / Σημεία Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Έλεγχος και Παραλαβή Υπηρεσιών στις Βάρδιες των σημείων φύλαξης από τους Επόπτες</h5>
-                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                            <h5 class="card-title">Σημεία Φύλαξης και Βάρδιες - Έλεγχος και Παραλαβή Υπηρεσιών ανά Βάρδια από τους Επόπτες</h5>
+                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="{{ route('shift.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
@@ -53,8 +53,8 @@
                             <strong>Διαχείριση Παραμέτρων</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Διαχειριστείτε τις παραμέτρους της Εφαρμογής</h5>
-                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                            <h5 class="card-title">Διαχειριστείτε τις Παραμέτρους της Εφαρμογής</h5>
+                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="{{ route('app.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">Εξαγωγή Μηνιαίας Βεβαίωσης Επιτροπής Παραλαβής</h5>
-                            <p class="card-text">Πατήστε το παρακάτω πλήκτρο για να συνεχίσετε</p>
+                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>

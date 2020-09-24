@@ -6,16 +6,16 @@
             <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Λειτουργίες</strong>
+                        <strong>Παράμετροι Εφαρμογής</strong>
                     </div>
                     <div class="card-body">
 
                         <div class="d-flex justify-content-center mb-5">
-                            <div class="row col-md-8">
-                                <h6>
+                            <div class="row col-md-10">
+                                <h6 style="text-align: justify">
                                     <strong>
                                         Χρησιμοποιείστε τις παρακάτω λειτουργίες για να ορίσετε ποιες μέρες είναι αργίες,
-                                        να προσδιορίσετε τους συντελεστές της κάθε βάρδιας
+                                        να προσδιορίσετε τους συντελεστές προσαύξησης για κάθε βάρδια
                                         και να ορίσετε τους χρήστες που μπορούν να έχουν πρόσβαση στην εφαρμογή.
                                     </strong>
                                 </h6>
@@ -31,7 +31,7 @@
 {{--                        </div>--}}
                         <div class="d-flex">
                             <div class="col-md-6">
-                                <p><strong>Εμφάνιση και Επεξεργασία Συντελεστών Βαρδιών</strong></p>
+                                <p><strong>Εμφάνιση και επεξεργασία των συντελεστών προσαύξησης ανάλογα με τις βάρδιες</strong></p>
                             </div>
                             <div class="form-group col-md-4">
                                 <a href="{{ route('factor.index') }}" class="btn btn-primary">Προβολή</a>
@@ -39,7 +39,7 @@
                         </div>
                         <div class="col-md-12 mt-5">
                             <div class="row">
-                                <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τις αργίες του έτους.</strong></p>
+                                <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τις αργίες καθ' όλη τη διάρκεια της σύμβασης.</strong></p>
                             </div>
                             <div class="row">
                                 <form action="{{ route('holidays.import') }}" method="POST" enctype="multipart/form-data">
@@ -53,7 +53,8 @@
                         </div>
                         <div class="col-md-12 mt-5">
                             <div class="row">
-                                <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τα E-mail των χρηστών που έχουν δικαίωμα να χρησιμοποιούν την εφαρμογή.</strong></p>
+                                <p><strong>Χρησιμοποιήστε την παρακάτω λειτουργία για εισαγωγή αρχείου Excel με τα
+                                        E-mail των χρηστών οι οποίοι δικαιούνται να έχουν πρόσβαση στην εφαρμογή.</strong></p>
                             </div>
                             <div class="row">
                                 <form action="{{ route('user-emails.import') }}" method="POST" enctype="multipart/form-data">

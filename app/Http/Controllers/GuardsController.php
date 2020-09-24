@@ -22,7 +22,7 @@ class GuardsController extends Controller
 
     public function index(Company $company)
     {
-        $guards = Guard::where('company_id', $company->id)->paginate(15);
+        $guards = Guard::where('company_id', $company->id)->paginate(10);
         return view('guard.index', compact('company', 'guards'));
     }
 
