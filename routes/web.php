@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\NewUserRegisterMail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,10 @@ Auth::routes();
 
 Route::get('/', function () {
     return redirect('/home');
+});
+
+Route::get('/email', function () {
+    return new NewUserRegisterMail();
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -70,10 +75,13 @@ Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
 Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
 Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
 
-Route::get('/app/index', 'AppController@index')->middleware('can:doy')->name('app.index');
-Route::get('/app/populate-days-table', 'AppController@populateDaysTable')->name('app.populate-days');
-Route::post('/app/holidays/import', 'AppController@import')->name('holidays.import');
-Route::post('/app/user-emails/import', 'AppController@userEmailsImport')->name('user-emails.import');
+//App Routes
+Route::prefix('/app')->group(function () {
+    Route::get('/index', 'AppController@index')->middleware('can:doy')->name('app.index');
+    Route::get('/populate-days-table', 'AppController@populateDaysTable')->name('app.populate-days');
+    Route::post('/holidays/import', 'AppController@import')->name('holidays.import');
+    Route::post('/user-emails/import', 'AppController@userEmailsImport')->name('user-emails.import');
+});
 
 Route::get('/factor/index', 'FactorsController@index')->name('factor.index');
 Route::get('/factor/edit/{factor}', 'FactorsController@edit')->name('factor.edit');

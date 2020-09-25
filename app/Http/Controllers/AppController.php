@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Imports\HolidaysImport;
 use App\Imports\UserEmailImport;
+use App\User;
+use App\UserEmail;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -76,11 +78,6 @@ class AppController extends Controller
             }
         }
 
-//        if (!is_null($flawedShifts) and isset($flawedShifts))
-//        {
-//            dd($flawedShifts);
-//        }
-
         return true;
     }
 
@@ -130,12 +127,74 @@ class AppController extends Controller
     {
         DB::table('user_emails')->truncate();
 
-        if ( Excel::import(new UserEmailImport(), $request->file('import_file')) ) {
-            $request->session()->flash('success', 'Επιτυχής εισαγωγή.');
-        } else {
+        if (! Excel::import(new UserEmailImport(), $request->file('import_file')) )
+        {
             $request->session()->flash('error', 'Αποτυχία κατά την εισαγωγή.');
         }
 
-        return redirect()->back();
+        $this->createUsersFromImport();
+        return redirect(route('app.index'));
+    }
+
+    private function createUsersFromImport()
+    {
+        $path = base_path();
+        include $path.'/include/roles.php';
+        global $userRole;
+
+        $importedData = UserEmail::all();
+
+        foreach ($importedData as $data)
+        {
+            $email = trim($data['email']);
+
+            if ( !$this->isEmailValid($email) )
+            {
+                \request()->session()->flash('warning', 'Μη έγκυρη διεύθυνση Email ('.$email.'). Δεκτά γίνονται μόνο τα Email του Ιδρύματος.
+                                                        Οι προηγούμενοι χρήστες του αρχείου εισήχθησαν επιτυχώς.');
+                return redirect(route('app.index'));
+            }
+
+            if ( $this->userAlreadyExists($email) )
+            {
+                continue;
+            }
+
+            $newUser = new User();
+            $newUser->name = trim($data['name']);
+            $newUser->surname = trim($data['surname']);
+            $newUser->email = $email;
+
+            if ( !$newUser->save() ) {
+                \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία νέου χρήστη με email .'.$data['email']);
+                return redirect(route('app.index'));
+            }
+
+            $newUser->roles()->attach($userRole);
+        }
+
+        \request()->session()->flash('success', 'Επιτυχής εισαγωγή χρηστών του αρχείου.');
+        return true;
+    }
+
+    private function userAlreadyExists($email)
+    {
+        if ( User::where('email', '=', $email)->exists() )
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private function isEmailValid($email)
+    {
+        $emailDomain = explode('@', $email);
+        $domainComponents = explode('.', $emailDomain[1]);
+
+        if ( $domainComponents[count($domainComponents) - 2] != 'uoa' )
+        {
+            return false;
+        }
+        return true;
     }
 }

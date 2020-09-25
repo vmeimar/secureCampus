@@ -2,9 +2,12 @@
 
 namespace App;
 
+use App\Mail\NewUserRegisterMail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -36,6 +39,30 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+//    protected static function boot()
+//    {
+//        parent::boot();
+//
+//        static::created(function ($user) {
+//            Mail::to($user->email)->send(new NewUserRegisterMail());
+//        });
+//    }
+
+    public function sendWelcomeEmail(){
+
+        $token = app('auth.password.broker')->createToken($this);;
+
+        DB::table(config('auth.passwords.users.table'))->insert([
+            'email' => $this->email,
+            'token' => $token
+        ]);
+
+        $resetUrl= url(config('app.url').route('password.reset', $token, false));
+
+        Mail::to($this)->send(new Welcome($this, $resetUrl));
+
+    }
 
     public function shifts()
     {

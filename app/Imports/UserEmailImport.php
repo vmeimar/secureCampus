@@ -5,9 +5,9 @@ namespace App\Imports;
 use App\UserEmail;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UserEmailImport implements ToModel
+class UserEmailImport implements ToModel, WithHeadingRow
 {
     /**
      * @param array $row
@@ -17,7 +17,9 @@ class UserEmailImport implements ToModel
     public function model(array $row)
     {
         return new UserEmail([
-            'email'  =>  $row[0]
+            'name'  =>  $row['onoma'],
+            'surname'   =>  $row['eponymo'],
+            'email'  =>  $row['email'],
         ]);
     }
 }

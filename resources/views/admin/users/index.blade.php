@@ -5,18 +5,18 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-
                     <div class="card-header">
-                        <strong>Χρήστες</strong>
+                        <strong>Διαχείριση χρηστών</strong>
                     </div>
-
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Όνομα</th>
+                                <th scope="col">Επώνυμο</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Ιδιότητα</th>
                                 <th scope="col">Ρόλος</th>
                                 @can('admin')
                                     <th scope="col">Ενέργειες</th>
@@ -27,8 +27,10 @@
                             @foreach($users as $user)
                                 <tr>
                                     <th scope="row">{{ $user->id }}</th>
-                                    <td>{{ $user->surname }} {{ $user->name }}</td>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $user->surname }}</td>
                                     <td>{{ $user->email }}</td>
+                                    <td>{{ $user->tier }}</td>
                                     <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray()) }}</td>
                                     <td>
                                         @can('admin')

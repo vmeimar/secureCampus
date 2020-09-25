@@ -16,6 +16,8 @@ class CreateUserEmailsTable extends Migration
         Schema::create('user_emails', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
+            $table->string('name');
+            $table->string('surname');
             $table->timestamps();
         });
     }
