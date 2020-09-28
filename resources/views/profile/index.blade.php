@@ -25,7 +25,7 @@
                             <strong>Φύλακες / Εταιρίες Φύλαξης</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιρειών Φύλαξης και Υπαλλήλων Φύλαξης</h5>
+                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιρειών και Υπαλλήλων Φύλαξης</h5>
                             <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="/security/index" class="btn btn-primary">Είσοδος</a>
                         </div>

@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Imports\HolidaysImport;
 use App\Imports\UserEmailImport;
+use App\Mail\NewUserRegisterMail;
 use App\User;
 use App\UserEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class AppController extends Controller
@@ -160,10 +164,13 @@ class AppController extends Controller
                 continue;
             }
 
+            $token = hash_hmac('sha256', Str::random(40), config('app.key'));
+
             $newUser = new User();
             $newUser->name = trim($data['name']);
             $newUser->surname = trim($data['surname']);
             $newUser->email = $email;
+            $newUser->register_token = $token;
 
             if ( !$newUser->save() ) {
                 \request()->session()->flash('error', 'Σφάλμα κατά τη δημιουργία νέου χρήστη με email .'.$data['email']);
@@ -171,6 +178,8 @@ class AppController extends Controller
             }
 
             $newUser->roles()->attach($userRole);
+
+            Mail::to($newUser->email)->send(new NewUserRegisterMail($token));
         }
 
         \request()->session()->flash('success', 'Επιτυχής εισαγωγή χρηστών του αρχείου.');

@@ -18,11 +18,12 @@ Auth::routes();
 
 Route::get('/', function () {
     return redirect('/home');
-});
+})->name('home');
 
-Route::get('/email', function () {
-    return new NewUserRegisterMail();
-});
+Route::get('/email', 'AppController@createUsersFromImport');
+
+Route::get('/set/password/{token}', 'PasswordSetupController@getSetPassword');
+Route::post('/set/password', 'PasswordSetupController@postSetPassword');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
