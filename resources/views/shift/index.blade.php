@@ -73,12 +73,16 @@
                     {{ $shifts->links() }}
                 </div>
                 <div class="d-flex">
+                    @can('create-shifts')
                     <div class="row">
                         <a href="/shift/create" class="btn btn-info m-4">Δημιουργία Νέας Βάρδιας σε Σημείο Φύλαξης</a>
                     </div>
+                    @endcan
+                    @can('create-locations')
                     <div class="row">
                         <a href="/location/create" class="btn btn-primary m-4">Δημιουργία Νέου Σημείου Φύλαξης</a>
                     </div>
+                    @endcan
                 </div>
                 <div class="d-flex">
                     @can('create-shifts')

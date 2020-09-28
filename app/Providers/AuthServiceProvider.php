@@ -68,6 +68,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-shifts', function ($user) {
             return $user->hasAnyRoles([
                 'admin',
+                'epoptis',
+                'doy',
+            ]);
+        });
+
+        Gate::define('create-locations', function ($user) {
+            return $user->hasAnyRoles([
+                'admin',
                 'doy',
             ]);
         });
