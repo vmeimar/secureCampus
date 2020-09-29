@@ -32,6 +32,9 @@
                                         </tr>
                                     @endforeach
                                 </table>
+                                <div>
+                                    <p>Συνολικές ώρες υπερεργασίας του/της φύλακα {{ $guard }}: <strong>{{ $guardTotalOvertime[$guard] }}</strong></p>
+                                </div>
                             </ul>
                         @endforeach
                     </div>

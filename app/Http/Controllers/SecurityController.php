@@ -128,10 +128,16 @@ class SecurityController extends Controller
 
         foreach ($guards as $guard)
         {
+            if ($guard->active == 0)
+            {
+                continue;
+            }
+
             $guardShifts = $guard->activeShifts()->get()->sortBy('from');
             $prevUntil = null;
             $prevShift= null;
             $prevDuration = 0;
+            $prevIds = [];
 
             if ( ! isset($guardShifts) or is_null($guardShifts) )
             {
@@ -150,6 +156,7 @@ class SecurityController extends Controller
                 $prevUntil = $guardShift['until'];
                 $prevShift = $guardShift;
                 $prevDuration = $guardShift['duration'];
+                $prevIds[] = $guardShift['id'];
             }
         }
 
@@ -167,11 +174,41 @@ class SecurityController extends Controller
             $data[$key] = $sorted;
         }
 
+        foreach ($data as $key => $value)
+        {
+            $count = 0;
+            $prev = null;
+            $overtimeHours = 0;
+
+            foreach ($value as $shift)
+            {
+                if ( strtotime($shift['from']) == strtotime($prev['until']) )
+                {
+                    $count++;
+
+                    if ($count == 1)
+                    {
+                        $overtimeHours += $prev['duration'] + $shift['duration'] - 11;
+                    }
+                    elseif ($count > 1)
+                    {
+                        $overtimeHours += $shift['duration'];
+                    }
+                }
+                else
+                {
+                    $count = 0;
+                }
+                $prev = $shift;
+            }
+            $guardTotalOvertime[$key] = $overtimeHours;
+        }
+
         if (isset($sorted) and !is_null($sorted))
         {
-            return view('guard.show-overtime', compact('data'));
-//            $pdf = PDF::loadView('/security/export-overtime', compact('data'));
-//            return $pdf->download('Υπερεργασία_Φυλάκων.pdf');
+//            return view('guard.show-overtime', compact('data', 'guardTotalOvertime'));
+            $pdf = PDF::loadView('/security/export-overtime', compact('data', 'guardTotalOvertime'));
+            return $pdf->download('Υπερεργασία_Φυλάκων.pdf');
         }
         else
         {

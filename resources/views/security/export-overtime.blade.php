@@ -56,13 +56,16 @@
                         <tr>
                             <td>{{ $shift->id }}</td>
                             <td>{{ $shift->name }}</td>
-                            <td>{{ $shift->from }}</td>
-                            <td>{{ $shift->until }}</td>
+                            <td>{{ date('d/m/Y H:i', strtotime($shift->from)) }}</td>
+                            <td>{{ date('d/m/Y H:i', strtotime($shift->until)) }}</td>
                             <td>{{ $shift->duration }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                <div>
+                    <p>Συνολικές ώρες υπερεργασίας του/της φύλακα {{ $guard }}: <strong>{{ $guardTotalOvertime[$guard] }}</strong></p>
+                </div>
             </div>
         @endforeach
     </div>
