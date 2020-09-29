@@ -7,7 +7,6 @@ use App\Imports\UserEmailImport;
 use App\Mail\NewUserRegisterMail;
 use App\User;
 use App\UserEmail;
-use Carbon\Carbon;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

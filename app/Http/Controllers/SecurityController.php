@@ -169,9 +169,9 @@ class SecurityController extends Controller
 
         if (isset($sorted) and !is_null($sorted))
         {
-//            return view('guard.show-overtime', compact('data'));
-            $pdf = PDF::loadView('/security/export-overtime', compact('data'));
-            return $pdf->download('Υπερεργασία_Φυλάκων.pdf');
+            return view('guard.show-overtime', compact('data'));
+//            $pdf = PDF::loadView('/security/export-overtime', compact('data'));
+//            return $pdf->download('Υπερεργασία_Φυλάκων.pdf');
         }
         else
         {

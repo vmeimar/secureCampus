@@ -376,7 +376,8 @@ class ActiveShiftsController extends Controller
                 $durationInMinutes = $this->calculateDurationInMinutes($checkFrom, $checkUntil);
 
                 if ( ( (strtotime($checkFrom) > strtotime($guardShiftFrom)) and (strtotime($checkFrom) < strtotime($guardShiftUntil)) )
-                    or ( (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') > strtotime($guardShiftFrom)) and (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') < strtotime($guardShiftUntil)) ) )
+                    or ( (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') > strtotime($guardShiftFrom)) and (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') < strtotime($guardShiftUntil)) )
+                    or (  (strtotime($checkFrom) == strtotime($guardShiftFrom)) ) )
                 {
                     $overLap = 1;
                 }
