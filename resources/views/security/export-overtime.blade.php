@@ -18,11 +18,11 @@
         font-family: DejaVu Sans, sans-serif;
         font-size: 10px;
     }
-    #table{
+    #table {
         max-width: 2480px;
         width:100%;
     }
-    #table td{
+    #table td {
         width: auto;
         overflow: hidden;
         word-wrap: break-word;
