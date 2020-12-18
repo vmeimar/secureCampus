@@ -9,7 +9,6 @@
                         <strong>Παράμετροι Εφαρμογής</strong>
                     </div>
                     <div class="card-body">
-
                         <div class="d-flex justify-content-center mb-5">
                             <div class="row col-md-10">
                                 <h6 style="text-align: justify">
@@ -21,20 +20,20 @@
                                 </h6>
                             </div>
                         </div>
-{{--                        <div class="d-flex">--}}
-{{--                            <div class="col-md-6">--}}
-{{--                                <p><strong>Γέμισμα πίνακα ημερών του έτους</strong></p>--}}
-{{--                            </div>--}}
-{{--                            <div class="form-group col-md-6">--}}
-{{--                                <a href="{{ route('app.populate-days') }}" class="btn btn-primary">Εκτέλεση</a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                         <div class="d-flex">
                             <div class="col-md-6">
                                 <p><strong>Εμφάνιση και επεξεργασία των συντελεστών προσαύξησης ανάλογα με τις βάρδιες</strong></p>
                             </div>
                             <div class="form-group col-md-4">
                                 <a href="{{ route('factor.index') }}" class="btn btn-primary">Προβολή</a>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-md-6">
+                                <p><strong>Εμφάνιση και επεξεργασία των στοιχείων της Σύμβασης</strong></p>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <a href="#" class="btn btn-primary">Προβολή</a>
                             </div>
                         </div>
                         <div class="col-md-12 mt-5">

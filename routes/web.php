@@ -91,9 +91,11 @@ Route::delete('/factor/{factor}', 'FactorsController@destroy')->middleware('can:
 
 Route::get('/location/create', 'LocationsController@create')->name('location.create');
 Route::post('/l', 'LocationsController@store');
-
+// Unused CSV Export
 //Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 
+
+//Admin Routes
 Route::namespace('Admin')
     ->prefix('admin')
     ->name('admin.')
