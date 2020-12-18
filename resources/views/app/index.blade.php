@@ -33,7 +33,7 @@
                                 <p><strong>Εμφάνιση και επεξεργασία των στοιχείων της Σύμβασης</strong></p>
                             </div>
                             <div class="form-group col-md-4">
-                                <a href="#" class="btn btn-primary">Προβολή</a>
+                                <a href="{{ route('contract.index') }}" class="btn btn-primary">Προβολή</a>
                             </div>
                         </div>
                         <div class="col-md-12 mt-5">

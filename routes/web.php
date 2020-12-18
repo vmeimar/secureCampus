@@ -94,6 +94,10 @@ Route::post('/l', 'LocationsController@store');
 // Unused CSV Export
 //Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
 
+Route::get('/contract/index', 'ContractsController@index')->middleware('can:doy')->name('contract.index');
+Route::get('/contract/create', 'ContractsController@create')->middleware('can:doy')->name('contract.create');
+Route::get('/contract/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
+Route::post('/contract/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
 
 //Admin Routes
 Route::namespace('Admin')

@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class FactorsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $factors = Factor::all();
@@ -15,7 +20,6 @@ class FactorsController extends Controller
 
     public function edit(Factor $factor)
     {
-
         return view('factor.edit', compact('factor'));
     }
 
