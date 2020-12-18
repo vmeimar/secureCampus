@@ -18,7 +18,7 @@ class CreateActiveShiftsTable extends Migration
             $table->unsignedBigInteger('shift_id');
             $table->unsignedBigInteger('location_id');
             $table->string('name');
-            $table->dateTime('date');
+            $table->date('date');
             $table->string('from');
             $table->string('until');
             $table->tinyInteger('confirmed_steward');

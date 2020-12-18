@@ -85,7 +85,7 @@
                     @endcan
                 </div>
                 <div class="d-flex">
-                    @can('create-shifts')
+                    @can('view-shifts')
                     <div class="row">
                         <p class="mt-4"><strong>Βάρδιες οι οποίες έχουν εκτελεστεί:</strong></p>
                         <a href="{{ route('active-shift.index') }}" style="max-height: 38px" class="btn btn-primary mt-4 ml-4">Προβολή & Υποβολή</a>

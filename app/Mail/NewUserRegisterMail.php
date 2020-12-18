@@ -30,8 +30,10 @@ class NewUserRegisterMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.register-email', [
-            'token'    =>  $this->token,
-        ]);
+        return $this->subject('Εγγραφή Χρήστη στην Πλατφόρμα Secure Campus')
+                    ->from('ΕΚΠΑ Secure Campus')
+                    ->markdown('emails.register-email', [
+                                    'token'    =>  $this->token,
+                                ]);
     }
 }

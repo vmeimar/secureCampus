@@ -92,7 +92,7 @@
                                 <div class="form-group row">
                                     <label for="month" class="col-md-4 col-form-label text-md-right"><strong>Επιλέξτε μήνα και έτος για εξαγωγή</strong></label>
                                     <div class="col-md-2">
-                                        <select required name="month" id="month" class="form-control input-lg dynamic">
+                                        <select required name="month" class="form-control input-lg dynamic">
                                             <option disabled selected value="">Επιλέξτε Μήνα</option>
                                             <option value="all">Όλοι οι μήνες</option>
                                             @foreach($monthsYears['months'] as $month)
@@ -104,7 +104,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-2">
-                                        <select required name="year" id="year" class="form-control input-lg dynamic">
+                                        <select required name="year" class="form-control input-lg dynamic">
                                             <option disabled selected value="">Επιλέξτε Έτος</option>
                                             @foreach($monthsYears['years'] as $year)
                                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -126,7 +126,7 @@
                         <strong>Βάρδιες οι οποίες ολοκληρώθηκαν</strong>
                     </div>
                     <div class="card-body">
-                        <table class="table table-striped table-bordered">
+                        <table id="myTable" class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -161,7 +161,7 @@
                                                 <form action="/active-shift/{{ $activeShift->id }}/confirm-supervisor" method="POST" class="float-left">
                                                     @csrf
                                                     @method('patch')
-                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2" id="shift-submit" value="{{ $activeShift->confirmed_supervisor }}">
+                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2" value="{{ $activeShift->confirmed_supervisor }}">
                                                         {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Υπεβλήθη'}}
                                                     </button>
                                                 </form>
@@ -214,4 +214,12 @@
             </div>
         </div>
     </div>
+
+    <script type="application/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
+    <script type="application/javascript">
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    </script>
 @endsection

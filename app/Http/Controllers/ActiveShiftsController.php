@@ -77,7 +77,7 @@ class ActiveShiftsController extends Controller
     public function edit(ActiveShift $activeShift)
     {
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
-        return view('active-shift.edit', compact('activeShift', 'guards', 'availableDates'));
+        return view('active-shift.edit', compact('activeShift', 'guards'));
     }
 
     public function store(Request $request)
@@ -147,7 +147,7 @@ class ActiveShiftsController extends Controller
             'shift_id'  =>  $staticShift->id,
             'location_id'  =>  $staticShift->location_id,
             'name'  =>  $staticShift->name,
-            'date'  =>  $data['active-shift-date'],
+            'date'  =>  date('Y-m-d', strtotime($data['active-shift-date'])),
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'duration'  =>  $shiftDuration / 3600,  // IN HOURS
@@ -232,7 +232,7 @@ class ActiveShiftsController extends Controller
 
         if (! $activeShift->update([
             'name'  =>  $activeShift->name,
-            'date'  =>  $data['active-shift-date'],
+            'date'  =>  date('Y-m-d', strtotime($data['active-shift-date'])),
             'from'  =>  $shiftFrom,
             'until' =>  $shiftUntil,
             'comments'  =>  $data['active-shift-comments'],
@@ -348,6 +348,7 @@ class ActiveShiftsController extends Controller
 
     private function checkShiftOverlap($assignedGuardIds, $data)
     {
+        $quantum = 20;  // Minutes
         $overLap = 0;
 
         if ( isset($data['active-shift-id']) )
@@ -363,23 +364,34 @@ class ActiveShiftsController extends Controller
 
             foreach ( $guard->activeShifts()->get() as $guardShift )
             {
+                $counter = 0;
                 $guardShiftFrom = date('d-m-Y H:i:s', strtotime($guardShift->from));
                 $guardShiftUntil = date('d-m-Y H:i:s', strtotime($guardShift->until));
+                $guardShiftDurationMinutes = (strtotime($guardShiftUntil) - strtotime($guardShiftFrom))/60;
 
-                if ( isset($activeShift) and ($guardShift->id == $activeShift->id) )    continue;
+                if ( isset($activeShift) and ($guardShift->id == $activeShift->id) )
+                {
+                    continue;
+                }
 
                 $staticDate = $data['active-shift-date'];
                 $staticShift = Shift::find($data['shift-id']);
                 $checkFrom = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_from));
                 $checkUntil = date('d-m-Y H:i:s', strtotime($staticDate.' '.$staticShift->shift_until));
+                $durationInMinutes = $this->calculateDurationInMinutes($checkFrom, $checkUntil);  // CHECK IF SHIFT ENDS NEXT DAY
 
-                $durationInMinutes = $this->calculateDurationInMinutes($checkFrom, $checkUntil);
-
-                if ( ( (strtotime($checkFrom) > strtotime($guardShiftFrom)) and (strtotime($checkFrom) < strtotime($guardShiftUntil)) )
-                    or ( (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') > strtotime($guardShiftFrom)) and (strtotime($checkFrom.' +'.$durationInMinutes.' minutes') < strtotime($guardShiftUntil)) )
-                    or (  (strtotime($checkFrom) == strtotime($guardShiftFrom)) ) )
+                while ($counter < $guardShiftDurationMinutes)
                 {
-                    $overLap = 1;
+//                    ---------------------------  DEBUG  -------------------------------
+//                    print_r( date('d-m-Y H:i:s', strtotime($checkFrom)).' -> '.date('d-m-Y H:i:s', strtotime($guardShiftFrom.' +'.$counter.' minutes')).' -> '.date('d-m-Y H:i:s', strtotime($checkFrom.' +'.$durationInMinutes.' minutes')) );
+//                    echo "<br>";
+
+                    if (    (strtotime($guardShiftFrom.' +'.$counter.' minutes') >= strtotime($checkFrom))
+                        and (strtotime($guardShiftFrom.' +'.$counter.' minutes') < strtotime($checkFrom.' +'.$durationInMinutes.' minutes')) )
+                    {
+                        $overLap = 1;
+                    }
+                    $counter += $quantum;
                 }
             }
         }
@@ -897,6 +909,7 @@ class ActiveShiftsController extends Controller
      */
         function fetch(Request $request)
     {
+        $data = [];
         $select = $request->get('select');
         $value = $request->get('value');
         $dependent = $request->get('dependent');
@@ -927,16 +940,27 @@ class ActiveShiftsController extends Controller
 
         foreach ($daysOfYear as $item)
         {
-            if ($value == date('m', strtotime($item->date)))
+            if ( $value == date('m', strtotime($item->date)) )
             {
                 $data[] = $item;
             }
         }
 
+        $activeShiftsDates = DB::table('active_shifts')
+            ->where('shift_id', '=', $shiftId)
+            ->where('deleted_at', '=', 'NULL')
+            ->pluck('date')
+            ->toArray();
+
         $output = '<option value="" disabled>Επιλέξτε Ημέρα</option>';
 
         foreach ($data as $row)
         {
+            if ( (in_array(date('Y-m-d', strtotime($row->date)), $activeShiftsDates)) and ($activeShiftsDates != []) )
+            {
+                continue;
+            }
+
             switch ($row->day)
             {
                 case 'Monday':

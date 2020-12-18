@@ -49,7 +49,6 @@ class GuardsImport implements ToModel, WithValidation, WithHeadingRow, WithMulti
         ];
     }
 
-
     /**
     * @param array $row
     *
