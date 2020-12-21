@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header"><strong>Επεξεργασία {{ $guard->name }} {{ $guard->surname }}</strong></div>
                     <div class="card-body">
-                        <form method="post" action="/g/{{ $guard->id }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.update', $guard->id) }}" enctype="multipart/form-data">
                             @method('patch')
                             @csrf
                             <div class="form-group row">

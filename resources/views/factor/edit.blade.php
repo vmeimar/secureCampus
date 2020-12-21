@@ -5,8 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header"><strong>Επεξεργασία </strong></div>
-
+                    <div class="card-header">
+                        <strong>Επεξεργασία </strong>
+                    </div>
                     <div class="card-body">
                         <form method="post" action="{{ route('factor.update', $factor->id) }}" enctype="multipart/form-data">
                             @method('patch')
@@ -14,7 +15,6 @@
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Τύπος</label>
                                 <div class="col-md-4">
-
                                     <input id="name"
                                            type="text"
                                            class="form-control"
@@ -24,7 +24,6 @@
                                            autocomplete="name" autofocus>
                                 </div>
                             </div>
-
                             <div class="form-group row">
                                 <label for="rate" class="col-md-4 col-form-label text-md-right">Τιμή</label>
                                 <div class="col-md-4">
@@ -34,7 +33,6 @@
                                            name="rate"
                                            value="{{ $factor->rate }}"
                                            autocomplete="rate" autofocus>
-
                                     @error('rate')
                                     <strong>Συμπληρώστε την τιμή</strong>
                                     @enderror
@@ -48,11 +46,9 @@
                         </form>
                     </div>
                 </div>
-
                 <div class="row">
-                    <a href="/factor/index" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="{{ route('factor.index') }}" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
-
             </div>
         </div>
     </div>

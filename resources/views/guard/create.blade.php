@@ -8,7 +8,7 @@
                     <div class="card-header"><strong>Δημιουργία Φύλακα</strong></div>
 
                     <div class="card-body">
-                        <form method="post" action="/g" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('guard.store') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">

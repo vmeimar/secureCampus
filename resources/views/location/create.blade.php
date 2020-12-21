@@ -7,7 +7,7 @@
                 <div class="card">
                     <div class="card-header"><strong>Δημιουργία Νέου Σημείου Φύλαξης</strong></div>
                     <div class="card-body">
-                        <form method="post" action="/l" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('location.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Κτήριο/Θέση</label>
@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/shift/index" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="{{ route('shift.index') }}" class="btn btn-secondary m-4">Πίσω</a>
                 </div>
             </div>
         </div>

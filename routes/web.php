@@ -61,20 +61,25 @@ Route::post('/security/{company}/show-overtime', 'SecurityController@showOvertim
 Route::patch('/s/{company}', 'SecurityController@update')->middleware('can:manage-security');
 Route::delete('/security/{company}', 'SecurityController@destroy')->middleware('can:admin')->name('company.destroy');
 
-Route::get('/guard/{company}/index', 'GuardsController@index')->middleware('can:manage-security')->name('guard.index');
-Route::get('/guard/{company}/create', 'GuardsController@create')->middleware('can:create-guard');
-Route::get('/guard/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
-Route::get('/guard/{guard}', 'GuardsController@show')->middleware('can:manage-security')->name('guard.show');
-Route::get('/guard/{company}/export-by-month', 'GuardsController@exportByMonth')->middleware('can:manage-security')->name('guard.export-by-month');
-Route::post('/guard/{guard}/custom-range', 'GuardsController@showCustomRangeShifts')->name('guard.custom-range');
-Route::post('/guard/{company}/import', 'GuardsController@import')->name('guard.import');
-Route::post('/guard/{guard}/export', 'GuardsController@export')->name('guard.export');
-Route::post('/guard/{company}/export-all-guards', 'GuardsController@exportAllGuards')->name('guard.export-all-guards');
-Route::post('/guard/{company}/export-all-guards-pdf', 'GuardsController@exportAllGuardsPdf')->name('guard.export-all-guards-pdf');
-Route::post('/guard/{company}/export-committee', 'GuardsController@exportCommittee')->middleware('can:epitropi')->name('guard.export-committee');
-Route::post('/g', 'GuardsController@store')->middleware('can:create-guard');
-Route::patch('/g/{guard}', 'GuardsController@update')->middleware('can:create-guard');
-Route::delete('/guard/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
+//Guards Routes
+Route::prefix('/guard')->group(function () {
+    Route::get('/{company}/index', 'GuardsController@index')->middleware('can:manage-security')->name('guard.index');
+    Route::get('/{company}/create', 'GuardsController@create')->middleware('can:create-guard');
+    Route::get('/{guard}/edit', 'GuardsController@edit')->middleware('can:manage-security')->name('guard.edit');
+    Route::get('/{guard}', 'GuardsController@show')->middleware('can:manage-security')->name('guard.show');
+    Route::get('/{company}/export-by-month', 'GuardsController@exportByMonth')->middleware('can:manage-security')->name('guard.export-by-month');
+    Route::post('/{guard}/custom-range', 'GuardsController@showCustomRangeShifts')->name('guard.custom-range');
+    Route::post('/{company}/import', 'GuardsController@import')->name('guard.import');
+    Route::post('/{guard}/export', 'GuardsController@export')->name('guard.export');
+    Route::post('/{company}/export-all-guards', 'GuardsController@exportAllGuards')->name('guard.export-all-guards');
+    Route::post('/{company}/export-all-guards-pdf', 'GuardsController@exportAllGuardsPdf')->name('guard.export-all-guards-pdf');
+    Route::post('/{company}/export-committee', 'GuardsController@exportCommittee')->middleware('can:epitropi')->name('guard.export-committee');
+    Route::post('/store', 'GuardsController@store')->middleware('can:create-guard')->name('guard.store');
+    Route::patch('/update/{guard}', 'GuardsController@update')->middleware('can:create-guard')->name('guard.update');
+    Route::delete('/destroy/{guard}', 'GuardsController@destroy')->middleware('can:admin')->name('guard.destroy');
+//    Unused CSV Export
+//    Route::post('/exportcsv/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
+});
 
 //App Routes
 Route::prefix('/app')->group(function () {
@@ -84,21 +89,27 @@ Route::prefix('/app')->group(function () {
     Route::post('/user-emails/import', 'AppController@userEmailsImport')->name('user-emails.import');
 });
 
-Route::get('/factor/index', 'FactorsController@index')->name('factor.index');
-Route::get('/factor/edit/{factor}', 'FactorsController@edit')->name('factor.edit');
-Route::patch('/f/{factor}', 'FactorsController@update')->name('factor.update');
-Route::delete('/factor/{factor}', 'FactorsController@destroy')->middleware('can:admin')->name('factor.destroy');
+//Factors Routes
+Route::prefix('/factor')->group(function () {
+    Route::get('/index', 'FactorsController@index')->name('factor.index');
+    Route::get('/edit/{factor}', 'FactorsController@edit')->name('factor.edit');
+    Route::patch('/update/{factor}', 'FactorsController@update')->name('factor.update');
+});
 
-Route::get('/location/create', 'LocationsController@create')->name('location.create');
-Route::post('/l', 'LocationsController@store');
-// Unused CSV Export
-//Route::post('/guard/{guard}', 'GuardsController@exportCsv')->middleware('can:manage-shifts')->name('guard.exportCsv');
+//Location Routes
+Route::prefix('/location')->group(function () {
+    Route::get('/create', 'LocationsController@create')->name('location.create');
+    Route::post('/store', 'LocationsController@store')->name('location.store');
+});
 
-Route::get('/contract/index', 'ContractsController@index')->middleware('can:doy')->name('contract.index');
-Route::get('/contract/create', 'ContractsController@create')->middleware('can:doy')->name('contract.create');
-Route::get('/contract/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
-Route::post('/contract/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
-Route::patch('/contract/update/{contract}', 'ContractsController@update')->middleware('can:doy')->name('contract.update');
+//Contract Routes
+Route::prefix('/contract')->group(function () {
+    Route::get('/index', 'ContractsController@index')->middleware('can:doy')->name('contract.index');
+    Route::get('/create', 'ContractsController@create')->middleware('can:doy')->name('contract.create');
+    Route::get('/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
+    Route::post('/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
+    Route::patch('/update/{contract}', 'ContractsController@update')->middleware('can:doy')->name('contract.update');
+});
 
 //Admin Routes
 Route::namespace('Admin')

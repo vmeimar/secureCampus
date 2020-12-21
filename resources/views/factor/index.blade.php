@@ -24,7 +24,7 @@
                                     <td style="text-align: center">{{ $factor->name_greek }}</td>
                                     <td style="text-align: center">{{ $factor->rate }}</td>
                                     <td style="text-align: center">
-                                        <a href="{{route('factor.edit', $factor->id)}}" class="btn btn-primary btn-sm">Επεξεργασία</a>
+                                        <a href="{{ route('factor.edit', $factor->id) }}" class="btn btn-primary btn-sm">Επεξεργασία</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -35,7 +35,7 @@
                 </div>
                     <div class="d-flex">
                         <div class="row">
-                            <a href="/app/index" class="btn btn-secondary m-4">Πίσω</a>
+                            <a href="{{ route('app.index') }}" class="btn btn-secondary m-4">Πίσω</a>
                         </div>
                     </div>
             </div>

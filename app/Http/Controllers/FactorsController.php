@@ -23,9 +23,9 @@ class FactorsController extends Controller
         return view('factor.edit', compact('factor'));
     }
 
-    public function update(Factor $factor)
+    public function update(Factor $factor, Request $request)
     {
-        $data = request()->validate([
+        $data = $request->validate([
             'name'  => 'required',
             'rate'  => 'required',
         ]);
@@ -35,10 +35,5 @@ class FactorsController extends Controller
             : request()->session()->flash('error', 'Ανεπιτυχής αποθήκευση');
 
         return redirect(route('factor.index'));
-    }
-
-    public function destroy(Factor $factor)
-    {
-        dd($factor);
     }
 }
