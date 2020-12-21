@@ -132,7 +132,7 @@ class ActiveShiftsController extends Controller
         }
 
         /**
-         *  Partial Absence Start
+         *  Partial Absence Start - Unused
          */
 //        if ( !is_null($request['hours']) and isset($request['hours']) and ($request['hours'] > 0) )
 //        {
@@ -140,7 +140,7 @@ class ActiveShiftsController extends Controller
 //            $comments = 'Η φύλαξη δεν πραγματοποιήθηκε για '.$absent.' ώρες από τις '.($shiftDuration/3600).' της συνολικής βάρδιας.';
 //        }
         /**
-         * Partial Absence End
+         * Partial Absence End - Unused
          */
 
         $activeShift = ActiveShift::create([

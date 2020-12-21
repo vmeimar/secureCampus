@@ -98,6 +98,7 @@ Route::get('/contract/index', 'ContractsController@index')->middleware('can:doy'
 Route::get('/contract/create', 'ContractsController@create')->middleware('can:doy')->name('contract.create');
 Route::get('/contract/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
 Route::post('/contract/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
+Route::patch('/contract/update/{contract}', 'ContractsController@update')->middleware('can:doy')->name('contract.update');
 
 //Admin Routes
 Route::namespace('Admin')

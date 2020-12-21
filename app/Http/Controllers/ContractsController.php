@@ -55,7 +55,28 @@ class ContractsController extends Controller
 
     public function edit(Contract $contract)
     {
-        dd($contract);
         return view('contract.edit', compact('contract'));
+    }
+
+    public function update(Contract $contract, Request $request)
+    {
+        $data = $request->validate([
+            'dean_act'  =>  'required',
+            'ada'  =>  'required',
+            'adam'  =>  'required',
+            'contract_start_date'  =>  'required',
+        ]);
+
+        if ($contract->update([
+            'dean_act'  =>  $data['dean_act'],
+            'ada'  =>  $data['ada'],
+            'adam'  =>  $data['adam'],
+            'contract_start_date'  =>  $data['contract_start_date'],
+        ])) {
+            $request->session()->flash('success', 'Επιτυχής αποθήκευση.');
+        } else {
+            $request->session()->flash('warning', 'Σφάλμα κατά την αποθήκευση.');
+        }
+        return redirect(route('contract.index'));
     }
 }

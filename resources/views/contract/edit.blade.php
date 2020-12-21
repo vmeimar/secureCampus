@@ -7,21 +7,22 @@
                 <div class="card">
                     <div class="card-header"><strong>Επεξεργασία Σύμβασης</strong></div>
                     <div class="card-body">
-                        <form method="post" action="#" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('contract.update', $contract->id) }}" enctype="multipart/form-data">
                             @method('patch')
                             @csrf
                             <div class="form-group row">
-                                <label for="act" class="col-md-4 col-form-label text-md-right">Πράξη Πρύτανη</label>
+                                <label for="dean_act" class="col-md-4 col-form-label text-md-right">Πράξη Πρύτανη</label>
                                 <div class="col-md-6">
-                                    <input id="act"
+                                    <input id="dean_act"
                                            type="text"
                                            class="form-control @error('name') is-invalid @enderror"
-                                           name="act"
-                                           value="{{ $contract['act'] }}"
-                                           autocomplete="act"
+                                           name="dean_act"
+                                           value="{{ $contract['dean_act'] }}"
+                                           autocomplete="dean_act"
+                                           required
                                            autofocus>
                                     @error('name')
-                                    <strong>Συμπληρώστε όνομα</strong>
+                                    <strong>Υποχρεωτικό Πεδίο</strong>
                                     @enderror
                                 </div>
                             </div>
@@ -34,9 +35,10 @@
                                            name="ada"
                                            value="{{ $contract['ada'] }}"
                                            autocomplete="ada"
+                                           required
                                            autofocus>
                                     @error('ada')
-                                    <strong>Συμπληρώστε επώνυμο</strong>
+                                    <strong>Υποχρεωτικό Πεδίο</strong>
                                     @enderror
                                 </div>
                             </div>
@@ -49,9 +51,26 @@
                                            name="adam"
                                            value="{{ $contract['adam'] }}"
                                            autocomplete="adam"
+                                           required
                                            autofocus>
                                     @error('adam')
-                                    <strong>Διαλέξτε εταιρεία</strong>
+                                    <strong>Υποχρεωτικό Πεδίο</strong>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="contract_start_date" class="col-md-4 col-form-label text-md-right">Ημερομηνία</label>
+                                <div class="col-md-6">
+                                    <input id="contract_start_date"
+                                           type="date"
+                                           class="form-control @error('contract_start_date') is-invalid @enderror"
+                                           name="contract_start_date"
+                                           value="{{ $contract['contract_start_date'] }}"
+                                           autocomplete="contract_start_date"
+                                           required
+                                           autofocus>
+                                    @error('month')
+                                    <strong>Υποχρεωτικό Πεδίο</strong>
                                     @enderror
                                 </div>
                             </div>
