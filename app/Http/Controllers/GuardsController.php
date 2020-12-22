@@ -324,7 +324,7 @@ class GuardsController extends Controller
 
         $contract = Contract::first();
 
-        // TODO: put all duplicated code inside global functions
+        // TODO: put all duplicated code inside global functions and use global scope variables
 
         $month = $data['month'];
         $year = $data['year'];
