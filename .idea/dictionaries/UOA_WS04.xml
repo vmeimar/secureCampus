@@ -2,6 +2,7 @@
   <dictionary name="UOA_WS04">
     <words>
       <w>enderror</w>
+      <w>mktime</w>
     </words>
   </dictionary>
 </component>

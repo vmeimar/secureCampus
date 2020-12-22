@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Contract;
 use App\Exports\AllGuardsExport;
 use App\Exports\GuardsExport;
 use App\Guard;
@@ -321,6 +322,10 @@ class GuardsController extends Controller
             'year' =>  'required',
         ]);
 
+        $contract = Contract::first();
+
+        // TODO: put all duplicated code inside global functions
+
         $month = $data['month'];
         $year = $data['year'];
 
@@ -331,8 +336,7 @@ class GuardsController extends Controller
         }
         else
         {
-            // Use mktime() and date() function to
-            // convert number to month name
+            // Use mktime() and date() function to convert number to month name
             $month_name = date("F", mktime(0, 0, 0, $month, 10));
 
             $from = date('01/m/Y', strtotime($month_name.' '.$year));
@@ -347,7 +351,7 @@ class GuardsController extends Controller
             return redirect(route('security.choose-company'));
         }
 
-        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company'))->setPaper('a4');
+        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company', 'contract'))->setPaper('a4');
         return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 
