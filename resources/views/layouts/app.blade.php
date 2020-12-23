@@ -92,6 +92,8 @@
                                     </form>
                                 </div>
                             </li>
+{{--                            <li class="nav-item"><a href="{{ url('locale/en') }}" ><i class="fa fa-language"></i> EN</a></li>--}}
+{{--                            <li class="nav-item"><a href="{{ url('locale/el') }}" ><i class="fa fa-language"></i> EL</a></li>--}}
                         @endguest
                     </ul>
                 </div>

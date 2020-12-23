@@ -324,25 +324,7 @@ class GuardsController extends Controller
 
         $contract = Contract::first();
 
-        // TODO: put all duplicated code inside global functions and use global scope variables
-
-        $month = $data['month'];
-        $year = $data['year'];
-
-        if ($month == 'all')
-        {
-            $from = date('d/m/Y', strtotime('Jan 1 '.$year));
-            $to = date('d/m/Y', strtotime('Dec 31 '.$year));
-        }
-        else
-        {
-            // Use mktime() and date() function to convert number to month name
-            $month_name = date("F", mktime(0, 0, 0, $month, 10));
-
-            $from = date('01/m/Y', strtotime($month_name.' '.$year));
-            $to = date('t/m/Y', strtotime($month_name.' '.$year));
-        }
-
+        $duration = getExportMonth($data['month'], $data['year']);
         $committeeMembers = $this->getCommitteeMembers();
 
         if (sizeof($committeeMembers) != 3)
@@ -351,7 +333,7 @@ class GuardsController extends Controller
             return redirect(route('security.choose-company'));
         }
 
-        $pdf = PDF::loadView('/guard/export-committee', compact('from', 'to', 'committeeMembers', 'company', 'contract'))->setPaper('a4');
+        $pdf = PDF::loadView('/guard/export-committee', compact('duration', 'committeeMembers', 'company', 'contract'))->setPaper('a4');
         return $pdf->download('Βεβαίωση_Επιτροπής.pdf');
     }
 

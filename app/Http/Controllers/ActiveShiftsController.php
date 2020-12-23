@@ -9,6 +9,7 @@ use App\Guard;
 use App\Location;
 use App\Shift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -755,22 +756,8 @@ class ActiveShiftsController extends Controller
     {
         $data = $request->all();
         $locations = Location::all();
-        $month = $data['month'];
-        $year = $data['year'];
 
-        if ($month == 'all')
-        {
-            $from = date('d/m/Y', strtotime('Jan 1 '.$year));
-            $to = date('d/m/Y', strtotime('Dec 31 '.$year));
-        }
-        else
-        {
-            // Use mktime() and date() function to
-            // convert number to month name
-            $month_name = date("F", mktime(0, 0, 0, $month, 10));
-            $from = date('01/m/Y', strtotime($month_name.' '.$year));
-            $to = date('t/m/Y', strtotime($month_name.' '.$year));
-        }
+        $duration = getExportMonth($data['month'], $data['year']);
 
         $totalHoursAbsent = 0;
         $totalFactorAbsent = 0;
@@ -790,7 +777,7 @@ class ActiveShiftsController extends Controller
                 foreach ($activeShift->guards()->get() as $guard)
                 {
                     // Inactive Company contains the Absent Guard Instance.
-                    if ( ((date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all')) and ($guard->company->active == 1) )
+                    if ( ((date('m', strtotime($activeShift['date'])) == $data['month']) or ($data['month'] == 'all')) and ($guard->company->active == 1) )
                     {
                         $locationGuardArray[$key][] = [
                             'guard_id'  =>  $guard->id,
@@ -803,7 +790,7 @@ class ActiveShiftsController extends Controller
                     }
                 }
 
-                if ( (date('m', strtotime($activeShift['date'])) == $month) or ($month == 'all') )
+                if ( (date('m', strtotime($activeShift['date'])) == $data['month']) or ($data['month'] == 'all') )
                 {
                     $activeShifts[$key][] = $activeShift;
                     $totalHoursAbsentByLocation += $activeShift['absent'];
@@ -857,7 +844,7 @@ class ActiveShiftsController extends Controller
 //        return view('active-shift.export-committee-pdf',
 //            compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
 
-        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('from', 'to', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
+        $pdf = PDF::loadView('/active-shift/export-committee-pdf', compact('duration', 'totalHours', 'totalHoursAbsent', 'totalFactorAbsent', 'exportData', 'totalTemp'));
         return $pdf->download('Σύνολο Βαρδιών.pdf');
     }
 
