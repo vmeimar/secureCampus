@@ -6,11 +6,11 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Σύμβαση</strong>
+                        <strong>{{ __('messages.langContract') }}</strong>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
-                            <label for="dean_act" class="col-md-4 col-form-label text-md-right">Πράξη Πρύτανη</label>
+                            <label for="dean_act" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDeanAct') }}</label>
                             <div class="col-md-6">
                                 <input id="dean_act"
                                        type="text"
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="ada" class="col-md-4 col-form-label text-md-right">ΑΔΑ</label>
+                            <label for="ada" class="col-md-4 col-form-label text-md-right">{{ __('messages.langAda') }}</label>
                             <div class="col-md-6">
                                 <input id="ada"
                                        type="text"
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="adam" class="col-md-4 col-form-label text-md-right">ΑΔΑΜ</label>
+                            <label for="adam" class="col-md-4 col-form-label text-md-right">{{ __('messages.langAdam') }}</label>
                             <div class="col-md-6">
                                 <input id="adam"
                                        type="text"
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="contract_start_date" class="col-md-4 col-form-label text-md-right">Ημερομηνία</label>
+                            <label for="contract_start_date" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDate') }}</label>
                             <div class="col-md-6">
                                 <input id="contract_start_date"
                                        type="date"

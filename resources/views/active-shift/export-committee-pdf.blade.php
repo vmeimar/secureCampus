@@ -35,7 +35,7 @@
 </header>
 <div class="container">
     <div>
-        <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΔΙΑΣΤΗΜΑ ΑΠΟ {{ $from }} ΜΕΧΡΙ {{ $to }}</strong></p>
+        <p class="text-center"><strong>ΒΑΡΔΙΕΣ ΑΝΑ ΣΗΜΕΙΟ ΦΥΛΑΞΗΣ ΓΙΑ ΤΟ ΔΙΑΣΤΗΜΑ ΑΠΟ {{ $duration['from'] }} ΜΕΧΡΙ {{ $duration['to'] }}</strong></p>
     </div>
     <div>
         @foreach($exportData as $locationName => $value)
