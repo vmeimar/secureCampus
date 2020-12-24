@@ -115,6 +115,7 @@ Route::prefix('/contract')->group(function () {
     Route::get('/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
     Route::post('/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
     Route::patch('/update/{contract}', 'ContractsController@update')->middleware('can:doy')->name('contract.update');
+    Route::delete('/delete/{contract}', 'ContractsController@destroy')->middleware('can:doy')->name('contract.destroy');
 });
 
 //Admin Routes

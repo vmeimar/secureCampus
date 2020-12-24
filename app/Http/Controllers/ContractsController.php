@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contract;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ContractsController extends Controller
 {
@@ -45,9 +46,9 @@ class ContractsController extends Controller
         ]);
 
         if (!$contract->id) {
-            $request->session()->flash('warning', 'Σφάλμα κατά τη δημιουργία.');
+            $request->session()->flash('warning', __('messages.langErrorCreate'));
         } else {
-            $request->session()->flash('success', 'Επιτυχής δημιουργία.');
+            $request->session()->flash('success', __('messages.langSuccessCreate'));
         }
 
         return redirect(route('contract.index'));
@@ -73,10 +74,23 @@ class ContractsController extends Controller
             'adam'  =>  $data['adam'],
             'contract_start_date'  =>  $data['contract_start_date'],
         ])) {
-            $request->session()->flash('success', 'Επιτυχής αποθήκευση.');
+            $request->session()->flash('success', __('messages.langSuccessSave'));
         } else {
-            $request->session()->flash('warning', 'Σφάλμα κατά την αποθήκευση.');
+            $request->session()->flash('warning', __('messages.langErrorSave'));
         }
         return redirect(route('contract.index'));
+    }
+
+    public function destroy(Contract $contract, Request $request)
+    {
+        try {
+            $contract->delete();
+        } catch (Throwable $e) {
+            report($e);
+            $request->session()->flash('error', __('messages.langErrorDelete'));
+            return false;
+        }
+        $request->session()->flash('success', __('messages.langSuccessDelete'));
+        return redirect(route('app.index'));
     }
 }

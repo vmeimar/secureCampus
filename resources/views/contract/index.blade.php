@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">
                         <strong>{{ __('messages.langContract') }}</strong>
@@ -14,14 +14,11 @@
                             <div class="col-md-6">
                                 <input id="dean_act"
                                        type="text"
-                                       class="form-control @error('name') is-invalid @enderror"
+                                       class="form-control"
                                        name="dean_act"
                                        value="{{ $contract['dean_act'] }}"
                                        readonly
-                                       autocomplete="dean_act" autofocus>
-                                @error('name')
-                                <strong>Συμπληρώστε όνομα</strong>
-                                @enderror
+                                       autofocus>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -29,14 +26,10 @@
                             <div class="col-md-6">
                                 <input id="ada"
                                        type="text"
-                                       class="form-control @error('ada') is-invalid @enderror"
+                                       class="form-control"
                                        name="ada"
                                        value="{{ $contract['ada'] }}"
-                                       readonly
-                                       autocomplete="ada" autofocus>
-                                @error('ada')
-                                <strong>Συμπληρώστε επώνυμο</strong>
-                                @enderror
+                                       readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -44,14 +37,10 @@
                             <div class="col-md-6">
                                 <input id="adam"
                                        type="text"
-                                       class="form-control @error('adam') is-invalid @enderror"
+                                       class="form-control"
                                        name="adam"
                                        value="{{ $contract['adam'] }}"
-                                       readonly
-                                       autocomplete="adam" autofocus>
-                                @error('adam')
-                                <strong>Διαλέξτε εταιρεία</strong>
-                                @enderror
+                                       readonly>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -59,26 +48,31 @@
                             <div class="col-md-6">
                                 <input id="contract_start_date"
                                        type="date"
-                                       class="form-control @error('contract_start_date') is-invalid @enderror"
+                                       class="form-control"
                                        name="contract_start_date"
                                        value="{{ $contract['contract_start_date'] }}"
-                                       autocomplete="contract_start_date"
-                                       readonly
-                                       autofocus>
-                                @error('month')
-                                <strong>Παρακαλώ επιλέξτε μήνα</strong>
-                                @enderror
+                                       readonly>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6 offset-md-4">
-                                <a href="{{ route('contract.edit', $contract->id) }}" class="btn btn-primary">Επεξεργασία</a>
+                            <div class="col-md-2 offset-4">
+                                <a href="{{ route('contract.edit', $contract->id) }}" class="btn btn-primary">{{ __('messages.langEdit') }}</a>
+                            </div>
+                            <div class="col-md-2">
+                                <form action="{{ route('contract.destroy', $contract->id) }}" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit"
+                                            onclick="return confirm('{{ __('messages.langConfirmDelete') }}')"
+                                            class="btn btn-danger">
+                                        {{ __('messages.langDelete') }}</button>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ route('app.index') }}" class="btn btn-secondary m-4">Πίσω</a>
+                    <a href="{{ route('app.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
                 </div>
             </div>
         </div>
