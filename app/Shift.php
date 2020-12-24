@@ -2,9 +2,14 @@
 
 namespace App;
 
-use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Contract
+ * @package App
+ * @mixin Builder
+ */
 class Shift extends Model
 {
     protected $guarded = [];

@@ -4,7 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Class Contract
+ * @package App
+ * @mixin Builder
+ */
 class ActiveShift extends Model
 {
     use SoftDeletes;

@@ -8,7 +8,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Class Contract
+ * @package App
+ * @mixin Builder
+ */
 class User extends Authenticatable
 {
     use Notifiable;
