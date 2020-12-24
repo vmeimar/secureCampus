@@ -6,6 +6,8 @@ return [
     'langCompany'   =>  'εταιρεία',
     'langChoose'    =>  'διαλέξτε',
     'langCreate'    =>  'Δημιουργία',
+    'langSubmit'  =>  'Υποβολή',
+    'langSubmitted'  =>  'Υπεβλήθη',
     'langSuccessCreate'    =>  'Επιτυχής Δημιουργία',
     'langErrorCreate'    =>  'Σφάλμα κατά την Δημιουργία',
     'langEdit'  =>  'Επεξεργασία',

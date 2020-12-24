@@ -51,7 +51,15 @@ Route::post('/active-shift/show-by-location', 'ActiveShiftsController@showByLoca
 Route::post('active-shift/index/fetch', 'ActiveShiftsController@fetch')->name('active-shift.fetch');       //   AJAX
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:assign-shifts');
 Route::post('/as/{location}/export-by-location', 'ActiveShiftsController@exportByLocation')->middleware('can:view-shifts')->name('active-shift.export-by-location');
-Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
+
+
+
+//Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
+Route::post('/active-shift/submit/{activeShift}', 'ActiveShiftsController@confirmActiveShiftSupervisor');
+
+
+
+
 Route::patch('/active-shift/{location}/confirm-all-supervisor', 'ActiveShiftsController@confirmAllSupervisor')->middleware('can:supervisor');
 Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
 Route::patch('/as/{activeShift}', 'ActiveShiftsController@update')->middleware('can:confirm-shifts')->name('active-shift.update');

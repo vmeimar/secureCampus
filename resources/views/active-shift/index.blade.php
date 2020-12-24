@@ -158,13 +158,14 @@
                                     <td>
                                         @can('confirm-shifts')
                                             <div class="row mb-1">
-                                                <form action="/active-shift/{{ $activeShift->id }}/confirm-supervisor" method="POST" class="float-left">
-                                                    @csrf
-                                                    @method('patch')
-                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2" value="{{ $activeShift->confirmed_supervisor }}">
-                                                        {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Υπεβλήθη'}}
-                                                    </button>
-                                                </form>
+{{--                                                <form action="/active-shift/{{ $activeShift->id }}/confirm-supervisor" method="POST" class="float-left">--}}
+{{--                                                    @csrf--}}
+{{--                                                    @method('patch')--}}
+{{--                                                    <button type="submit" style="width: 100px" class="btn btn-primary btn-sm ml-2 mr-2" value="{{ $activeShift->confirmed_supervisor }}">--}}
+{{--                                                        {{ $activeShift->confirmed_supervisor == 0 ? 'Υποβολή' : 'Υπεβλήθη'}}--}}
+{{--                                                    </button>--}}
+{{--                                                </form>--}}
+                                                <submit-button active-shift-id="{{ $activeShift['id'] }}" submitted="{{ $activeShift['confirmed_supervisor'] }}"></submit-button>
                                             </div>
                                         @endcan
 {{--                                        @can('confirm-shifts-steward')--}}

@@ -28,6 +28,11 @@ class ActiveShiftsController extends Controller
         $user = Auth::user();
         $activeShiftsIds = [];
 
+        $langs = [
+            '0' => __('messages.langSubmit'),
+            '1' => __('messages.langSubmitted'),
+        ];
+
         $monthsYears = $this->getMonthsYears();
 
         if (!$monthsYears)
@@ -59,7 +64,7 @@ class ActiveShiftsController extends Controller
             $activeShifts = ActiveShift::whereIn('id', $activeShiftsIds)->latest()->paginate(10);
         }
 
-        return view('active-shift.index', compact('activeShifts', 'user', 'monthsYears'));
+        return view('active-shift.index', compact('activeShifts', 'user', 'monthsYears', 'langs'));
     }
 
     public function create(Shift $shift)
@@ -173,26 +178,26 @@ class ActiveShiftsController extends Controller
         }
 
         $request->session()->flash('success', 'Επιτυχής ανάθεση.');
-        return redirect(route('active-shift.index'));
+        return redirect( route('active-shift.index') );
     }
 
-    public function update(ActiveShift $activeShift)
+    public function update(ActiveShift $activeShift, Request $request)
     {
         $timeOffset = 10;
         $absent = null;
 
-        foreach (request()->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month']) as $item)
+        foreach ($request->except(['_token', '_method', 'active-shift-date', 'shift-id', 'active-shift-comments', 'month']) as $item)
         {
             $assignedGuardIds[] = $item;
         }
 
-        $data = request()->all();
+        $data = $request->all();
         $data['active-shift-id'] = $activeShift->id;
         $overLap = $this->checkShiftOverlap($assignedGuardIds, $data);
 
         if ($overLap)
         {
-            request()->session()->flash('warning', 'Δεν αποθηκεύτηκε. Υπάρχει σύγκρουση ωραρίου.');
+            $request->session()->flash('warning', 'Δεν αποθηκεύτηκε. Υπάρχει σύγκρουση ωραρίου.');
             return redirect(route('active-shift.index'));
         }
 
@@ -248,7 +253,7 @@ class ActiveShiftsController extends Controller
             'is_holiday' => $factorData['is_holiday'],
         ]))
         {
-            request()->session()->flash('error', 'Σφάλμα κατά την αποθήκευση.');
+            $request->session()->flash('error', 'Σφάλμα κατά την αποθήκευση.');
             return redirect(route('active-shift.index'));
         }
 
@@ -261,34 +266,39 @@ class ActiveShiftsController extends Controller
             return false;
         }
 
-        request()->session()->flash('success', 'Επιτυχής αποθήκευση.');
+        $request->session()->flash('success', 'Επιτυχής αποθήκευση.');
         return redirect(route('active-shift.index'));
     }
 
-    public function destroy(ActiveShift $activeShift)
+    public function destroy(ActiveShift $activeShift, Request $request)
     {
         $activeShift->delete();
 
-        \request()->session()->flash('success', 'Επιτυχής διαγραφή');
+        $request->session()->flash('success', 'Επιτυχής διαγραφή');
         return redirect(route('active-shift.index'));
     }
 
-    public function confirmActiveShiftSupervisor($id)
+    public function confirmActiveShiftSupervisor(ActiveShift $activeShift)
     {
-        $activeShift = ActiveShift::findOrFail($id);
-
-        if ($activeShift->confirmed_supervisor == 1)
-        {
-            request()->session()->flash('success', 'Η Βάρδια έχει ήδη υποβληθεί επιτυχώς.');
-            return redirect( route('active-shift.index') );
-        }
-
-        $activeShift->confirmed_supervisor = 1;
-        $activeShift->save();
-
-        request()->session()->flash('success', 'Επιτυχής υποβολή');
-        return redirect( route('active-shift.index') );
+        return $activeShift->id;
     }
+
+//    public function confirmActiveShiftSupervisor($id)
+//    {
+//        $activeShift = ActiveShift::findOrFail($id);
+//
+//        if ($activeShift->confirmed_supervisor == 1)
+//        {
+//            request()->session()->flash('success', 'Η Βάρδια έχει ήδη υποβληθεί επιτυχώς.');
+//            return redirect( route('active-shift.index') );
+//        }
+//
+//        $activeShift->confirmed_supervisor = 1;
+//        $activeShift->save();
+//
+//        request()->session()->flash('success', 'Επιτυχής υποβολή');
+//        return redirect( route('active-shift.index') );
+//    }
 
     public function confirmAllSupervisor(Location $location, Request $request)
     {

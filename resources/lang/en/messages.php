@@ -6,6 +6,8 @@ return [
     'langCompany'   =>  'company',
     'langChoose'    =>  'choose',
     'langEdit'  =>  'Edit',
+    'langSubmit'  =>  'Submit',
+    'langSubmitted'  =>  'Submitted',
     'langSave'  =>  'Save',
     'langSuccessSave'  =>  'Saved successfully',
     'langErrorSave'  =>  'Error during saving',
