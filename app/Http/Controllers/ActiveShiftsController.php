@@ -81,6 +81,11 @@ class ActiveShiftsController extends Controller
 
     public function edit(ActiveShift $activeShift)
     {
+        if ($activeShift->confirmed_supervisor == 1)
+        {
+            request()->session()->flash('warning', 'Οι υποπεβλημένες βάρδιες δεν είναι επεξεργάσιμες');
+            return redirect(route('active-shift.index'));
+        }
         $guards = Guard::where('active', 1)->orderBy('surname', 'asc')->get();
         return view('active-shift.edit', compact('activeShift', 'guards'));
     }
@@ -272,6 +277,12 @@ class ActiveShiftsController extends Controller
 
     public function destroy(ActiveShift $activeShift, Request $request)
     {
+        if ($activeShift->confirmed_supervisor == 1)
+        {
+            request()->session()->flash('warning', 'Οι υποπεβλημένες βάρδιες δεν διαγράφονται');
+            return redirect(route('active-shift.index'));
+        }
+
         $activeShift->delete();
 
         $request->session()->flash('success', 'Επιτυχής διαγραφή');
@@ -280,7 +291,14 @@ class ActiveShiftsController extends Controller
 
     public function confirmActiveShiftSupervisor(ActiveShift $activeShift)
     {
-        return $activeShift->id;
+        if ($activeShift->confirmed_supervisor == 0)
+        {
+            $activeShift->update([
+                'confirmed_supervisor'  =>  1
+            ]);
+        }
+
+        return $activeShift->confirmed_supervisor;
     }
 
 //    public function confirmActiveShiftSupervisor($id)

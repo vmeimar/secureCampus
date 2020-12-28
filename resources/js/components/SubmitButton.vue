@@ -21,7 +21,11 @@
             submitActiveShift() {
                 axios.post('/active-shift/submit/' + this.activeShiftId)
                 .then(response => {
-                    console.log(this.submitted);
+                    if (this.status == false) {
+                        this.status = 1;
+                    }
+
+                    console.log(this.status);
                 });
             }
         },

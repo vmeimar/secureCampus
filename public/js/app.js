@@ -1960,7 +1960,11 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/active-shift/submit/' + this.activeShiftId).then(function (response) {
-        console.log(_this.submitted);
+        if (_this.status == false) {
+          _this.status = 1;
+        }
+
+        console.log(_this.status);
       });
     }
   },
