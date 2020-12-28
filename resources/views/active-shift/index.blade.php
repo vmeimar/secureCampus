@@ -126,7 +126,7 @@
                         <strong>Βάρδιες οι οποίες ολοκληρώθηκαν</strong>
                     </div>
                     <div class="card-body">
-                        <table id="myTable" class="table table-striped table-bordered">
+                        <table id="activeShiftsTable" class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -220,7 +220,10 @@
 
     <script type="application/javascript">
         $(document).ready( function () {
-            $('#myTable').DataTable();
+            $('#activeShiftsTable').DataTable({
+                "order": [[0, "desc"]],
+                "bDestroy": true
+            });
         } );
     </script>
 @endsection
