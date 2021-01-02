@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Session;
 */
 Auth::routes();
 
-Route::get('locale/{locale}', function ($locale){
+Route::get('locale/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
 });
