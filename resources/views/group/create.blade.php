@@ -17,8 +17,7 @@
                                            type="text"
                                            class="form-control"
                                            name="name"
-                                           required
-                                           autofocus>
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -27,18 +26,29 @@
                                     <input id="ada"
                                            type="text"
                                            class="form-control"
-                                           name="ada"
-                                           autofocus>
+                                           name="ada">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="dean_act" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDeanAct') }} ({{ __('messages.langOptional') }})</label>
+                                <label for="dean-act" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDeanAct') }} ({{ __('messages.langOptional') }})</label>
                                 <div class="col-md-6">
-                                    <input id="dean_act"
+                                    <input id="dean-act"
                                            type="text"
                                            class="form-control"
-                                           name="dean_act"
-                                           autofocus>
+                                           name="dean-act">
+                                </div>
+                            </div><div class="form-group row">
+                                <label for="contract-type" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDocumentType') }}</label>
+                                <div class="col-md-6">
+                                    <select id="contract-type"
+                                           type="text"
+                                           class="form-control"
+                                           name="contract-type">
+                                        <option value="" selected disabled>Choose type</option>
+                                        <option value="1">type 1</option>
+                                        <option value="2">type 2</option>
+                                        <option value="3">type 3</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row mb-0">

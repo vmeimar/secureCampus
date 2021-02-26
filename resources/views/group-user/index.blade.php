@@ -59,12 +59,15 @@
 
                     </div>
                 </div>
-                @can('doy')
                     <div class="d-flex">
+{{--                        @can('doy')--}}
+{{--                        <div class="row">--}}
+{{--                            <a href="{{ route('group.create') }}" class="btn btn-primary m-4">{{ __('messages.langCreate') }} {{ __('messages.langUser') }}</a>--}}
+{{--                        </div>--}}
+{{--                        @endcan--}}
                         <div class="row">
-                            <a href="{{ route('group.create') }}" class="btn btn-primary m-4">{{ __('messages.langCreate') }} {{ __('messages.langUser') }}</a>
+                            <a href="#" class="btn btn-success m-4">{{ __('messages.langMassImport') }}</a>
                         </div>
-                        @endcan
                         <div class="row">
                             <a href="{{ route('group.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
                         </div>

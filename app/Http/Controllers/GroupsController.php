@@ -46,7 +46,7 @@ class GroupsController extends Controller
             $group = Group::create([
                 'name'  => $data['name'],
                 'ada'  => $data['ada'],
-                'dean_act'  => $data['dean_act'],
+                'dean_act'  => $data['dean-act'],
             ]);
         } catch (Throwable $e) {
             report($e);
@@ -67,7 +67,7 @@ class GroupsController extends Controller
             $update = $group->update([
                 'name'  => $data['name'],
                 'ada'  => $data['ada'],
-                'dean_act'  => $data['dean_act'],
+                'dean_act'  => $data['dean-act'],
             ]);
         } catch (Throwable $e) {
             report($e);
