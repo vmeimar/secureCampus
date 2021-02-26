@@ -15,12 +15,13 @@ class ContractsController extends Controller
 
     public function index()
     {
-        $contract = Contract::first();
+        $user_id = auth()->id();
+        $contracts = Contract::all();
 
-        if (is_null($contract) or !isset($contract->id)) {
+        if (is_null($contracts)) {
             return redirect(route('contract.create'));
         } else {
-            return view('contract.index', compact('contract'));
+            return view('contract.index', compact('contracts', 'user_id'));
         }
     }
 

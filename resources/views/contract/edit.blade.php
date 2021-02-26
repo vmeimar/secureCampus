@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ route('app.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
+                    <a href="{{ route('contract.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
                 </div>
             </div>
         </div>
