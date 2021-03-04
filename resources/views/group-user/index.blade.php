@@ -59,19 +59,19 @@
 
                     </div>
                 </div>
-                    <div class="d-flex">
-{{--                        @can('doy')--}}
-{{--                        <div class="row">--}}
-{{--                            <a href="{{ route('group.create') }}" class="btn btn-primary m-4">{{ __('messages.langCreate') }} {{ __('messages.langUser') }}</a>--}}
-{{--                        </div>--}}
-{{--                        @endcan--}}
-                        <div class="row">
-                            <a href="#" class="btn btn-success m-4">{{ __('messages.langMassImport') }}</a>
-                        </div>
-                        <div class="row">
-                            <a href="{{ route('group.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
-                        </div>
+                <div class="d-flex">
+                    <div class="row">
+                        <a href="{{ route('group.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
                     </div>
+                    <form action="{{ route('group-users.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row ml-5">
+                            <input type="file" name="file" class="mt-4 ml-4" required/>
+                            <br />
+                            <input type="submit" value="{{ __('messages.langMassImport') }}" class="btn btn-success mt-4 ml-1"/>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

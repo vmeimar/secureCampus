@@ -134,6 +134,11 @@ Route::prefix('/group')->group(function () {
 //GroupUser Routes
 Route::prefix('/group-users')->group(function () {
     Route::get('/index/{group}', 'GroupUsersController@index')->name('group-users.index');
+
+    // Imports - Exports
+    Route::get('/export', 'GroupUsersController@export')->name('group-users.export');
+    Route::get('/importExportView', 'GroupUsersController@importExportView')->name('group-users.import-export-view');
+    Route::post('/import', 'GroupUsersController@import')->name('group-users.import');
 });
 
 //Admin Routes
