@@ -8,12 +8,12 @@
         </div>
         <div class="col-9 pt-5">
             <div>
-                <h2>Καλωσήρθατε στην πλατφόρμα Secure Campus του ΕΚΠΑ</h2>
+                <h2>Συμβάσεις</h2>
             </div>
             <div class="pt-2">
-                <div>Είστε συνδεδεμένος/η ως <strong>{{ $user->name }} {{ $user->surname }}</strong></div>
+                <div><strong>{{ $user->name }} {{ $user->surname }}</strong></div>
                 @can('admin')
-                <div><strong>Ρόλος:</strong> {{ implode(", ", $userRoles) }}</div>
+                <div><strong>{{ implode(", ", $userRoles) }}</strong></div>
                 @endcan
                 <hr>
             </div>
@@ -22,27 +22,27 @@
                     @can('manage-security')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
-                            <strong>Φύλακες / Εταιρίες Φύλαξης</strong>
+                            <strong>Χρήστες Συστήματος</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Δημιουργία και Επεξεργασία Εταιρειών και Υπαλλήλων Φύλαξης</h5>
+                            <h5 class="card-title">Δημιουργία και Επεξεργασία Ομάδων Χρηστών</h5>
                             <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
-                            <a href="/security/index" class="btn btn-primary">Είσοδος</a>
+                            <a href="{{ route('group.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
                     @endcan
-                    @can('view-shifts')
-                    <div class="card mr-2" style="width: 1000px">
-                        <div class="card-header">
-                            <strong>Βάρδιες / Σημεία Φύλαξης</strong>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Σημεία Φύλαξης και Βάρδιες - Έλεγχος και Παραλαβή Υπηρεσιών ανά Βάρδια από τους Επόπτες</h5>
-                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
-                            <a href="{{ route('shift.index') }}" class="btn btn-primary">Είσοδος</a>
-                        </div>
-                    </div>
-                    @endcan
+{{--                    @can('view-shifts')--}}
+{{--                    <div class="card mr-2" style="width: 1000px">--}}
+{{--                        <div class="card-header">--}}
+{{--                            <strong>Βάρδιες / Σημεία Φύλαξης</strong>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
+{{--                            <h5 class="card-title">Σημεία Φύλαξης και Βάρδιες - Έλεγχος και Παραλαβή Υπηρεσιών ανά Βάρδια από τους Επόπτες</h5>--}}
+{{--                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>--}}
+{{--                            <a href="{{ route('shift.index') }}" class="btn btn-primary">Είσοδος</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    @endcan--}}
                 </div>
             </div>
             <div class="row">
@@ -50,27 +50,27 @@
                     @can('doy')
                     <div class="card mr-2" style="width: 1000px">
                         <div class="card-header">
-                            <strong>Διαχείριση Παραμέτρων</strong>
+                            <strong>Δημιουργία & Διαχείριση Συμβάσεων</strong>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Διαχειριστείτε τις Παραμέτρους της Εφαρμογής</h5>
+                            <h5 class="card-title">Διαχειριστείτε τις Συμβάσεις της Εφαρμογής</h5>
                             <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
                             <a href="{{ route('app.index') }}" class="btn btn-primary">Είσοδος</a>
                         </div>
                     </div>
                     @endcan
-                    @can('epitropi')
-                    <div class="card mr-2" style="width: 1000px">
-                        <div class="card-header">
-                            <strong>Επιτροπή Παραλαβής Υπηρεσιών Φύλαξης</strong>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Εξαγωγή Μηνιαίας Βεβαίωσης Επιτροπής Παραλαβής</h5>
-                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>
-                            <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>
-                        </div>
-                    </div>
-                    @endcan
+{{--                    @can('epitropi')--}}
+{{--                    <div class="card mr-2" style="width: 1000px">--}}
+{{--                        <div class="card-header">--}}
+{{--                            <strong>Επιτροπή Παραλαβής Υπηρεσιών Φύλαξης</strong>--}}
+{{--                        </div>--}}
+{{--                        <div class="card-body">--}}
+{{--                            <h5 class="card-title">Εξαγωγή Μηνιαίας Βεβαίωσης Επιτροπής Παραλαβής</h5>--}}
+{{--                            <p class="card-text">Πατήστε παρακάτω για να συνεχίσετε</p>--}}
+{{--                            <a href="/security/choose-company" class="btn btn-primary">Είσοδος</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    @endcan--}}
                 </div>
             </div>
         </div>

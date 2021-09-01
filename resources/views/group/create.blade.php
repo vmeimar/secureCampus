@@ -5,50 +5,50 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header"><strong>{{ __('messages.langCreate') }} {{ __('messages.langOfContract') }}</strong></div>
+                    <div class="card-header"><strong>{{ __('messages.langCreate') }} {{ __('messages.langOfGroup') }}</strong></div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('contract.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('group.store') }}" enctype="multipart/form-data">
                             @method('post')
                             @csrf
                             <div class="form-group row">
-                                <label for="dean_act" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDeanAct') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('messages.langGroupName') }}</label>
                                 <div class="col-md-6">
-                                    <input id="dean_act"
+                                    <input id="name"
                                            type="text"
                                            class="form-control"
-                                           name="dean_act"
-                                           required
-                                           autofocus>
+                                           name="name"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="ada" class="col-md-4 col-form-label text-md-right">{{ __('messages.langAda') }}</label>
+                                <label for="ada" class="col-md-4 col-form-label text-md-right">{{ __('messages.langAda') }} ({{ __('messages.langOptional') }})</label>
                                 <div class="col-md-6">
                                     <input id="ada"
                                            type="text"
                                            class="form-control"
-                                           name="ada"
-                                           required>
+                                           name="ada">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="adam" class="col-md-4 col-form-label text-md-right">{{ __('messages.langAdam') }}</label>
+                                <label for="dean-act" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDeanAct') }} ({{ __('messages.langOptional') }})</label>
                                 <div class="col-md-6">
-                                    <input id="adam"
+                                    <input id="dean-act"
                                            type="text"
                                            class="form-control"
-                                           name="adam"
-                                           required>
+                                           name="dean-act">
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label for="contract_start_date" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDate') }}</label>
+                            </div><div class="form-group row">
+                                <label for="contract-type" class="col-md-4 col-form-label text-md-right">{{ __('messages.langDocumentType') }}</label>
                                 <div class="col-md-6">
-                                    <input id="contract_start_date"
-                                           type="date"
+                                    <select id="contract-type"
+                                           type="text"
                                            class="form-control"
-                                           name="contract_start_date"
-                                           required>
+                                           name="contract-type">
+                                        <option value="" selected disabled>Choose type</option>
+                                        <option value="1">type 1</option>
+                                        <option value="2">type 2</option>
+                                        <option value="3">type 3</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="{{ route('contract.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
+                    <a href="{{ route('group.index') }}" class="btn btn-secondary m-4">{{ __('messages.langBack') }}</a>
                 </div>
             </div>
         </div>

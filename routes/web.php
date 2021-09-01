@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Session;
 */
 Auth::routes();
 
-Route::get('locale/{locale}', function ($locale){
+Route::get('locale/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
 });
@@ -52,13 +52,8 @@ Route::post('active-shift/index/fetch', 'ActiveShiftsController@fetch')->name('a
 Route::post('/as', 'ActiveShiftsController@store')->middleware('can:assign-shifts');
 Route::post('/as/{location}/export-by-location', 'ActiveShiftsController@exportByLocation')->middleware('can:view-shifts')->name('active-shift.export-by-location');
 
-
-
 //Route::patch('/active-shift/{shift}/confirm-supervisor', 'ActiveShiftsController@confirmActiveShiftSupervisor')->middleware('can:confirm-shifts');
 Route::post('/active-shift/submit/{activeShift}', 'ActiveShiftsController@confirmActiveShiftSupervisor');
-
-
-
 
 Route::patch('/active-shift/{location}/confirm-all-supervisor', 'ActiveShiftsController@confirmAllSupervisor')->middleware('can:supervisor');
 Route::patch('/active-shift/{shift}/confirm-steward', 'ActiveShiftsController@confirmActiveShiftSteward')->middleware('can:confirm-shifts-steward');
@@ -123,7 +118,27 @@ Route::prefix('/contract')->group(function () {
     Route::get('/edit/{contract}', 'ContractsController@edit')->middleware('can:doy')->name('contract.edit');
     Route::post('/store', 'ContractsController@store')->middleware('can:doy')->name('contract.store');
     Route::patch('/update/{contract}', 'ContractsController@update')->middleware('can:doy')->name('contract.update');
-    Route::delete('/delete/{contract}', 'ContractsController@destroy')->middleware('can:doy')->name('contract.destroy');
+    Route::delete('/destroy/{contract}', 'ContractsController@destroy')->middleware('can:doy')->name('contract.destroy');
+});
+
+//Group Routes
+Route::prefix('/group')->group(function () {
+    Route::get('/index', 'GroupsController@index')->name('group.index');
+    Route::get('/create', 'GroupsController@create')->name('group.create');
+    Route::get('/edit/{group}', 'GroupsController@edit')->name('group.edit');
+    Route::post('/store', 'GroupsController@store')->name('group.store');
+    Route::patch('/update/{group}', 'GroupsController@update')->name('group.update');
+    Route::delete('/destroy/{group}', 'GroupsController@destroy')->name('group.destroy');
+});
+
+//GroupUser Routes
+Route::prefix('/group-users')->group(function () {
+    Route::get('/index/{group}', 'GroupUsersController@index')->name('group-users.index');
+
+    // Imports - Exports
+    Route::get('/export', 'GroupUsersController@export')->name('group-users.export');
+    Route::get('/importExportView', 'GroupUsersController@importExportView')->name('group-users.import-export-view');
+    Route::post('/import', 'GroupUsersController@import')->name('group-users.import');
 });
 
 //Admin Routes

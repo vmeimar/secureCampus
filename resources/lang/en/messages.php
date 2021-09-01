@@ -2,34 +2,56 @@
 
 return [
     // Common
-    'langPlease'    =>  'Please',
-    'langCompany'   =>  'company',
-    'langChoose'    =>  'choose',
-    'langEdit'  =>  'Edit',
-    'langSubmit'  =>  'Submit',
-    'langSubmitted'  =>  'Submitted',
-    'langSave'  =>  'Save',
-    'langSuccessSave'  =>  'Saved successfully',
-    'langErrorSave'  =>  'Error during saving',
-    'langDelete'    =>  'Delete',
-    'langSuccessDelete'    =>  'Deleted Successfully',
-    'langErrorDelete'    =>  'Error during Deletion',
-    'langConfirmDelete'    =>  'Confirm Deletion',
-    'langBack'  =>  'Back',
+    'langActions'   =>  'Actions',
+    'langBack' => 'Back',
+    'langChoose' => 'Choose',
+    'langCompany' => 'Company',
+    'langConfirmDelete' => 'Confirm Deletion',
+    'langCreate' => 'Create',
+    'langCreationDate'  =>  'Creation Date',
+    'langDelete' => 'Delete',
+    'langDocumentType' => 'Document Type',
+    'langEdit' => 'Edit',
+    'langErrorCreate' => 'Error During Creation',
+    'langErrorDelete' => 'Error During Deletion',
+    'langErrorSave' => 'Error During Saving',
+    'langFirstName'  =>  'First Name',
+    'langLastName'  =>  'Last Name',
+    'langMassImport'  =>  'Mass Import',
+    'langName' => 'Name',
+    'langNoRecordsExist'    =>  'No Existing Records',
+    'langOfUsers'    =>  'of Users',
+    'langOptional'  =>  'Optional',
+    'langPlease' => 'Please',
+    'langSave' => 'Save',
+    'langShowUsers'  =>  'Show Users',
+    'langSubmit' => 'Submit',
+    'langSubmitted' => 'Submitted',
+    'langSuccessCreate' => 'Created Successfully',
+    'langSuccessDelete' => 'Deleted Successfully',
+    'langSuccessSave' => 'Saved Successfully',
+    'langUser' => 'User',
+    'langUsers' => 'Users',
 
     // Contracts messages
-    'langContract'  =>  'Contract',
-    'langOfContract'  =>  "Contract",
+    'langAda' => 'ADA',
+    'langAdam' => 'ADAM',
+    'langContract' => 'Contract',
+    'langOfContract' => 'Contract',
+    'langDate' => 'Date',
     'langDeanAct' => "Dean's Act",
-    'langAda'   =>  'ADA',
-    'langAdam'  =>  'ADAM',
-    'langDate'  =>  'Date',
 
     // Active Shifts
 
     // Shifts
 
     // Guards
+
+    // Group
+    'langGroup' => 'Group',
+    'langGroups' =>  'Groups',
+    'langOfGroup' => 'Group',
+    'langGroupName' => 'Group Name',
 
     // Security
 
@@ -46,3 +68,4 @@ return [
     // Users
 
 ];
+
